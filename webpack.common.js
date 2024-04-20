@@ -18,7 +18,7 @@ module.exports = {
 			title: "Todo list - Complete your goals",
 			filename: "index.html",
 			scriptLoading: "defer",
-			favicon: "",
+			favicon: "./src/assets/to-do-list.png",
 		}),
 	],
 	module: {
