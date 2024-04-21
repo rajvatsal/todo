@@ -22,7 +22,6 @@ const TaskManager = (options) => {
 	const proto = {
 		tasks: [],
 		add: (opts, arg) => {
-			opts.selfIndex = arg.tasks.length;
 			arg.tasks.push(opts);
 		},
 		remove: (ptn, arg) => {
@@ -42,7 +41,6 @@ const TaskManager = (options) => {
 export const projectManager = ((options) => {
 	const proto = {
 		add: (opts) => {
-			opts.selfIndex = projects.length;
 			opts.taskManager = TaskManager();
 			projects.push(opts);
 		},
