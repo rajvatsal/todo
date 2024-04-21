@@ -13,6 +13,10 @@ const fetchAllInterface = (state) => ({
 	fetchAll: () => state.fetchAll(state),
 });
 
+const fetchOneInterface = (state) => ({
+	fetch: (pattern) => state.fetch(pattern, state),
+});
+
 // [ FACTORIES ]
 const TaskManager = (options) => {
 	const proto = {
@@ -48,22 +52,16 @@ export const projectManager = ((options) => {
 			}
 		},
 		fetchAll: () => projects.slice(),
+		fetch: (ptn) => {
+			for (let i = 0; i < projects.length; i++) {
+				if (ptn === projects[i].name) return projects[i];
+			}
+		},
 	};
 
 	const basic = inNOutInterface(proto);
 	const fetchAll = fetchAllInterface(proto);
-	const composite = Object.assign(basic, fetchAll);
+	const fetchOne = fetchOneInterface(proto);
+	const composite = Object.assign(basic, fetchAll, fetchOne);
 	return Object.assign(Object.create(composite), options);
 })();
-
-projectManager.add({ name: "vatsal", color: "charcoal" });
-projectManager.add({ name: "anhay", color: "red" });
-projects[0].taskManager.add({
-	name: "Todo list",
-	desc: "Write the logic for todo list",
-	priority: "high",
-});
-projects[1].taskManager.add({ name: "Shananigans", desc: "jindagi jhand hai" });
-console.log(projects);
-console.log(projects[1].taskManager.fetchAll());
-console.log(projects[0].taskManager.fetchAll());
