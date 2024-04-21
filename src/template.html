@@ -5,10 +5,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TodoList - Complete your goals</title>
+  <style>
+    :root {
+      height: 100%;
+    }
+
+    body {
+      display: grid;
+      grid-template: 1.4fr 5fr / 1fr 3fr;
+      height: inherit;
+    }
+
+    header {
+      grid-area: 1 / 2 / 2 / -1;
+    }
+
+    .links {
+      grid-area: 1 / 1 / -1 / 2;
+    }
+
+    .page {
+      grid-area: 2 / 2 / -1 / -1;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Working</h1>
+  <header>
+    <h1>My projects</h1>
+  </header>
+  <div class="links">
+    <a href="#">project 1</a>
+    <a href="#">project 2</a>
+    <a href="#">project 3</a>
+  </div>
+  <div class="page">
+    <h2>page</h2>
+    <form method="post" action="">
+      <fieldset>
+        <legend>Add new task</legend>
+        <label for="task_name">name</label>
+        <input type="text" id="task_name" name="task_name" value="" placeholder="hunt wolf" required />
+        <label for="task_dec">description</label>
+        <input type="textarea" id="task_dec" name="task_desc" value=""
+          placeholder="it's our last day in the himalayan mountains" maxlength="50ch" />
+        <label for="due_date">due date</label>
+        <input type="date" id="due_date" name="due_date" value="" />
+        <fieldset>
+          <legend>priority</legend>
+          <input type="radio" id="p1" name="priority" value="p1" checked />
+          <label for="p1">priority one</label>
+          <input type="radio" id="p2" name="priority" value"="p2" />
+          <label for="p2">priority two</label>
+          <input type="radio" id="p3" name="priority" value="p3" />
+          <label for="p3">priority three</label>
+        </fieldset>
+        <button type="submit">add task</button>
+      </fieldset>
+    </form>
+  </div>
 </body>
 
 </html>

@@ -1,5 +1,3 @@
-import { compareAsc, format } from "date-fns";
-
 const projects = [];
 
 // [ INTERFACES ]
@@ -43,6 +41,7 @@ export const projectManager = ((options) => {
 		add: (opts) => {
 			opts.taskManager = TaskManager();
 			projects.push(opts);
+			return opts;
 		},
 		remove: (ptn) => {
 			for (let i = 0; i < projects.length; i++) {
