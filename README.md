@@ -22,6 +22,7 @@
   - add new task
 
 - ### PROJECTS page
+
   - each project will have:
     - name and it is editable
     - array of the tasks
@@ -29,3 +30,7 @@
     - delete button
   - list of projects
   - number of projects
+
+- update tmplate so that you have a add project button
+- create a function that changes the dom when you create that project
+- add helper function that creates html elements for you

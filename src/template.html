@@ -20,27 +20,49 @@
       grid-area: 1 / 2 / 2 / -1;
     }
 
-    .links {
+    .side-bar {
       grid-area: 1 / 1 / -1 / 2;
     }
 
     .page {
       grid-area: 2 / 2 / -1 / -1;
     }
+
+    .task-form {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>project name goes here</h1>
+    <h1>My projects</h1>
   </header>
-  <div class="links">
-    <a href="#">project 1</a>
-    <a href="#">project 2</a>
-    <a href="#">project 3</a>
+  <div class="side-bar">
+    <h2>projects</h2>
+    <button type="button" class="btn-add-project">add new project</button>
+    <dialog class="add-project">
+      <form action="" method="form">
+        <fieldset>
+          <legend>create new project</legend>
+          <form method="dialog" action="">
+            <label for="#project-name">Name: </label>
+            <input id="project-name" type="text" name="project_name" value="" placeholder="Todo list" required />
+            <label for="#project-color">Select a color for your project</label>
+            <select id="project-color">
+              <option value="red" selected>red</option>
+              <option value="pink">pink</option>
+              <option value="yellow">yellow</option>
+              <option value="charcoal">charcoal</option>
+            </select>
+            <button type="submit" class="btn__form-add-project">add project</button>
+          </form>
+        </fieldset>
+      </form>
+    </dialog>
   </div>
   <div class="page">
-    <form method="post" action="">
+    <form method="post" action="" class="task-form">
       <fieldset>
         <legend>Add new task</legend>
         <label for="task_name">name</label>
@@ -59,7 +81,7 @@
           <input type="radio" id="p3" name="priority" value="p3" />
           <label for="p3">priority three</label>
         </fieldset>
-        <button type="submit">add task</button>
+        <button type="submit" class="btn_add-task">add task</button>
       </fieldset>
     </form>
   </div>
