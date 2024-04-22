@@ -1,3 +1,5 @@
+import { emit, on, off } from "./pub-sub";
+
 const projects = [];
 
 // [ INTERFACES ]
@@ -62,3 +64,10 @@ export const projectManager = ((options) => {
 	const composite = Object.assign(basic, fetchAll, fetchOne);
 	return Object.assign(Object.create(composite), options);
 })();
+
+function addNewProject(opts) {
+	const project = projectManager.add(opts);
+	emit("showNewProject", project);
+}
+
+on("addNewProject", addNewProject);
