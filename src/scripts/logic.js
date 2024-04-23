@@ -38,7 +38,7 @@ const TaskManager = (options) => {
 	return Object.assign(Object.create(composite), options);
 };
 
-export const projectManager = ((options) => {
+export const ProjectManager = ((options) => {
 	const proto = {
 		add: (opts) => {
 			opts.taskManager = TaskManager();
@@ -66,7 +66,7 @@ export const projectManager = ((options) => {
 })();
 
 function addNewProject(opts) {
-	const project = projectManager.add(opts);
+	const project = ProjectManager.add(opts);
 	emit("showNewProject", project);
 }
 
