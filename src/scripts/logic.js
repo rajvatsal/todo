@@ -23,6 +23,7 @@ const TaskManager = (options) => {
 		tasks: [],
 		add: (opts, arg) => {
 			arg.tasks.push(opts);
+			return opts;
 		},
 		remove: (ptn, arg) => {
 			for (let i = 0; i < arg.tasks.length; i++) {
@@ -70,4 +71,18 @@ function addNewProject(opts) {
 	emit("showNewProject", project);
 }
 
+// function addNewTask(data) {
+// 	const [projectName, options] = data;
+// 	for (let project of projects) {
+// 		if (project.name === projectName) {
+// 			const newTask = project.taskManager.add(options);
+// 			emit("showNewTask", newTask);
+// 			return;
+// 		}
+//
+// 		alert("error: project doesn't exist");
+// 	}
+// }
+
 on("addNewProject", addNewProject);
+// on("addNewTask", addNewTask);

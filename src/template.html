@@ -65,6 +65,9 @@
     </dialog>
   </div>
   <div class="page">
+    <ul class="task-list">
+
+    </ul>
     <form method="post" action="" class="task-form">
       <fieldset>
         <legend>Add new task</legend>
@@ -74,7 +77,7 @@
         <input type="textarea" id="task_dec" name="task_desc" value=""
           placeholder="it's our last day in the himalayan mountains" maxlength="50ch" />
         <label for="due_date">due date</label>
-        <input type="date" id="due_date" name="due_date" value="" />
+        <input type="date" id="due_date" name="due_date" value="" required />
         <fieldset>
           <legend>priority</legend>
           <input type="radio" id="p1" name="priority" value="p1" checked />
