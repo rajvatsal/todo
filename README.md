@@ -12,25 +12,27 @@
 
 - ## FEATURES of a task
 
-  - name
-  - description
-  - due-date
+  - ~~name~~
+  - ~~description~~
+  - ~~due-date~~
   - **_optional_** label
-  - priority
+  - ~~priority~~
   - edit button
   - delete button
-  - add new task
+  - ~~add new task~~
 
 - ### PROJECTS page
 
   - each project will have:
     - name and it is editable
-    - array of the tasks
-    - color i.e. the DOM Logic
+    - ~~array of the tasks~~
+    - ~~color i.e. the DOM Logic~~
     - delete button
-  - list of projects
-  - number of projects
+  - ~~list of projects~~
+  - ~~number of projects~~
 
-- update tmplate so that you have a add project button
-- create a function that changes the dom when you create that project
+- ~~update tmplate so that you have a add project button~~
+- ~~create a function that changes the dom when you create that project~~
 - add helper function that creates html elements for you
+
+- clickHandlerProjectBtn doesn't open that project's tasks. currently all the tasks are global make it show only tasks that are of that praticular project
