@@ -1,7 +1,6 @@
 import { compareAsc, format } from "date-fns";
 import { createElement } from "./utility";
 import { on, off, emit } from "./pub-sub";
-import { createHtmlTagObject } from "html-webpack-plugin";
 
 const btnAddProject = document.querySelector(".btn-add-project");
 const dialogAddProject = document.querySelector("dialog.add-project");
