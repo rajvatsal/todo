@@ -14,7 +14,24 @@ const taskForm = document.querySelector(".task-form");
 const btnAddTask = document.querySelector(".btn_add-task");
 const inputTaskName = document.querySelector("#task_name");
 const inputTaskDate = document.querySelector("#due_date");
+const inputTaskDesc = document.querySelector("#task_dec");
+const inputTaskPriorities = Array.from(
+	document.querySelectorAll('.task-form input[type="radio"]'),
+);
 const taskList = document.querySelector(".task-list");
+
+const priorityManager = (() => {
+	const priorityColors = {
+		p1: "red",
+		p2: "yellow",
+		p3: "blue",
+	};
+	const prop = {
+		getPriorityColor: (val) => priorityColors[val],
+	};
+
+	return Object.assign(Object.create(prop));
+})();
 
 const showProjectForm = () => dialogAddProject.showModal();
 btnAddProject.addEventListener("click", showProjectForm);
@@ -30,11 +47,15 @@ function clickHandlerAddTask(e) {
 	e.preventDefault();
 
 	const projectNm = topHeading.textContent;
-	const newTask = emit("addNewTask", [
+	console.log(inputTaskPriorities);
+	const [priority] = inputTaskPriorities.filter((priority) => priority.checked);
+	emit("addNewTask", [
 		projectNm,
 		{
 			name: `${inputTaskName.value}`,
 			dueDate: `${inputTaskDate.value}`,
+			desc: `${inputTaskDesc.value}`,
+			priority: priority.value,
 		},
 	]);
 }
@@ -72,22 +93,29 @@ function showNewProject(project) {
 	projectList.appendChild(li);
 }
 
-// function showNewTask(newTask) {
-// 	const li = createElement("li");
-// 	const div = createElement("div");
-// 	const h3 = createElement("h3", {
-// 		property: { textContent: `${newTask.name}` },
-// 	});
-// 	let p;
-// 	if (!newTask.desc)
-// 		p = createElement("p", { property: { textContent: `${newTask.desc}` } });
-// 	const span = createElement("span", { attributes: { class: "due-date" } });
-// 	div.appendChild(h3);
-// 	if (p !== undefined) div.appendChild(p);
-// 	div.appendChild(span);
-// 	li.appendChild(div);
-// 	taskList.appendChild(li);
-// }
+function showNewTask(newTask) {
+	const li = createElement("li");
+	li.setAttribute(
+		"style",
+		`border: 1px solid ${priorityManager.getPriorityColor(newTask.priority)}`,
+	);
+	const div = createElement("div");
+	const h3 = createElement("h3", {
+		property: { textContent: `${newTask.name}` },
+	});
+	let p;
+	if (newTask.desc)
+		p = createElement("p", { property: { textContent: `${newTask.desc}` } });
+	const span = createElement("span", {
+		attributes: { class: "due-date" },
+		property: { textContent: `${newTask.dueDate}` },
+	});
+	div.appendChild(h3);
+	if (p !== undefined) div.appendChild(p);
+	div.appendChild(span);
+	li.appendChild(div);
+	taskList.appendChild(li);
+}
 
 on("showNewProject", showNewProject);
-// on("showNewTask", showNewTask);
+on("showNewTask", showNewTask);

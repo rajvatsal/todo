@@ -71,18 +71,18 @@ function addNewProject(opts) {
 	emit("showNewProject", project);
 }
 
-// function addNewTask(data) {
-// 	const [projectName, options] = data;
-// 	for (let project of projects) {
-// 		if (project.name === projectName) {
-// 			const newTask = project.taskManager.add(options);
-// 			emit("showNewTask", newTask);
-// 			return;
-// 		}
-//
-// 		alert("error: project doesn't exist");
-// 	}
-// }
+function addNewTask(data) {
+	const [projectName, options] = data;
+	for (let project of projects) {
+		if (project.name === projectName) {
+			const newTask = project.taskManager.add(options);
+			emit("showNewTask", newTask);
+			return;
+		}
+
+		alert("error: project doesn't exist");
+	}
+}
 
 on("addNewProject", addNewProject);
-// on("addNewTask", addNewTask);
+on("addNewTask", addNewTask);
