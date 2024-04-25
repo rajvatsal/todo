@@ -47,7 +47,6 @@ function clickHandlerAddTask(e) {
 	e.preventDefault();
 
 	const projectNm = topHeading.textContent;
-	console.log(inputTaskPriorities);
 	const [priority] = inputTaskPriorities.filter((priority) => priority.checked);
 	emit("addNewTask", [
 		projectNm,
@@ -74,7 +73,10 @@ function clickHandlerAddProject(e) {
 }
 
 function clickHandlerProjectBtn(e) {
-	topHeading.textContent = e.target.textContent;
+	const projectName = e.target.textContent;
+	// const tasks = emit("getProjectTasks", projectName);
+	// console.log(tasks);
+	topHeading.textContent = projectName;
 	taskForm.style.display = "block";
 }
 

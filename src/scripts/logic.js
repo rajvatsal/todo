@@ -79,10 +79,20 @@ function addNewTask(data) {
 			emit("showNewTask", newTask);
 			return;
 		}
-
-		alert("error: project doesn't exist");
 	}
+	alert("error: project doesn't exist");
 }
+
+// function openAProject(pName) {
+// 	for (let project of projects) {
+// 		if (project.name !== pName) continue;
+// 		var tasks = project.taskManager.fetchAll();
+// 		break;
+// 	}
+// 	console.log(`FROM LOGIC: ${tasks.join("-")}`);
+// 	return tasks;
+// }
 
 on("addNewProject", addNewProject);
 on("addNewTask", addNewTask);
+// on("getProjectTasks", openAProject);
