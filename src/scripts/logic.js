@@ -83,16 +83,15 @@ function addNewTask(data) {
 	alert("error: project doesn't exist");
 }
 
-// function openAProject(pName) {
-// 	for (let project of projects) {
-// 		if (project.name !== pName) continue;
-// 		var tasks = project.taskManager.fetchAll();
-// 		break;
-// 	}
-// 	console.log(`FROM LOGIC: ${tasks.join("-")}`);
-// 	return tasks;
-// }
+function openAProject(pName) {
+	for (let project of projects) {
+		if (project.name !== pName) continue;
+		var tasks = project.taskManager.fetchAll(tasks);
+		break;
+	}
+	emit("showCurrentProjectTasks", { tasks, pName });
+}
 
 on("addNewProject", addNewProject);
 on("addNewTask", addNewTask);
-// on("getProjectTasks", openAProject);
+on("getProjectTasks", openAProject);

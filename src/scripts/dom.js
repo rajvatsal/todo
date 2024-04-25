@@ -18,7 +18,7 @@ const inputTaskDesc = document.querySelector("#task_dec");
 const inputTaskPriorities = Array.from(
 	document.querySelectorAll('.task-form input[type="radio"]'),
 );
-const taskList = document.querySelector(".task-list");
+const page = document.querySelector(".page");
 
 const priorityManager = (() => {
 	const priorityColors = {
@@ -72,13 +72,7 @@ function clickHandlerAddProject(e) {
 	formAddProject.reset();
 }
 
-function clickHandlerProjectBtn(e) {
-	const projectName = e.target.textContent;
-	// const tasks = emit("getProjectTasks", projectName);
-	// console.log(tasks);
-	topHeading.textContent = projectName;
-	taskForm.style.display = "block";
-}
+function clickHandlerProjectBtn(e) {}
 
 function showNewProject(project) {
 	const li = createElement("li");
@@ -90,12 +84,15 @@ function showNewProject(project) {
 		},
 	};
 	const btnOpenProject = createElement("button", projectOptions);
-	btnOpenProject.addEventListener("click", clickHandlerProjectBtn);
+	btnOpenProject.addEventListener("click", (e) =>
+		emit("getProjectTasks", e.target.textContent),
+	);
 	li.appendChild(btnOpenProject);
 	projectList.appendChild(li);
 }
 
 function showNewTask(newTask) {
+	const taskList = document.querySelector(".task-list");
 	const li = createElement("li");
 	li.setAttribute(
 		"style",
@@ -119,5 +116,15 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
+function showProjectTasks({ tasks, pName }) {
+	const taskList = document.querySelector(".task-list");
+	page.removeChild(taskList);
+	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
+	tasks.forEach((task) => showNewTask(task));
+	topHeading.textContent = pName;
+	taskForm.style.display = "block";
+}
+
 on("showNewProject", showNewProject);
 on("showNewTask", showNewTask);
+on("showCurrentProjectTasks", showProjectTasks);
