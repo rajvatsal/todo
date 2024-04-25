@@ -33,6 +33,6 @@
 
 - ~~update tmplate so that you have a add project button~~
 - ~~create a function that changes the dom when you create that project~~
-- add helper function that creates html elements for you
+- ~~add helper function that creates html elements for you~~
 
 - clickHandlerProjectBtn doesn't open that project's tasks. currently all the tasks are global make it show only tasks that are of that praticular project
