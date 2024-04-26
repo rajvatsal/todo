@@ -6,7 +6,7 @@ const projects = [];
 const inNOutInterface = (state) => ({
 	type: "inNOutInterface",
 	add: (options) => state.add(options, state),
-	remove: (pattern) => state.remove(pattern, state),
+	remove: (index) => state.remove(index, state),
 });
 
 const fetchAllInterface = (state) => ({
@@ -25,13 +25,7 @@ const TaskManager = (options) => {
 			arg.tasks.push(opts);
 			return opts;
 		},
-		remove: (ptn, arg) => {
-			for (let i = 0; i < arg.tasks.length; i++) {
-				if (arg.tasks[i].name !== ptn) continue;
-				arg.tasks.splice(i, 1);
-				break;
-			}
-		},
+		remove: (tIndex, arg) => arg.tasks.splice(tIndex, 1),
 		fetchAll: (arg) => arg.tasks.slice(),
 	};
 
@@ -95,10 +89,10 @@ function openAProject(pName) {
 }
 
 function removeTask(data) {
-	const { tName, pName } = data;
+	const { tIndex, pName } = data;
 	for (let project of projects) {
 		if (project.name !== pName) continue;
-		project.taskManager.remove(tName);
+		project.taskManager.remove(tIndex);
 		var tasks = project.taskManager.fetchAll();
 		break;
 	}

@@ -142,9 +142,16 @@ function showProjectTasks({ tasks, pName }) {
 }
 
 function clickHandlerTaskCheckbox(e) {
-	const tName = e.target.value;
 	const pName = topHeading.textContent;
-	emit("taskCompletedLogic", { tName, pName });
+	let tIndex = undefined;
+
+	const tList = document.querySelectorAll('.task-list input[type="radio"]');
+	for (let i = 0; i < tList.length; i++) {
+		if (tList[i] !== e.target) continue;
+		tIndex = i;
+		break;
+	}
+	emit("taskCompletedLogic", { tIndex, pName });
 }
 
 on("showNewProject", showNewProject);
