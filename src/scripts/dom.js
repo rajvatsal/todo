@@ -112,17 +112,20 @@ function showNewTask(newTask) {
 		"style",
 		`border: 1px solid ${priorityManager.getPriorityColor(newTask.priority)}`,
 	);
+
 	const div = createElement("div", { attributes: { class: "task-container" } });
 	const h3 = createElement("h3", {
 		property: { textContent: `${newTask.name}` },
 	});
-	let p;
-	if (newTask.desc)
-		p = createElement("p", { property: { textContent: `${newTask.desc}` } });
+	let p = newTask.desc
+		? createElement("p", { property: { textContent: `${newTask.desc}` } })
+		: undefined;
+
 	const span = createElement("span", {
 		attributes: { class: "due-date" },
 		property: { textContent: `${newTask.dueDate}` },
 	});
+
 	taskInfoContainer.appendChild(h3);
 	if (p !== undefined) taskInfoContainer.appendChild(p);
 	taskInfoContainer.appendChild(span);
@@ -132,7 +135,7 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
-function showProjectTasks({ tasks, pName }) {
+function showProject({ tasks, pName }) {
 	const taskList = document.querySelector(".task-list");
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
@@ -156,4 +159,4 @@ function clickHandlerTaskCheckbox(e) {
 
 on("showNewProject", showNewProject);
 on("showNewTask", showNewTask);
-on("showCurrentProjectTasks", showProjectTasks);
+on("showCurrentProject", showProject);

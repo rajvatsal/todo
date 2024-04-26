@@ -36,6 +36,10 @@
       display: flex;
       align-items: start;
     }
+
+    .page__btn-add-task {
+      display: none;
+    }
   </style>
 </head>
 
@@ -71,6 +75,7 @@
   </div>
   <div class="page">
     <ul class="task-list"></ul>
+    <button type="button" class="page__btn-add-task">Add task</button>
     <form method="post" action="" class="task-form">
       <fieldset>
         <legend>Add new task</legend>
@@ -91,6 +96,7 @@
           <label for="p3">priority three</label>
         </fieldset>
         <button type="submit" class="btn_add-task">add task</button>
+        <button type="button" class="task-form__btn-cancel">cancel</button>
       </fieldset>
     </form>
   </div>

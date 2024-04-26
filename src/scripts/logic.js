@@ -85,7 +85,7 @@ function openAProject(pName) {
 		var tasks = project.taskManager.fetchAll(tasks);
 		break;
 	}
-	emit("showCurrentProjectTasks", { tasks, pName });
+	emit("showCurrentProject", { tasks, pName });
 }
 
 function removeTask(data) {
@@ -96,7 +96,7 @@ function removeTask(data) {
 		var tasks = project.taskManager.fetchAll();
 		break;
 	}
-	emit("showCurrentProjectTasks", { tasks, pName });
+	emit("showCurrentProject", { tasks, pName });
 }
 
 on("addNewProject", addNewProject);
