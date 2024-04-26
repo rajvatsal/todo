@@ -27,7 +27,9 @@ const TaskManager = (options) => {
 		},
 		remove: (ptn, arg) => {
 			for (let i = 0; i < arg.tasks.length; i++) {
-				if (arg.tasks[i].name === ptn) arg.tasks.splice(i, 1);
+				if (arg.tasks[i].name !== ptn) continue;
+				arg.tasks.splice(i, 1);
+				break;
 			}
 		},
 		fetchAll: (arg) => arg.tasks.slice(),
@@ -92,6 +94,18 @@ function openAProject(pName) {
 	emit("showCurrentProjectTasks", { tasks, pName });
 }
 
+function removeTask(data) {
+	const { tName, pName } = data;
+	for (let project of projects) {
+		if (project.name !== pName) continue;
+		project.taskManager.remove(tName);
+		var tasks = project.taskManager.fetchAll();
+		break;
+	}
+	emit("showCurrentProjectTasks", { tasks, pName });
+}
+
 on("addNewProject", addNewProject);
 on("addNewTask", addNewTask);
 on("getProjectTasks", openAProject);
+on("taskCompletedLogic", removeTask);

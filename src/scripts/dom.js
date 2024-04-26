@@ -94,11 +94,25 @@ function showNewProject(project) {
 function showNewTask(newTask) {
 	const taskList = document.querySelector(".task-list");
 	const li = createElement("li");
+	const checkBox = createElement("input", {
+		attributes: {
+			type: "radio",
+			name: `${newTask.name}`,
+			value: newTask.name,
+		},
+	});
+
+	checkBox.addEventListener("click", clickHandlerTaskCheckbox);
+
+	const taskInfoContainer = createElement("div", {
+		attributes: { class: "task-info" },
+	});
+
 	li.setAttribute(
 		"style",
 		`border: 1px solid ${priorityManager.getPriorityColor(newTask.priority)}`,
 	);
-	const div = createElement("div");
+	const div = createElement("div", { attributes: { class: "task-container" } });
 	const h3 = createElement("h3", {
 		property: { textContent: `${newTask.name}` },
 	});
@@ -109,9 +123,11 @@ function showNewTask(newTask) {
 		attributes: { class: "due-date" },
 		property: { textContent: `${newTask.dueDate}` },
 	});
-	div.appendChild(h3);
-	if (p !== undefined) div.appendChild(p);
-	div.appendChild(span);
+	taskInfoContainer.appendChild(h3);
+	if (p !== undefined) taskInfoContainer.appendChild(p);
+	taskInfoContainer.appendChild(span);
+	div.appendChild(checkBox);
+	div.appendChild(taskInfoContainer);
 	li.appendChild(div);
 	taskList.appendChild(li);
 }
@@ -123,6 +139,12 @@ function showProjectTasks({ tasks, pName }) {
 	tasks.forEach((task) => showNewTask(task));
 	topHeading.textContent = pName;
 	taskForm.style.display = "block";
+}
+
+function clickHandlerTaskCheckbox(e) {
+	const tName = e.target.value;
+	const pName = topHeading.textContent;
+	emit("taskCompletedLogic", { tName, pName });
 }
 
 on("showNewProject", showNewProject);
