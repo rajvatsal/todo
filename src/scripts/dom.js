@@ -11,7 +11,7 @@ const ipDilaogProjectColor = document.querySelector("#project-color");
 const projectList = document.querySelector(".project-list");
 const topHeading = document.querySelector("header>h1");
 const taskForm = document.querySelector(".task-form");
-const btnAddTask = document.querySelector(".btn_add-task");
+const btnAddTask = document.querySelector(".page__btn-add-task");
 const inputTaskName = document.querySelector("#task_name");
 const inputTaskDate = document.querySelector("#due_date");
 const inputTaskDesc = document.querySelector("#task_dec");
@@ -19,6 +19,17 @@ const inputTaskPriorities = Array.from(
 	document.querySelectorAll('.task-form input[type="radio"]'),
 );
 const page = document.querySelector(".page");
+const btnAddTaskSubmitForm = document.querySelector(".task-form__btn-add-task");
+const btnTaskCancel = document.querySelector(".task-form__btn-cancel");
+
+btnAddTask.addEventListener("click", (e) => {
+	taskForm.style.display = "block";
+	e.target.style.display = "none";
+});
+btnTaskCancel.addEventListener("click", () => {
+	taskForm.style.display = "none";
+	btnAddTask.style.display = "block";
+});
 
 const priorityManager = (() => {
 	const priorityColors = {
@@ -38,7 +49,7 @@ btnAddProject.addEventListener("click", showProjectForm);
 
 btnDialogAddProject.addEventListener("click", clickHandlerAddProject);
 
-btnAddTask.addEventListener("click", clickHandlerAddTask);
+btnAddTaskSubmitForm.addEventListener("click", clickHandlerAddTask);
 
 function clickHandlerAddTask(e) {
 	if (!inputTaskName.checkValidity()) return;
@@ -141,7 +152,7 @@ function showProject({ tasks, pName }) {
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
 	tasks.forEach((task) => showNewTask(task));
 	topHeading.textContent = pName;
-	taskForm.style.display = "block";
+	if (taskForm.style.display !== "block") btnAddTask.style.display = "block";
 }
 
 function clickHandlerTaskCheckbox(e) {
