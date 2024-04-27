@@ -63,16 +63,14 @@ export const ProjectManager = ((options) => {
 })();
 
 function addNewProject(opts) {
-	const project = ProjectManager.add(opts);
-	emit("showNewProject", project);
+	ProjectManager.add(opts);
 }
 
 function addNewTask(data) {
 	const [projectName, options] = data;
 	for (let project of projects) {
 		if (project.name === projectName) {
-			const newTask = project.taskManager.add(options);
-			emit("showNewTask", newTask);
+			project.taskManager.add(options);
 			return;
 		}
 	}
@@ -85,7 +83,7 @@ function openAProject(pName) {
 		var tasks = project.taskManager.fetchAll(tasks);
 		break;
 	}
-	emit("showCurrentProject", { tasks, pName });
+	emit("return__getProjectTasks", { tasks, pName });
 }
 
 function removeTask(data) {
@@ -93,7 +91,6 @@ function removeTask(data) {
 	for (let project of projects) {
 		if (project.name !== pName) continue;
 		project.taskManager.remove(tIndex);
-		var tasks = project.taskManager.fetchAll();
 		break;
 	}
 }

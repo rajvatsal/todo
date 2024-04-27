@@ -62,15 +62,16 @@ function clickHandlerTaskFormSubmit(e) {
 
 	const projectNm = topHeading.textContent;
 	const [priority] = inputTaskPriorities.filter((priority) => priority.checked);
-	emit("addNewTask", [
-		projectNm,
-		{
-			name: `${inputTaskName.value}`,
-			dueDate: `${inputTaskDate.value}`,
-			desc: `${inputTaskDesc.value}`,
-			priority: priority.value,
-		},
-	]);
+
+	const taskOpts = {
+		name: `${inputTaskName.value}`,
+		dueDate: `${inputTaskDate.value}`,
+		desc: `${inputTaskDesc.value}`,
+		priority: priority.value,
+	};
+
+	emit("addNewTask", [projectNm, taskOpts]);
+	showNewTask(taskOpts);
 }
 
 function clickHandlerAddProject(e) {
@@ -84,9 +85,13 @@ function clickHandlerAddProject(e) {
 	emit("addNewProject", project);
 	dialogAddProject.close();
 	formAddProject.reset();
+
+	showNewProject(project);
 }
 
-function clickHandlerProjectBtn(e) {}
+function clickHandlerProjectBtn(e) {
+	emit("getProjectTasks", e.target.textContent);
+}
 
 function showNewProject(project) {
 	const li = createElement("li");
@@ -98,9 +103,7 @@ function showNewProject(project) {
 		},
 	};
 	const btnOpenProject = createElement("button", projectOptions);
-	btnOpenProject.addEventListener("click", (e) =>
-		emit("getProjectTasks", e.target.textContent),
-	);
+	btnOpenProject.addEventListener("click", clickHandlerProjectBtn);
 	li.appendChild(btnOpenProject);
 	projectList.appendChild(li);
 }
@@ -149,18 +152,16 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
-function resetTaskForm() {
-	taskForm.style.display = "none";
-	btnAddTask.style.display = "block";
-}
-
-function showProject({ tasks, pName }) {
+function openProject({ tasks, pName }) {
 	const taskList = document.querySelector(".task-list");
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
 	tasks.forEach((task) => showNewTask(task));
 	topHeading.textContent = pName;
-	resetTaskForm();
+
+	//task form/task button reset
+	taskForm.style.display = "none";
+	btnAddTask.style.display = "block";
 }
 
 function clickHandlerTaskCheckbox(e) {
@@ -179,6 +180,4 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
-on("showNewProject", showNewProject);
-on("showNewTask", showNewTask);
-on("showCurrentProject", showProject);
+on("return__getProjectTasks", openProject);
