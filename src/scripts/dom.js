@@ -130,11 +130,13 @@ function showNewTask(newTask) {
 		`border: 1px solid ${priorityManager.getPriorityColor(newTask.priority)}`,
 	);
 
-	const div = createElement("div", { attributes: { class: "task-container" } });
+	const taskContainer = createElement("div", {
+		attributes: { class: "task-container" },
+	});
 	const h3 = createElement("h3", {
 		property: { textContent: `${newTask.name}` },
 	});
-	let p = newTask.desc
+	const p = newTask.desc
 		? createElement("p", { property: { textContent: `${newTask.desc}` } })
 		: undefined;
 
@@ -146,8 +148,8 @@ function showNewTask(newTask) {
 	taskInfoContainer.appendChild(h3);
 	if (p !== undefined) taskInfoContainer.appendChild(p);
 	taskInfoContainer.appendChild(span);
-	div.appendChild(checkBox);
-	div.appendChild(taskInfoContainer);
+	taskContainer.appendChild(checkBox);
+	taskContainer.appendChild(taskInfoContainer);
 	li.appendChild(div);
 	taskList.appendChild(li);
 }
