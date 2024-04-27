@@ -85,7 +85,7 @@ function clickHandlerAddProject(e) {
 
 function clickHandlerProjectBtn(e) {}
 
-function showNewProject(project) {
+function addProjectBtn(project) {
 	const li = createElement("li");
 	const projectOptions = {
 		property: { textContent: project.name },
@@ -146,7 +146,7 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
-function showProject({ tasks, pName }) {
+function openProject({ tasks, pName }) {
 	const taskList = document.querySelector(".task-list");
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
@@ -168,6 +168,6 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
-on("showNewProject", showNewProject);
+on("addProjectBtn", addProjectBtn);
 on("showNewTask", showNewTask);
-on("showCurrentProject", showProject);
+on("showCurrentProject", openProject);
