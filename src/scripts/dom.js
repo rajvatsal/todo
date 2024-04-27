@@ -167,9 +167,12 @@ function clickHandlerTaskCheckbox(e) {
 	const pName = topHeading.textContent;
 	let tIndex = undefined;
 
+	const tListContainer = document.querySelector(".task-list");
 	const tList = document.querySelectorAll('.task-list input[type="radio"]');
 	for (let i = 0; i < tList.length; i++) {
 		if (tList[i] !== e.target) continue;
+		const li = document.querySelector(`.task-list>li:nth-child(${i + 1})`);
+		tListContainer.removeChild(li);
 		tIndex = i;
 		break;
 	}

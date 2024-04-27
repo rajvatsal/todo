@@ -96,7 +96,6 @@ function removeTask(data) {
 		var tasks = project.taskManager.fetchAll();
 		break;
 	}
-	emit("showCurrentProject", { tasks, pName });
 }
 
 on("addNewProject", addNewProject);
