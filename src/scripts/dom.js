@@ -22,14 +22,18 @@ const page = document.querySelector(".page");
 const btnAddTaskSubmitForm = document.querySelector(".task-form__btn-add-task");
 const btnTaskCancel = document.querySelector(".task-form__btn-cancel");
 
-btnAddTask.addEventListener("click", (e) => {
+function clickHandlerAddTaskPage(e) {
 	taskForm.style.display = "block";
 	e.target.style.display = "none";
-});
-btnTaskCancel.addEventListener("click", () => {
+}
+
+function clickHandlerCancelTask() {
 	taskForm.style.display = "none";
 	btnAddTask.style.display = "block";
-});
+}
+
+btnAddTask.addEventListener("click", clickHandlerAddTaskPage);
+btnTaskCancel.addEventListener("click", clickHandlerCancelTask);
 
 const priorityManager = (() => {
 	const priorityColors = {
@@ -45,13 +49,12 @@ const priorityManager = (() => {
 })();
 
 const showProjectForm = () => dialogAddProject.showModal();
+
 btnAddProject.addEventListener("click", showProjectForm);
-
 btnDialogAddProject.addEventListener("click", clickHandlerAddProject);
+btnAddTaskSubmitForm.addEventListener("click", clickHandlerTaskFormSubmit);
 
-btnAddTaskSubmitForm.addEventListener("click", clickHandlerAddTask);
-
-function clickHandlerAddTask(e) {
+function clickHandlerTaskFormSubmit(e) {
 	if (!inputTaskName.checkValidity()) return;
 	if (!inputTaskDate.checkValidity()) return;
 
@@ -146,13 +149,18 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
+function resetTaskForm() {
+	taskForm.style.display = "none";
+	btnAddTask.style.display = "block";
+}
+
 function showProject({ tasks, pName }) {
 	const taskList = document.querySelector(".task-list");
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
 	tasks.forEach((task) => showNewTask(task));
 	topHeading.textContent = pName;
-	if (taskForm.style.display !== "block") btnAddTask.style.display = "block";
+	resetTaskForm();
 }
 
 function clickHandlerTaskCheckbox(e) {
