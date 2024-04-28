@@ -110,7 +110,16 @@ function showNewProject(project) {
 
 function showNewTask(newTask) {
 	const taskList = document.querySelector(".task-list");
-	const li = createElement("li");
+	const li = createElement("li", {
+		attributes: {
+			style: `border: 1px solid ${priorityManager.getPriorityColor(
+				newTask.priority,
+			)}`,
+		},
+	});
+
+	li.addEventListener("click", clickHandlerEditTask);
+
 	const checkBox = createElement("input", {
 		attributes: {
 			type: "radio",
@@ -125,19 +134,21 @@ function showNewTask(newTask) {
 		attributes: { class: "task-info" },
 	});
 
-	li.setAttribute(
-		"style",
-		`border: 1px solid ${priorityManager.getPriorityColor(newTask.priority)}`,
-	);
-
 	const taskContainer = createElement("div", {
-		attributes: { class: "task-container" },
+		attributes: {
+			class: "task-container",
+			"data-task-priority": newTask.priority,
+		},
 	});
 	const h3 = createElement("h3", {
 		property: { textContent: `${newTask.name}` },
+		attributes: { class: "name" },
 	});
 	const p = newTask.desc
-		? createElement("p", { property: { textContent: `${newTask.desc}` } })
+		? createElement("p", {
+				attributes: { class: "desc" },
+				property: { textContent: `${newTask.desc}` },
+		  })
 		: undefined;
 
 	const span = createElement("span", {
@@ -145,13 +156,172 @@ function showNewTask(newTask) {
 		property: { textContent: `${newTask.dueDate}` },
 	});
 
+	const editBtn = createElement("button", {
+		attributes: {
+			class: "btn-edit-task",
+		},
+		property: { textContent: "edit" },
+	});
+
 	taskInfoContainer.appendChild(h3);
 	if (p !== undefined) taskInfoContainer.appendChild(p);
 	taskInfoContainer.appendChild(span);
 	taskContainer.appendChild(checkBox);
 	taskContainer.appendChild(taskInfoContainer);
+	taskContainer.appendChild(editBtn);
 	li.appendChild(taskContainer);
 	taskList.appendChild(li);
+}
+
+function clickHandlerEditTask(e) {
+	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
+
+	e.stopPropagation();
+	if (!e.target.classList.contains("btn-edit-task")) return;
+
+	const tName = this.querySelector(".task-info .name").textContent;
+	let tDesc = this.querySelector(".task-info .desc");
+	tDesc = tDesc === null ? "" : tDesc.textContent;
+	const tDate = this.querySelector(".task-info .due-date").textContent;
+	const tPriority = this.querySelector(".task-container")
+		.getAttribute("data-task-priority")
+		.split("")[1];
+
+	const formContainer = createElement("div", {
+		attributes: { class: "task-edit-form-container" },
+	});
+	const form = createElement("form");
+	const fieldset = createElement("fieldset");
+	const legend = createElement("legend", { property: { textContent: "edit" } });
+	const name = createElement("input", {
+		attributes: {
+			type: `text`,
+			id: "edit_tName",
+			name: "task_name",
+			placeholder: "task name",
+			value: `${tName}`,
+		},
+	});
+	const labelNm = createElement("label", {
+		attributes: {
+			for: `edit_tName`,
+		},
+		property: {
+			textContent: "name",
+		},
+	});
+
+	const desc = createElement("input", {
+		attributes: {
+			type: `textarea`,
+			id: "edit_tDesc",
+			name: "task_desc",
+			placeholder: "description",
+			value: `${tDesc}`,
+		},
+	});
+	const labelDesc = createElement("label", {
+		attributes: {
+			for: `edit_tDesc`,
+		},
+		property: {
+			textContent: "description",
+		},
+	});
+
+	const dueDate = createElement("input", {
+		attributes: {
+			type: `date`,
+			id: "edit_tDate",
+			name: "due_date",
+			value: `${tDate}`,
+		},
+	});
+	const labelDate = createElement("label", {
+		attributes: {
+			for: `edit_tDesc`,
+		},
+		property: {
+			textContent: "due date",
+		},
+	});
+
+	const fieldsetPriority = createElement("fieldset", {});
+	const legendPriority = createElement("legend", {
+		property: { textContent: "priority" },
+	});
+
+	const priorities = {};
+	for (let i = 1; i <= 3; i++) {
+		const inputOpts = {
+			attributes: {
+				type: "radio",
+				id: `edit_p${i}`,
+				name: "priorityp",
+				value: `p${i}`,
+			},
+		};
+
+		const labelOpts = {
+			attributes: { for: `edit_p${i}` },
+			property: { textContent: `priority ${i}` },
+		};
+
+		if (i === +tPriority) inputOpts.attributes.checked = null;
+
+		priorities[`p${i}`] = createElement("input", inputOpts);
+		priorities[`label_p${i}`] = createElement("label", labelOpts);
+	}
+
+	const btnSubmit = createElement("button", {
+		attributes: {
+			class: "edit-form__btn-submit",
+			type: "submit",
+		},
+		property: {
+			textContent: "edit",
+		},
+	});
+	const btnCancel = createElement("button", {
+		attributes: { class: "edit-form__btn-cancel" },
+		property: { textContent: "cancel" },
+	});
+
+	const clickHandlerEditFormCancel = (e) => {
+		e.stopPropagation();
+		const editForm = this.querySelector(".task-edit-form-container");
+		const task = this.querySelector(".task-container");
+
+		this.removeChild(editForm);
+		task.style.display = "flex";
+	};
+	btnCancel.addEventListener("click", clickHandlerEditFormCancel);
+
+	fieldsetPriority.appendChildren(
+		legendPriority,
+		priorities.p1,
+		priorities.label_p1,
+		priorities.p2,
+		priorities.label_p2,
+		priorities.p3,
+		priorities.label_p3,
+	);
+	fieldset.appendChildren(
+		legend,
+		labelNm,
+		name,
+		labelDesc,
+		desc,
+		labelDate,
+		dueDate,
+		fieldsetPriority,
+		btnSubmit,
+		btnCancel,
+	);
+	formContainer.appendChild(form.appendChild(fieldset));
+	this.appendChild(formContainer);
+
+	this.querySelector(".task-container").style.display = "none";
 }
 
 function clickHandlerOpenProject({ tasks, pName }) {
