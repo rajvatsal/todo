@@ -9,6 +9,14 @@ const DefaultValues = (() => {
 	return { form };
 })();
 
+const appendsChildren = () => ({
+	appendChildren: () => {
+		for (let child of arguments) {
+			this.appendChild(child);
+		}
+	},
+});
+
 export function createElement(tag, opts) {
 	const element = document.createElement(tag);
 
@@ -25,5 +33,5 @@ export function createElement(tag, opts) {
 		}
 	}
 
-	return element;
+	return Object.assign(element, appendsChildren());
 }
