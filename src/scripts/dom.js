@@ -344,7 +344,7 @@ function clickHandlerTaskCheckbox(e) {
 	const checkboxes = tList.querySelectorAll(
 		'.task-container>input[type="radio"]',
 	);
-	for (let i = 0; i < tList.length; i++) {
+	for (let i = 0; i < checkboxes.length; i++) {
 		if (checkboxes[i] !== e.target) continue;
 		tIndex = i;
 		break;
