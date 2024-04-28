@@ -14,8 +14,8 @@
   - add remove buttons
   - add my projects page
 
-  - lists all projects
-  - has a add project button
+    - lists all projects
+    - has a add project button
 
 - ~~update tmplate so that you have a add project button~~
 - ~~create a function that changes the dom when you create that project~~
