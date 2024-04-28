@@ -154,7 +154,7 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
-function openProject({ tasks, pName }) {
+function clickHandlerOpenProject({ tasks, pName }) {
 	const taskList = document.querySelector(".task-list");
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
@@ -182,4 +182,4 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
-on("return__getProjectTasks", openProject);
+on("return__getProjectTasks", clickHandlerOpenProject);
