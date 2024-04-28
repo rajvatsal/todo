@@ -150,7 +150,7 @@ function showNewTask(newTask) {
 	taskInfoContainer.appendChild(span);
 	taskContainer.appendChild(checkBox);
 	taskContainer.appendChild(taskInfoContainer);
-	li.appendChild(div);
+	li.appendChild(taskContainer);
 	taskList.appendChild(li);
 }
 
