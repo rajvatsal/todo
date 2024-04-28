@@ -118,7 +118,7 @@ function showNewTask(newTask) {
 		},
 	});
 
-	li.addEventListener("click", clickHandlerEditTask);
+	li.addEventListener("click", clickHandlerDelegateEditTask);
 
 	const checkBox = createElement("input", {
 		attributes: {
@@ -173,7 +173,7 @@ function showNewTask(newTask) {
 	taskList.appendChild(li);
 }
 
-function clickHandlerEditTask(e) {
+function clickHandlerDelegateEditTask(e) {
 	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
 
 	e.stopPropagation();
@@ -340,15 +340,17 @@ function clickHandlerTaskCheckbox(e) {
 	const pName = topHeading.textContent;
 	let tIndex = undefined;
 
-	const tListContainer = document.querySelector(".task-list");
-	const tList = document.querySelectorAll('.task-list input[type="radio"]');
+	const tList = document.querySelector(".task-list");
+	const checkboxes = tList.querySelectorAll(
+		'.task-container>input[type="radio"]',
+	);
 	for (let i = 0; i < tList.length; i++) {
-		if (tList[i] !== e.target) continue;
-		const li = document.querySelector(`.task-list>li:nth-child(${i + 1})`);
-		tListContainer.removeChild(li);
+		if (checkboxes[i] !== e.target) continue;
 		tIndex = i;
 		break;
 	}
+	const li = document.querySelector(`.task-list>li:nth-child(${tIndex + 1})`);
+	tList.removeChild(li);
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
