@@ -19,6 +19,8 @@ const page = $(".page");
 const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
 
+const tPriorityAttritubte = "data-priority";
+
 function clickHandlerAddTaskPage(e) {
 	taskForm.style.display = "block";
 	e.target.style.display = "none";
@@ -31,19 +33,6 @@ function clickHandlerCancelTask() {
 
 btnAddTask.addEventListener("click", clickHandlerAddTaskPage);
 btnTaskCancel.addEventListener("click", clickHandlerCancelTask);
-
-const priorityManager = (() => {
-	const priorityColors = {
-		p1: "red",
-		p2: "yellow",
-		p3: "blue",
-	};
-	const prop = {
-		getColor: (val) => priorityColors[val],
-	};
-
-	return Object.assign(Object.create(prop));
-})();
 
 function createTaskInfo(newTask) {
 	const infoContainer = createElement("div", {
@@ -132,11 +121,7 @@ function showNewProject(project) {
 
 function showNewTask(newTask) {
 	const taskList = $(".task-list");
-	const li = createElement("li", {
-		attributes: {
-			style: `border: 1px solid ${priorityManager.getColor(newTask.priority)}`,
-		},
-	});
+	const li = createElement("li");
 
 	li.addEventListener("click", clickHandlerDelegateEditTask);
 
@@ -155,7 +140,7 @@ function showNewTask(newTask) {
 	const taskContainer = createElement("div", {
 		attributes: {
 			class: "task-container",
-			"data-task-priority": newTask.priority,
+			[tPriorityAttritubte]: newTask.priority,
 		},
 	});
 
@@ -177,12 +162,15 @@ function clickHandlerDelegateEditTask(e) {
 	e.stopPropagation();
 	if (!e.target.classList.contains("btn-edit-task")) return;
 
-	const tName = this.querySelector(".task-info .name").textContent;
-	let tDesc = this.querySelector(".task-info .desc");
+	// custom function to select children of this task
+	const select = this.querySelector.bind(this);
+
+	const tName = select(".task-info .name").textContent;
+	let tDesc = select(".task-info .desc");
 	tDesc = tDesc === null ? "" : tDesc.textContent;
-	const tDate = this.querySelector(".task-info .due-date").textContent;
-	const tPriority = this.querySelector(".task-container")
-		.getAttribute("data-task-priority")
+	const tDate = select(".task-info .due-date").textContent;
+	const tPriority = select(".task-container")
+		.getAttribute(tPriorityAttritubte)
 		.split("")[1];
 
 	const formContainer = createElement("div", {
@@ -283,9 +271,6 @@ function clickHandlerDelegateEditTask(e) {
 		},
 	});
 
-	// custom function to select children of this task
-	const select = this.querySelector.bind(this);
-
 	const clickHandlerEditTask = (e) => {
 		e.stopPropagation();
 
@@ -302,8 +287,7 @@ function clickHandlerDelegateEditTask(e) {
 		select('.task-container input[type="radio"]').after(taskInfo);
 
 		//priority
-		tContainer.setAttribute("data-task-priority", priority);
-		this.style.border = `1px solid ${priorityManager.getColor(priority)}`;
+		tContainer.setAttribute(tPriorityAttritubte, priority);
 
 		emit("editTask", {});
 	};
