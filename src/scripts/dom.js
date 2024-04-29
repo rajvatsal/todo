@@ -1,26 +1,23 @@
-import { compareAsc, format } from "date-fns";
-import { createElement } from "./utility";
+import { compareAsc, format, intlFormat } from "date-fns";
+import { createElement, $ } from "./utility";
 import { on, off, emit } from "./pub-sub";
 
-const btnAddProject = document.querySelector(".btn-add-project");
-const dialogAddProject = document.querySelector("dialog.add-project");
-const btnDialogAddProject = document.querySelector(".btn__form-add-project");
-const formAddProject = document.querySelector("dialog.add-project > form");
-const ipDialogProjectName = document.querySelector("#project-name");
-const ipDilaogProjectColor = document.querySelector("#project-color");
-const projectList = document.querySelector(".project-list");
-const topHeading = document.querySelector("header>h1");
-const taskForm = document.querySelector(".task-form");
-const btnAddTask = document.querySelector(".page__btn-add-task");
-const inputTaskName = document.querySelector("#task_name");
-const inputTaskDate = document.querySelector("#due_date");
-const inputTaskDesc = document.querySelector("#task_dec");
-const inputTaskPriorities = Array.from(
-	document.querySelectorAll('.task-form input[type="radio"]'),
-);
-const page = document.querySelector(".page");
-const btnAddTaskSubmitForm = document.querySelector(".task-form__btn-add-task");
-const btnTaskCancel = document.querySelector(".task-form__btn-cancel");
+const btnAddProject = $(".btn-add-project");
+const dialogAddProject = $("dialog.add-project");
+const btnDialogAddProject = $(".btn__form-add-project");
+const formAddProject = $("dialog.add-project > form");
+const ipDialogProjectName = $("#project-name");
+const ipDilaogProjectColor = $("#project-color");
+const projectList = $(".project-list");
+const topHeading = $("header>h1");
+const taskForm = $(".task-form");
+const btnAddTask = $(".page__btn-add-task");
+const inputTaskName = $("#task_name");
+const inputTaskDate = $("#due_date");
+const inputTaskDesc = $("#task_dec");
+const page = $(".page");
+const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
+const btnTaskCancel = $(".task-form__btn-cancel");
 
 function clickHandlerAddTaskPage(e) {
 	taskForm.style.display = "block";
@@ -42,15 +39,38 @@ const priorityManager = (() => {
 		p3: "blue",
 	};
 	const prop = {
-		getPriorityColor: (val) => priorityColors[val],
+		getColor: (val) => priorityColors[val],
 	};
 
 	return Object.assign(Object.create(prop));
 })();
 
-const showProjectForm = () => dialogAddProject.showModal();
+function createTaskInfo(newTask) {
+	const infoContainer = createElement("div", {
+		attributes: { class: "task-info" },
+	});
+	const h3 = createElement("h3", {
+		property: { textContent: `${newTask.name}` },
+		attributes: { class: "name" },
+	});
+	const p = newTask.desc
+		? createElement("p", {
+				attributes: { class: "desc" },
+				property: { textContent: `${newTask.desc}` },
+		  })
+		: undefined;
 
-btnAddProject.addEventListener("click", showProjectForm);
+	const span = createElement("span", {
+		attributes: { class: "due-date" },
+		property: { textContent: `${newTask.dueDate}` },
+	});
+
+	infoContainer.appendChildren(h3, p, span);
+	return infoContainer;
+}
+
+const clickHandlerShowProjectForm = () => dialogAddProject.showModal();
+btnAddProject.addEventListener("click", clickHandlerShowProjectForm);
 btnDialogAddProject.addEventListener("click", clickHandlerAddProject);
 btnAddTaskSubmitForm.addEventListener("click", clickHandlerTaskFormSubmit);
 
@@ -61,7 +81,9 @@ function clickHandlerTaskFormSubmit(e) {
 	e.preventDefault();
 
 	const projectNm = topHeading.textContent;
-	const [priority] = inputTaskPriorities.filter((priority) => priority.checked);
+	const priority = $(
+		'.page .task-form input[type="radio"]:not(:disabled):checked',
+	);
 
 	const taskOpts = {
 		name: `${inputTaskName.value}`,
@@ -109,12 +131,10 @@ function showNewProject(project) {
 }
 
 function showNewTask(newTask) {
-	const taskList = document.querySelector(".task-list");
+	const taskList = $(".task-list");
 	const li = createElement("li", {
 		attributes: {
-			style: `border: 1px solid ${priorityManager.getPriorityColor(
-				newTask.priority,
-			)}`,
+			style: `border: 1px solid ${priorityManager.getColor(newTask.priority)}`,
 		},
 	});
 
@@ -130,30 +150,13 @@ function showNewTask(newTask) {
 
 	checkBox.addEventListener("click", clickHandlerTaskCheckbox);
 
-	const taskInfoContainer = createElement("div", {
-		attributes: { class: "task-info" },
-	});
+	const taskInfoContainer = createTaskInfo(newTask);
 
 	const taskContainer = createElement("div", {
 		attributes: {
 			class: "task-container",
 			"data-task-priority": newTask.priority,
 		},
-	});
-	const h3 = createElement("h3", {
-		property: { textContent: `${newTask.name}` },
-		attributes: { class: "name" },
-	});
-	const p = newTask.desc
-		? createElement("p", {
-				attributes: { class: "desc" },
-				property: { textContent: `${newTask.desc}` },
-		  })
-		: undefined;
-
-	const span = createElement("span", {
-		attributes: { class: "due-date" },
-		property: { textContent: `${newTask.dueDate}` },
 	});
 
 	const editBtn = createElement("button", {
@@ -163,12 +166,7 @@ function showNewTask(newTask) {
 		property: { textContent: "edit" },
 	});
 
-	taskInfoContainer.appendChild(h3);
-	if (p !== undefined) taskInfoContainer.appendChild(p);
-	taskInfoContainer.appendChild(span);
-	taskContainer.appendChild(checkBox);
-	taskContainer.appendChild(taskInfoContainer);
-	taskContainer.appendChild(editBtn);
+	taskContainer.appendChildren(checkBox, taskInfoContainer, editBtn);
 	li.appendChild(taskContainer);
 	taskList.appendChild(li);
 }
@@ -200,6 +198,7 @@ function clickHandlerDelegateEditTask(e) {
 			name: "task_name",
 			placeholder: "task name",
 			value: `${tName}`,
+			required: null,
 		},
 	});
 	const labelNm = createElement("label", {
@@ -235,6 +234,7 @@ function clickHandlerDelegateEditTask(e) {
 			id: "edit_tDate",
 			name: "due_date",
 			value: `${tDate}`,
+			required: null,
 		},
 	});
 	const labelDate = createElement("label", {
@@ -282,6 +282,33 @@ function clickHandlerDelegateEditTask(e) {
 			textContent: "edit",
 		},
 	});
+
+	// custom function to select children of this task
+	const select = this.querySelector.bind(this);
+
+	const clickHandlerEditTask = (e) => {
+		e.stopPropagation();
+
+		const name = select("#edit_tName").value;
+		const desc = select("#edit_tDesc").value;
+		const dueDate = select("#edit_tDate").value;
+		const priority = select(
+			".task-edit-form-container input:not(:disabled):checked",
+		).value;
+
+		const tContainer = select(".task-container");
+		tContainer.removeChild(select(".task-info"));
+		const taskInfo = createTaskInfo({ name, desc, dueDate });
+		select('.task-container input[type="radio"]').after(taskInfo);
+
+		//priority
+		tContainer.setAttribute("data-task-priority", priority);
+		this.style.border = `1px solid ${priorityManager.getColor(priority)}`;
+
+		emit("editTask", {});
+	};
+
+	btnSubmit.addEventListener("click", clickHandlerEditTask);
 	const btnCancel = createElement("button", {
 		attributes: { class: "edit-form__btn-cancel" },
 		property: { textContent: "cancel" },
@@ -289,11 +316,11 @@ function clickHandlerDelegateEditTask(e) {
 
 	const clickHandlerEditFormCancel = (e) => {
 		e.stopPropagation();
-		const editForm = this.querySelector(".task-edit-form-container");
-		const task = this.querySelector(".task-container");
+		const editForm = select(".task-edit-form-container");
+		const task = select(".task-container");
 
 		this.removeChild(editForm);
-		task.style.display = "flex";
+		task.removeAttribute("style");
 	};
 	btnCancel.addEventListener("click", clickHandlerEditFormCancel);
 
@@ -325,7 +352,7 @@ function clickHandlerDelegateEditTask(e) {
 }
 
 function clickHandlerOpenProject({ tasks, pName }) {
-	const taskList = document.querySelector(".task-list");
+	const taskList = $(".task-list");
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
 	tasks.forEach((task) => showNewTask(task));
@@ -340,7 +367,7 @@ function clickHandlerTaskCheckbox(e) {
 	const pName = topHeading.textContent;
 	let tIndex = undefined;
 
-	const tList = document.querySelector(".task-list");
+	const tList = $(".task-list");
 	const checkboxes = tList.querySelectorAll(
 		'.task-container>input[type="radio"]',
 	);
@@ -349,7 +376,7 @@ function clickHandlerTaskCheckbox(e) {
 		tIndex = i;
 		break;
 	}
-	const li = document.querySelector(`.task-list>li:nth-child(${tIndex + 1})`);
+	const li = $(`.task-list>li:nth-child(${tIndex + 1})`);
 	tList.removeChild(li);
 	emit("taskCompletedLogic", { tIndex, pName });
 }
