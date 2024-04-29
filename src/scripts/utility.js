@@ -11,7 +11,10 @@ const DefaultValues = (() => {
 
 const appendsChildren = () => ({
 	appendChildren(...args) {
-		args.forEach((child) => this.appendChild(child));
+		for (let child of args) {
+			if (child === undefined) continue;
+			this.appendChild(child);
+		}
 	},
 });
 
