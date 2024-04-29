@@ -10,25 +10,25 @@
 - ## list
 
   - add edit button on tasks.
-  - ~~fix edit button error.~~
-  - use required on edit forms.
-  - use css for setting colors of task priority.
-
-    - use a global variable for attribute name
-    - remove priorityMananger
-    - add correct css
-
-  - add remove buttons
-
+    - use required on edit forms.
+    - edit form should close on saving.
+    - rename edit button to save.
+    - if key value in an attribute is null then don't set that attributes value (util).
+    - complete logic.js
+  - add remove buttons on
     - Project form. <!-- cancel mid form completion. -->
     - Task-container.
     - Projects page.
     - Projects list.
-
   - add my projects page
-  - how can you use css for project colors also. <!-- production. -->
+  - contemplate how can you use css for project colors also. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
 
+- ~~fix edit button error.~~
+- ~~use css for setting colors of task priority.~~
+  - ~~use a global variable for attribute name~~
+  - ~~remove priorityMananger~~
+  - ~~add correct css~~
 - ~~update tmplate so that you have a add project button~~
 - ~~create a function that changes the dom when you create that project~~
 - ~~add helper function that creates html elements for you~~
