@@ -33,3 +33,5 @@ export function createElement(tag, opts) {
 
 	return Object.assign(element, appendsChildren());
 }
+
+export const $ = (selector) => document.querySelector(selector);
