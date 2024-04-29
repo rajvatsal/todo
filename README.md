@@ -10,7 +10,8 @@
 - ## list
 
   - add edit button on tasks.
-  - fix edit button error.
+  - ~~fix edit button error.~~
+  - use required on edit forms.
   - use css for setting colors of task priority.
 
     - use a global variable for attribute name
