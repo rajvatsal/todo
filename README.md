@@ -9,13 +9,24 @@
 
 - ## list
 
-  - add edit button on tasks
-  - add sections
-  - add remove buttons
-  - add my projects page
+  - add edit button on tasks.
+  - fix edit button error.
+  - use css for setting colors of task priority.
 
-    - lists all projects
-    - has a add project button
+    - use a global variable for attribute name
+    - remove priorityMananger
+    - add correct css
+
+  - add remove buttons
+
+    - Project form. <!-- cancel mid form completion. -->
+    - Task-container.
+    - Projects page.
+    - Projects list.
+
+  - add my projects page
+  - how can you use css for project colors also. <!-- production. -->
+  - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
 
 - ~~update tmplate so that you have a add project button~~
 - ~~create a function that changes the dom when you create that project~~
