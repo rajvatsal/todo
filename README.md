@@ -12,7 +12,7 @@
   - add edit button on tasks.
     - use required on edit forms.
     - edit form should close on saving.
-    - rename edit button to save.
+    - ~~rename edit button to save.~~
     - if key value in an attribute is null then don't set that attributes value (util).
     - complete logic.js
   - add remove buttons on

@@ -267,10 +267,9 @@ function clickHandlerDelegateEditTask(e) {
 			type: "submit",
 		},
 		property: {
-			textContent: "edit",
+			textContent: "save",
 		},
 	});
-
 	const clickHandlerEditTask = (e) => {
 		e.stopPropagation();
 
@@ -291,8 +290,8 @@ function clickHandlerDelegateEditTask(e) {
 
 		emit("editTask", {});
 	};
-
 	btnSubmit.addEventListener("click", clickHandlerEditTask);
+
 	const btnCancel = createElement("button", {
 		attributes: { class: "edit-form__btn-cancel" },
 		property: { textContent: "cancel" },
