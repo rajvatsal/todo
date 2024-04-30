@@ -21,6 +21,13 @@ const btnTaskCancel = $(".task-form__btn-cancel");
 
 const tPriorityAttritubte = "data-priority";
 
+function getTaskIndex(task) {
+	const tasks = document.querySelectorAll(".page .task-list>li");
+	for (let i = 0; i < tasks.length; i++) {
+		if ((task = tasks[i])) return i;
+	}
+}
+
 function clickHandlerAddTaskPage(e) {
 	taskForm.style.display = "block";
 	e.target.style.display = "none";
@@ -289,7 +296,10 @@ function clickHandlerDelegateEditTask(e) {
 		//priority
 		tContainer.setAttribute(tPriorityAttritubte, priority);
 
-		emit("editTask", {});
+		const pName = topHeading.getAttribute("data-projectNm");
+		const opts = { name, desc, dueDate, priority };
+		const tIndex = getTaskIndex(this);
+		emit("editTask", { pName, tIndex, opts });
 	};
 	btnSubmit.addEventListener("click", clickHandlerEditTask);
 

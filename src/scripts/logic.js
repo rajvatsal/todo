@@ -19,7 +19,7 @@ const fetchOneInterface = (state) => ({
 
 const modifyInterface = (state) => ({
 	type: "modifyInterface",
-	modify: (pName, index) => state.modify(state),
+	modify: (taskIndex, opts) => state.modify(taskIndex, opts, state),
 });
 
 // [ FACTORIES ]
@@ -32,11 +32,13 @@ const TaskManager = (options) => {
 		},
 		remove: (tIndex, arg) => arg.tasks.splice(tIndex, 1),
 		fetchAll: (arg) => arg.tasks.slice(),
+		modify: (tIndex, opts, arg) => Object.assign(arg.tasks[tIndex], opts),
 	};
 
 	const inNOut = inNOutInterface(proto);
 	const fetchAll = fetchAllInterface(proto);
-	const composite = Object.assign(inNOut, fetchAll);
+	const modify = modifyInterface(proto);
+	const composite = Object.assign(inNOut, fetchAll, modify);
 	return Object.assign(Object.create(composite), options);
 };
 
@@ -91,7 +93,12 @@ function removeTask(data) {
 	getProject(pName).taskManager.remove(tIndex);
 }
 
+function updateTask({ pName, tIndex, opts }) {
+	getProject(pName).taskManager.modify(tIndex, opts);
+}
+
 on("addNewProject", addNewProject);
 on("addNewTask", addNewTask);
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
+on("editTask", updateTask);

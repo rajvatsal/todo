@@ -10,12 +10,15 @@
 - ## list
 
   - add edit button on tasks.
+
     - use required on edit forms.
     - edit form should close on saving.
-    - add modify function to task and project managers
-    - ~~rename edit button to save.~~
     - if key value in an attribute is null then don't set that attributes value (util).
-    - complete logic.js
+
+    - ~~add modify function to task and project managers~~
+    - ~~rename edit button to save.~~
+    - ~~complete logic.js~~
+
   - add remove buttons on
     - Project form. <!-- cancel mid form completion. -->
     - Task-container.
