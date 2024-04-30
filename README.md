@@ -9,25 +9,21 @@
 
 - ## list
 
-  - add edit button on tasks.
-
-    - use required on edit forms.
-    - edit form should close on saving.
-    - if key value in an attribute is null then don't set that attributes value (util).
-
-    - ~~add modify function to task and project managers~~
-    - ~~rename edit button to save.~~
-    - ~~complete logic.js~~
-
+  - add my projects page
   - add remove buttons on
     - Project form. <!-- cancel mid form completion. -->
     - Task-container.
     - Projects page.
     - Projects list.
-  - add my projects page
-  - contemplate how can you use css for project colors also. <!-- production. -->
+  - contemplate how can you also use css for project colors. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
 
+- ~~add edit button on tasks.~~
+  - ~~use required on edit forms.~~
+  - ~~edit form should close on saving.~~
+  - ~~add modify function to task and project managers~~
+  - ~~rename edit button to save.~~
+  - ~~complete logic.js~~
 - ~~use data attribute for setting the project name. Reading textContent is confusing.~~
   - ~~inside openNewProject function.~~
   - ~~set and read current project name from data-projectNm attriubte.~~

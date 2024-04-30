@@ -281,6 +281,14 @@ function clickHandlerDelegateEditTask(e) {
 	const clickHandlerEditTask = (e) => {
 		e.stopPropagation();
 
+		if (
+			!select("#edit_tName").checkValidity() ||
+			!select("#edit_tDate").checkValidity()
+		)
+			return;
+
+		e.preventDefault();
+
 		const name = select("#edit_tName").value;
 		const desc = select("#edit_tDesc").value;
 		const dueDate = select("#edit_tDate").value;
@@ -300,6 +308,9 @@ function clickHandlerDelegateEditTask(e) {
 		const opts = { name, desc, dueDate, priority };
 		const tIndex = getTaskIndex(this);
 		emit("editTask", { pName, tIndex, opts });
+
+		this.removeChild(select(".task-edit-form-container"));
+		select(".task-container").removeAttribute("style");
 	};
 	btnSubmit.addEventListener("click", clickHandlerEditTask);
 
@@ -339,7 +350,8 @@ function clickHandlerDelegateEditTask(e) {
 		btnSubmit,
 		btnCancel,
 	);
-	formContainer.appendChild(form.appendChild(fieldset));
+	form.appendChild(fieldset);
+	formContainer.appendChild(form);
 	this.appendChild(formContainer);
 
 	this.querySelector(".task-container").style.display = "none";
