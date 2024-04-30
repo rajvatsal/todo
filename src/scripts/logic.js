@@ -17,6 +17,11 @@ const fetchOneInterface = (state) => ({
 	fetch: (pattern) => state.fetch(pattern, state),
 });
 
+const modifyInterface = (state) => ({
+	type: "modifyInterface",
+	modify: (pName, index) => state.modify(state),
+});
+
 // [ FACTORIES ]
 const TaskManager = (options) => {
 	const proto = {
@@ -48,11 +53,7 @@ export const ProjectManager = ((options) => {
 			}
 		},
 		fetchAll: () => projects.slice(),
-		fetch: (ptn) => {
-			for (let i = 0; i < projects.length; i++) {
-				if (ptn === projects[i].name) return projects[i];
-			}
-		},
+		fetch: (ptn) => getProject(ptn),
 	};
 
 	const basic = inNOutInterface(proto);
@@ -62,37 +63,32 @@ export const ProjectManager = ((options) => {
 	return Object.assign(Object.create(composite), options);
 })();
 
+// functions
 function addNewProject(opts) {
 	ProjectManager.add(opts);
 }
 
+function getProject(pName) {
+	for (let project of projects) {
+		if (pName === project.name) return project;
+	}
+}
+
 function addNewTask(data) {
 	const [projectName, options] = data;
-	for (let project of projects) {
-		if (project.name === projectName) {
-			project.taskManager.add(options);
-			return;
-		}
-	}
-	alert("error: project doesn't exist");
+	const project = getProject(projectName);
+	if (project !== undefined) project.taskManager.add(options);
+	else alert("error: project doesn't exist");
 }
 
 function openAProject(pName) {
-	for (let project of projects) {
-		if (project.name !== pName) continue;
-		var tasks = project.taskManager.fetchAll(tasks);
-		break;
-	}
+	let tasks = getProject(pName).taskManager.fetchAll();
 	emit("return__getProjectTasks", { tasks, pName });
 }
 
 function removeTask(data) {
 	const { tIndex, pName } = data;
-	for (let project of projects) {
-		if (project.name !== pName) continue;
-		project.taskManager.remove(tIndex);
-		break;
-	}
+	getProject(pName).taskManager.remove(tIndex);
 }
 
 on("addNewProject", addNewProject);
