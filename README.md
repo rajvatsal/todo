@@ -12,6 +12,7 @@
   - add edit button on tasks.
     - use required on edit forms.
     - edit form should close on saving.
+    - add modify function to task and project managers
     - ~~rename edit button to save.~~
     - if key value in an attribute is null then don't set that attributes value (util).
     - complete logic.js
@@ -24,6 +25,10 @@
   - contemplate how can you use css for project colors also. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
 
+- ~~use data attribute for setting the project name. Reading textContent is confusing.~~
+  - ~~inside openNewProject function.~~
+  - ~~set and read current project name from data-projectNm attriubte.~~
+  - ~~add attribute to the h1 element.~~
 - ~~fix edit button error.~~
 - ~~use css for setting colors of task priority.~~
   - ~~use a global variable for attribute name~~

@@ -69,7 +69,7 @@ function clickHandlerTaskFormSubmit(e) {
 
 	e.preventDefault();
 
-	const projectNm = topHeading.textContent;
+	const projectNm = topHeading.getAttribute("data-projectNm");
 	const priority = $(
 		'.page .task-form input[type="radio"]:not(:disabled):checked',
 	);
@@ -104,6 +104,7 @@ function clickHandlerProjectBtn(e) {
 	emit("getProjectTasks", e.target.textContent);
 }
 
+// Only adds project to the project list doesn't change the page. Switch to a more appropriate name.
 function showNewProject(project) {
 	const li = createElement("li");
 	const projectOptions = {
@@ -336,10 +337,16 @@ function clickHandlerDelegateEditTask(e) {
 
 function clickHandlerOpenProject({ tasks, pName }) {
 	const taskList = $(".task-list");
+
+	//reset page
 	page.removeChild(taskList);
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
+
+	// add tasks to page
 	tasks.forEach((task) => showNewTask(task));
-	topHeading.textContent = pName;
+
+	topHeading.setAttribute("data-projectNm", pName);
+	topHeading.textContent = topHeading.getAttribute("data-projectNm");
 
 	//task form/task button reset
 	taskForm.style.display = "none";
@@ -347,7 +354,7 @@ function clickHandlerOpenProject({ tasks, pName }) {
 }
 
 function clickHandlerTaskCheckbox(e) {
-	const pName = topHeading.textContent;
+	const pName = topHeading.getAttribute("data-projectNm");
 	let tIndex = undefined;
 
 	const tList = $(".task-list");
