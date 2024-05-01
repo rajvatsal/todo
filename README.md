@@ -10,6 +10,11 @@
 - ## list
 
   - add my projects page
+    - make my projects nav heading to a button
+    - add event listener to that button that creates my projects page
+    - create default projects on logic
+    - list all the projects on the projects page.
+    - add a add project button in .page
   - add remove buttons on
     - Project form. <!-- cancel mid form completion. -->
     - Task-container.
