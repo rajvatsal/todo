@@ -1,6 +1,6 @@
 import { emit, on, off } from "./pub-sub";
 
-const projects = [];
+const projects = [{ name: "sicko" }];
 
 // [ INTERFACES ]
 const inNOutInterface = (state) => ({
@@ -97,8 +97,16 @@ function updateTask({ pName, tIndex, opts }) {
 	getProject(pName).taskManager.modify(tIndex, opts);
 }
 
+function returnProjectList() {
+	const pList = ProjectManager.fetchAll();
+	emit("return__getProjectList", pList);
+}
+
 on("addNewProject", addNewProject);
 on("addNewTask", addNewTask);
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
+on("getProjectList", returnProjectList);
+
+emit("return__getProjectList", ProjectManager.fetchAll());

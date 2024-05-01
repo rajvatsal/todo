@@ -18,6 +18,7 @@ const inputTaskDesc = $("#task_dec");
 const page = $(".page");
 const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
+const btnMyProjects = $(".btn-project-home");
 
 const tPriorityAttritubte = "data-priority";
 
@@ -27,6 +28,8 @@ function getTaskIndex(task) {
 		if ((task = tasks[i])) return i;
 	}
 }
+
+btnMyProjects.addEventListener("click", () => emit("getProjectList"));
 
 function clickHandlerAddTaskPage(e) {
 	taskForm.style.display = "block";
@@ -358,6 +361,8 @@ function clickHandlerDelegateEditTask(e) {
 }
 
 function clickHandlerOpenProject({ tasks, pName }) {
+	removePageProjectList();
+
 	const taskList = $(".task-list");
 
 	//reset page
@@ -393,4 +398,43 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
+function removePageProjectList() {
+	const prevProjectList = $(".page__projects-list");
+	if (prevProjectList) page.removeChild(prevProjectList);
+}
+
+function openMyProjects(list) {
+	removePageProjectList(); //If there is a previous list present then remove it
+
+	topHeading.removeAttribute("data-projectNm");
+	topHeading.textContent = "My projects";
+
+	btnAddTask.setAttribute("style", "display: none;");
+
+	const ul = createElement("ul", {
+		attributes: { class: "page__projects-list" },
+	});
+
+	list.forEach((project) => {
+		const pName = createElement("h3", {
+			property: {
+				textContent: project.name,
+			},
+			attributes: { class: "project__project-Name" },
+		});
+
+		const li = createElement("li", {
+			attributes: {
+				class: "project-list__project btn",
+			},
+		});
+
+		li.appendChild(pName);
+		ul.appendChild(li);
+	});
+
+	page.prepend(ul);
+}
+
 on("return__getProjectTasks", clickHandlerOpenProject);
+on("return__getProjectList", openMyProjects);
