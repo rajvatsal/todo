@@ -416,8 +416,7 @@ function clickHandlerTaskCheckbox(e) {
 	const pName = topHeading.getAttribute("data-projectNm");
 	let tIndex = undefined;
 
-	const tList = $(".task-list");
-	const checkboxes = tList.querySelectorAll(
+	const checkboxes = $(".task-list").querySelectorAll(
 		'.task-container>input[type="radio"]',
 	);
 	for (let i = 0; i < checkboxes.length; i++) {
@@ -425,8 +424,7 @@ function clickHandlerTaskCheckbox(e) {
 		tIndex = i;
 		break;
 	}
-	const li = $(`.task-list>li:nth-child(${tIndex + 1})`);
-	tList.removeChild(li);
+	$(`.task-list>li:nth-child(${tIndex + 1})`).remove();
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
