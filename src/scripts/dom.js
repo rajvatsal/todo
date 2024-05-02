@@ -1,6 +1,7 @@
-import { compareAsc, format, intlFormat } from "date-fns";
+import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 import { createElement, $ } from "./utility";
 import { on, off, emit } from "./pub-sub";
+import { isValidProject } from "./logic";
 
 const btnAddProject = $(".btn-add-project");
 const dialogAddProject = $("dialog.add-project");
@@ -97,6 +98,12 @@ function clickHandlerTaskFormSubmit(e) {
 
 function clickHandlerAddProject(e) {
 	if (!ipDialogProjectName.checkValidity()) return;
+
+	if (!isValidProject(ipDialogProjectName.value)) {
+		alert("project exists");
+		return;
+	}
+
 	e.preventDefault();
 
 	const project = {};
@@ -416,6 +423,19 @@ function openMyProjects(list) {
 	});
 
 	list.forEach((project) => {
+		const li = createElement("li", {
+			attributes: {
+				class: "project-list__project-item btn",
+				["data-projectNm"]: project.name,
+			},
+		});
+
+		const projectContainer = createElement("div", {
+			attributes: {
+				class: "project-item__container flex",
+			},
+		});
+
 		const pName = createElement("h3", {
 			property: {
 				textContent: project.name,
@@ -423,17 +443,38 @@ function openMyProjects(list) {
 			attributes: { class: "project__project-Name" },
 		});
 
-		const li = createElement("li", {
-			attributes: {
-				class: "project-list__project btn",
-			},
+		const btnContainer = createElement("div", {
+			attributes: { class: "page__project-list__btn-container" },
 		});
 
-		li.appendChild(pName);
+		const btnEdit = createElement("button", {
+			attributes: { class: "btn-container__edit" },
+			property: { textContent: "edit" },
+		});
+
+		const btnRemove = createElement("button", {
+			attributes: { class: "btn-container__remove" },
+			property: { textContent: "remove" },
+		});
+
+		li.addEventListener("click", clickHandlerRemoveProject);
+
+		btnContainer.appendChildren(btnEdit, btnRemove);
+
+		projectContainer.appendChildren(pName, btnContainer);
+		li.appendChild(projectContainer);
 		ul.appendChild(li);
 	});
 
 	page.prepend(ul);
+}
+
+function clickHandlerRemoveProject(e) {
+	if (!e.target.classList.contains("btn-container__remove")) return;
+	e.stopPropagation();
+
+	$(".page__projects-list").removeChild(this);
+	emit("removeProject", this.getAttribute("data-projectNm"));
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);

@@ -16,7 +16,7 @@
     - ~~create default projects on logic~~
     - ~~list all the projects on the projects page.~~
     - add a add project button in .page
-    - add edit button
+    - ~~add edit button~~
     - update page on My projects when you have added a project in projects
     - open project when you click on it
   - add remove buttons on

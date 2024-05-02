@@ -66,10 +66,6 @@ export const ProjectManager = ((options) => {
 })();
 
 // functions
-function addNewProject(opts) {
-	ProjectManager.add(opts);
-}
-
 function getProject(pName) {
 	for (let project of projects) {
 		if (pName === project.name) return project;
@@ -102,10 +98,21 @@ function returnProjectList() {
 	emit("return__getProjectList", pList);
 }
 
-on("addNewProject", addNewProject);
+export function isValidProject(pName) {
+	for (let project of projects) {
+		if (project.name === pName) return false;
+	}
+	return true;
+}
+
+export function init() {
+	emit("return__getProjectList", ProjectManager.fetchAll()); // list default projects
+}
+
+on("addNewProject", ProjectManager.add);
 on("addNewTask", addNewTask);
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
 on("getProjectList", returnProjectList);
-emit("return__getProjectList", ProjectManager.fetchAll()); // list default projects
+on("removeProject", ProjectManager.remove);

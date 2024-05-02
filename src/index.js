@@ -1,2 +1,4 @@
 import "./scripts/dom.js";
-import app from "./scripts/logic.js";
+import { init } from "./scripts/logic.js";
+
+init();
