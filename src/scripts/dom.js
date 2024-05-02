@@ -1,7 +1,7 @@
 import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 import { createElement, $ } from "./utility";
 import { on, off, emit } from "./pub-sub";
-import { isValidProject } from "./logic";
+import { ProjectManager, isValidProject } from "./logic";
 
 const btnAddProject = $(".btn-add-project");
 const dialogAddProject = $("dialog.add-project");
@@ -118,22 +118,47 @@ function clickHandlerAddProject(e) {
 }
 
 function clickHandlerProjectBtn(e) {
-	emit("getProjectTasks", e.target.textContent);
+	if (e.target.classList.contains("side-bar__remove-project-btn")) {
+		clickHandlerRemoveProject.call(this);
+		return;
+	}
+	emit("getProjectTasks", this.getAttribute("data-projectNm"));
 }
 
-// Only adds project to the project list doesn't change the page. Switch to a more appropriate name.
+// Only adds project to the project list doesn't change the page. Give a more appropriate name.
 function showNewProject(project) {
-	const li = createElement("li");
-	const projectOptions = {
-		property: { textContent: project.name },
+	const li = createElement("li", {
 		attributes: {
-			style: `border: 1px solid ${project.color}`,
-			class: "project-btn",
+			class: "side-bar__project btn",
+			["data-project-name"]: project.name,
 		},
-	};
-	const btnOpenProject = createElement("button", projectOptions);
-	btnOpenProject.addEventListener("click", clickHandlerProjectBtn);
-	li.appendChild(btnOpenProject);
+	});
+	const pContainer = createElement("div", {
+		attributes: {
+			class: "side-bar__project-container",
+		},
+	});
+	const pName = createElement("span", {
+		property: { textContent: project.name },
+		attributes: { class: "project-container__name" },
+	});
+	const buttonContainer = createElement("div", {
+		attributes: { class: "side-bar__project-button-container btn" },
+	});
+	const btnRemove = createElement("button", {
+		attributes: { class: "side-bar__remove-project-btn" },
+		property: { textContent: "remove" },
+	});
+	const btnEdit = createElement("button", {
+		attributes: { class: "project-edit-button" },
+		property: { textContent: "edit" },
+	});
+	buttonContainer.appendChildren(btnEdit, btnRemove);
+	pContainer.appendChildren(pName, buttonContainer);
+	li.appendChild(pContainer);
+
+	li.addEventListener("click", clickHandlerProjectBtn);
+
 	projectList.appendChild(li);
 }
 
@@ -426,7 +451,7 @@ function openMyProjects(list) {
 		const li = createElement("li", {
 			attributes: {
 				class: "project-list__project-item btn",
-				["data-projectNm"]: project.name,
+				["data-project-name"]: project.name,
 			},
 		});
 
@@ -469,12 +494,12 @@ function openMyProjects(list) {
 	page.prepend(ul);
 }
 
-function clickHandlerRemoveProject(e) {
-	if (!e.target.classList.contains("btn-container__remove")) return;
-	e.stopPropagation();
-
-	$(".page__projects-list").removeChild(this);
-	emit("removeProject", this.getAttribute("data-projectNm"));
+function clickHandlerRemoveProject() {
+	const pName = this.getAttribute("data-project-name");
+	document
+		.querySelectorAll(`li[data-project-name="${pName}"]`)
+		.forEach((node) => node.remove());
+	emit("removeProject", pName);
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);
