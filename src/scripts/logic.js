@@ -108,5 +108,4 @@ on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
 on("getProjectList", returnProjectList);
-
-emit("return__getProjectList", ProjectManager.fetchAll());
+emit("return__getProjectList", ProjectManager.fetchAll()); // list default projects
