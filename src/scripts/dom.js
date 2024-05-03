@@ -3,8 +3,8 @@ import { createElement, $ } from "./utility";
 import { on, off, emit } from "./pub-sub";
 import { isValidProject } from "./logic";
 
-const btnAddProject = $(".btn-add-project");
-const dialogAddProject = $("dialog.add-project");
+const btnProjectForm = $(".btn-add-project");
+const dialogAddProjectForm = $("dialog.add-project");
 const btnDialogAddProject = $(".btn__form-add-project");
 const formAddProject = $("dialog.add-project > form");
 const ipDialogProjectName = $("#project-name");
@@ -20,6 +20,7 @@ const page = $(".page");
 const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
 const btnMyProjects = $(".btn-project-home");
+const btnCancelProjectForm = $(".btn__cancel-project-form");
 
 const tPriorityAttritubte = "data-priority";
 
@@ -69,32 +70,16 @@ function createTaskInfo(newTask) {
 	return infoContainer;
 }
 
-const clickHandlerShowProjectForm = () => dialogAddProject.showModal();
-btnAddProject.addEventListener("click", clickHandlerShowProjectForm);
+const clickHandlerShowProjectForm = () => dialogAddProjectForm.showModal();
+function clickHandlerCancelProjectForm() {
+	formAddProject.reset();
+	dialogAddProjectForm.close();
+}
+
+btnCancelProjectForm.addEventListener("click", clickHandlerCancelProjectForm);
+btnProjectForm.addEventListener("click", clickHandlerShowProjectForm);
 btnDialogAddProject.addEventListener("click", clickHandlerAddProject);
 btnAddTaskSubmitForm.addEventListener("click", clickHandlerTaskFormSubmit);
-
-function clickHandlerTaskFormSubmit(e) {
-	if (!inputTaskName.checkValidity()) return;
-	if (!inputTaskDate.checkValidity()) return;
-
-	e.preventDefault();
-
-	const projectNm = topHeading.getAttribute("data-projectNm");
-	const priority = $(
-		'.page .task-form input[type="radio"]:not(:disabled):checked',
-	);
-
-	const taskOpts = {
-		name: `${inputTaskName.value}`,
-		dueDate: `${inputTaskDate.value}`,
-		desc: `${inputTaskDesc.value}`,
-		priority: priority.value,
-	};
-
-	emit("addNewTask", [projectNm, taskOpts]);
-	showNewTask(taskOpts);
-}
 
 function clickHandlerAddProject(e) {
 	if (!ipDialogProjectName.checkValidity()) return;
@@ -111,7 +96,7 @@ function clickHandlerAddProject(e) {
 	project.color = ipDilaogProjectColor.value;
 
 	emit("addNewProject", project);
-	dialogAddProject.close();
+	dialogAddProjectForm.close();
 	formAddProject.reset();
 
 	showNewProject(project);
@@ -160,6 +145,28 @@ function showNewProject(project) {
 	li.addEventListener("click", clickHandlerProjectBtn);
 
 	projectList.appendChild(li);
+}
+
+function clickHandlerTaskFormSubmit(e) {
+	if (!inputTaskName.checkValidity()) return;
+	if (!inputTaskDate.checkValidity()) return;
+
+	e.preventDefault();
+
+	const projectNm = topHeading.getAttribute("data-projectNm");
+	const priority = $(
+		'.page .task-form input[type="radio"]:not(:disabled):checked',
+	);
+
+	const taskOpts = {
+		name: `${inputTaskName.value}`,
+		dueDate: `${inputTaskDate.value}`,
+		desc: `${inputTaskDesc.value}`,
+		priority: priority.value,
+	};
+
+	emit("addNewTask", [projectNm, taskOpts]);
+	showNewTask(taskOpts);
 }
 
 function showNewTask(newTask) {
