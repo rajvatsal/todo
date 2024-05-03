@@ -166,7 +166,7 @@ function showNewTask(newTask) {
 	const taskList = $(".task-list");
 	const li = createElement("li");
 
-	li.addEventListener("click", clickHandlerDelegateEditTask);
+	li.addEventListener("click", clickHandlerDelegateTaskBtn);
 
 	const checkBox = createElement("input", {
 		attributes: {
@@ -217,16 +217,7 @@ function removeTaskBtn() {
 	this.remove();
 }
 
-function clickHandlerDelegateEditTask(e) {
-	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
-
-	if (e.target.classList.contains("btn-remove-task")) {
-		removeTaskBtn.call(this);
-		return;
-	}
-	if (!e.target.classList.contains("btn-edit-task")) return;
-	e.stopPropagation();
-
+function editTask() {
 	// custom function to select children of this task
 	const select = this.querySelector.bind(this);
 
@@ -412,6 +403,14 @@ function clickHandlerDelegateEditTask(e) {
 	this.appendChild(formContainer);
 
 	this.querySelector(".task-container").style.display = "none";
+}
+
+function clickHandlerDelegateTaskBtn(e) {
+	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
+
+	if (e.target.classList.contains("btn-remove-task")) removeTaskBtn.call(this);
+	else if (e.target.classList.contains("btn-edit-task")) editTask.call(this);
+	else return;
 }
 
 function clickHandlerOpenProject({ tasks, pName }) {
