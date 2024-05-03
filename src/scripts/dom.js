@@ -1,7 +1,7 @@
 import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 import { createElement, $ } from "./utility";
 import { on, off, emit } from "./pub-sub";
-import { ProjectManager, isValidProject } from "./logic";
+import { isValidProject } from "./logic";
 
 const btnAddProject = $(".btn-add-project");
 const dialogAddProject = $("dialog.add-project");
@@ -122,7 +122,7 @@ function clickHandlerProjectBtn(e) {
 		clickHandlerRemoveProject.call(this);
 		return;
 	}
-	emit("getProjectTasks", this.getAttribute("data-projectNm"));
+	emit("getProjectTasks", this.getAttribute("data-project-name"));
 }
 
 // Only adds project to the project list doesn't change the page. Give a more appropriate name.
@@ -194,16 +194,34 @@ function showNewTask(newTask) {
 		property: { textContent: "edit" },
 	});
 
-	taskContainer.appendChildren(checkBox, taskInfoContainer, editBtn);
+	const deleteBtn = createElement("button", {
+		attributes: {
+			class: "btn-remove-task",
+		},
+		property: {
+			textContent: "remove",
+		},
+	});
+
+	taskContainer.appendChildren(checkBox, taskInfoContainer, editBtn, deleteBtn);
 	li.appendChild(taskContainer);
 	taskList.appendChild(li);
+}
+
+function removeTaskBtn() {
+	//this is the list element
+	this.remove();
 }
 
 function clickHandlerDelegateEditTask(e) {
 	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
 
-	e.stopPropagation();
 	if (!e.target.classList.contains("btn-edit-task")) return;
+	if (e.target.classList.contains("btn-remove-task")) {
+		removeTaskBtn.call(this);
+		return;
+	}
+	e.stopPropagation();
 
 	// custom function to select children of this task
 	const select = this.querySelector.bind(this);

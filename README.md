@@ -20,8 +20,8 @@
     - update page on My projects when you have added a project in projects
     - open project when you click on it
   - add remove buttons on
-    - Project form. <!-- cancel mid form completion. -->
-    - Task-container.
+    - ~~Project form.~~ <!-- cancel mid form completion. -->
+    - ~~Task-container.~~
     - ~~Projects page.~~
     - ~~Projects list.~~
   - contemplate how can you also use css for project colors. <!-- production. -->
