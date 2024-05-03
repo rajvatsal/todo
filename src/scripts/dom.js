@@ -518,6 +518,8 @@ function openMyProjects(list) {
 	});
 
 	page.prepend(ul);
+
+	list.forEach((project) => showNewProject(project)); // add project to side bar component
 }
 
 function clickHandlerRemoveProject() {
