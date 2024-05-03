@@ -116,3 +116,4 @@ on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
 on("getProjectList", returnProjectList);
 on("removeProject", ProjectManager.remove);
+on("removeTask", removeTask);

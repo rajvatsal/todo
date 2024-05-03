@@ -210,17 +210,21 @@ function showNewTask(newTask) {
 
 function removeTaskBtn() {
 	//this is the list element
+	emit("removeTask", {
+		tIndex: Array.from(this.parentNode.children).indexOf(this),
+		pName: topHeading.getAttribute("data-projectNm"),
+	});
 	this.remove();
 }
 
 function clickHandlerDelegateEditTask(e) {
 	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
 
-	if (!e.target.classList.contains("btn-edit-task")) return;
 	if (e.target.classList.contains("btn-remove-task")) {
 		removeTaskBtn.call(this);
 		return;
 	}
+	if (!e.target.classList.contains("btn-edit-task")) return;
 	e.stopPropagation();
 
 	// custom function to select children of this task
