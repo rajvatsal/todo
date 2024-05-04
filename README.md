@@ -9,24 +9,25 @@
 
 - ## list
 
-  - ~~rename cHAddTaskPage to cHShowTaskForm~~
   - add my projects page
+    - combine the functions for adding project on sidebar and main page
     - ~~make my projects nav heading to a button~~
     - ~~add event listener to that button that creates my projects page~~
     - ~~create default projects on logic~~
     - ~~list all the projects on the projects page.~~
-    - add a add project button in .page
     - ~~add edit button~~
+    - add a add project button in .page
     - update page on My projects when you have added a project in projects
     - open project when you click on it
-  - add remove buttons on
-    - ~~Project form.~~ <!-- cancel mid form completion. -->
-    - ~~Task-container.~~
-    - ~~Projects page.~~
-    - ~~Projects list.~~
   - contemplate how can you also use css for project colors. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
 
+- ~~rename cHAddTaskPage to cHShowTaskForm~~
+- ~~add remove buttons on~~
+  - ~~Project form.~~ <!-- cancel mid form completion. -->
+  - ~~Task-container.~~
+  - ~~Projects page.~~
+  - ~~Projects list.~~
 - ~~add edit button on tasks.~~
   - ~~use required on edit forms.~~
   - ~~edit form should close on saving.~~
