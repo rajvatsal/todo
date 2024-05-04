@@ -9,7 +9,7 @@
 
 - ## list
 
-  - rename cHAddTaskPage to cHShowTaskForm
+  - ~~rename cHAddTaskPage to cHShowTaskForm~~
   - add my projects page
     - ~~make my projects nav heading to a button~~
     - ~~add event listener to that button that creates my projects page~~
