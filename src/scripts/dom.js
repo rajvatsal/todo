@@ -33,7 +33,7 @@ function getTaskIndex(task) {
 
 btnMyProjects.addEventListener("click", () => emit("getProjectList"));
 
-function clickHandlerAddTaskPage(e) {
+function clickHandlerShowTaskForm(e) {
 	taskForm.style.display = "block";
 	e.target.style.display = "none";
 }
@@ -43,7 +43,7 @@ function clickHandlerCancelTask() {
 	btnAddTask.style.display = "block";
 }
 
-btnAddTask.addEventListener("click", clickHandlerAddTaskPage);
+btnAddTask.addEventListener("click", clickHandlerShowTaskForm);
 btnTaskCancel.addEventListener("click", clickHandlerCancelTask);
 
 function createTaskInfo(newTask) {
