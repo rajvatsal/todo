@@ -9,7 +9,6 @@ const btnDialogAddProject = $(".btn__form-add-project");
 const formAddProject = $("dialog.add-project > form");
 const ipDialogProjectName = $("#project-name");
 const ipDilaogProjectColor = $("#project-color");
-const projectList = $(".side-bar__project-list");
 const topHeading = $("header>h1");
 const taskForm = $(".task-form");
 const btnAddTask = $(".page__btn-add-task");
@@ -23,6 +22,7 @@ const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 
 const tPriorityAttritubte = "data-priority";
+const headingHomePage = "My projects";
 
 function getTaskIndex(task) {
 	const tasks = document.querySelectorAll(".page .task-list>li");
@@ -100,6 +100,8 @@ function clickHandlerAddProject(e) {
 	formAddProject.reset();
 
 	addProjectToSidebar(project);
+	if (topHeading.getAttribute("data-is-projects-page") !== "false")
+		addProjectToMainPage(project);
 }
 
 function clickHandlerProjectBtn(e) {
@@ -144,7 +146,10 @@ function addProjectToSidebar(project) {
 
 	li.addEventListener("click", clickHandlerProjectBtn);
 
-	projectList.appendChild(li);
+	// select it dynamincally cuz this container will
+	// be removod and added to the dom by some other
+	// functions like opneMyPrjects
+	$(".side-bar__project-list").appendChild(li);
 }
 
 function clickHandlerTaskFormSubmit(e) {
@@ -413,7 +418,9 @@ function editTask() {
 }
 
 function clickHandlerDelegateTaskBtn(e) {
-	// this can be done by another function which will be responsible for creating add task form during initialzation. We could use the same function to create form for edit and add
+	// this can be done by another function which will be responsible for creating
+	// add task form during initialzation. We could use the same function to
+	// create form for edit and add
 
 	if (e.target.classList.contains("btn-remove-task")) removeTaskBtn.call(this);
 	else if (e.target.classList.contains("btn-edit-task")) editTask.call(this);
@@ -421,12 +428,17 @@ function clickHandlerDelegateTaskBtn(e) {
 }
 
 function clickHandlerOpenProject({ tasks, pName }) {
-	removePageProjectList();
+	// reset page
+	// remove task list so that tasks of new project
+	// can be added
+	const taskList = $(".page> .task-list");
+	if (taskList) taskList.remove();
 
-	const taskList = $(".task-list");
-
-	//reset page
-	page.removeChild(taskList);
+	// if it's my projects page then remove projects list
+	if (topHeading.getAttribute("data-is-projects-page") === "true") {
+		$(".page__projects-list").remove();
+		topHeading.setAttribute("data-is-projects-page", false);
+	}
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
 
 	// add tasks to page
@@ -456,72 +468,91 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
-function removePageProjectList() {
-	const prevProjectList = $(".page__projects-list");
-	if (prevProjectList) page.removeChild(prevProjectList);
+function cleanPage() {
+	// remove previous projects
+	// we are basically resetting everything so that
+	// we can add a fresh list
+	const projectsOnMainPage = $(".page__projects-list");
+	const projectsOnSidebar = $(".side-bar__project-list");
+	const taskList = $(".page > .task-list");
+
+	if (projectsOnSidebar) projectsOnSidebar.remove();
+	if (projectsOnMainPage) projectsOnMainPage.remove();
+	if (taskList) taskList.remove();
 }
 
 function openMyProjects(list) {
-	removePageProjectList(); //If there is a previous list present then remove it
+	cleanPage();
 
-	topHeading.removeAttribute("data-projectNm");
-	topHeading.textContent = "My projects";
+	topHeading.textContent = headingHomePage;
+	topHeading.setAttribute("data-is-projects-page", true);
 
 	btnAddTask.setAttribute("style", "display: none;");
 
-	const ul = createElement("ul", {
+	const listInPage = createElement("ul", {
 		attributes: { class: "page__projects-list" },
 	});
 
-	list.forEach((project) => {
-		const li = createElement("li", {
-			attributes: {
-				class: "project-list__project-item btn",
-				["data-project-name"]: project.name,
-			},
-		});
-
-		const projectContainer = createElement("div", {
-			attributes: {
-				class: "project-item__container flex",
-			},
-		});
-
-		const pName = createElement("h3", {
-			property: {
-				textContent: project.name,
-			},
-			attributes: { class: "project__project-Name" },
-		});
-
-		const btnContainer = createElement("div", {
-			attributes: { class: "page__project-list__btn-container" },
-		});
-
-		const btnEdit = createElement("button", {
-			attributes: { class: "btn-container__edit" },
-			property: { textContent: "edit" },
-		});
-
-		const btnRemove = createElement("button", {
-			attributes: { class: "btn-container__remove" },
-			property: { textContent: "remove" },
-		});
-
-		li.addEventListener("click", clickHandlerRemoveProject);
-
-		btnContainer.appendChildren(btnEdit, btnRemove);
-
-		projectContainer.appendChildren(pName, btnContainer);
-		li.appendChild(projectContainer);
-		ul.appendChild(li);
+	const listInSidebar = createElement("ul", {
+		attributes: { class: "side-bar__project-list" },
 	});
 
-	page.prepend(ul);
+	// add ul after my projects button in side bar
+	btnMyProjects.after(listInSidebar);
+	list.forEach((project) => {
+		addProjectToMainPage(project, listInPage);
+		addProjectToSidebar(project);
+	});
 
-	list.forEach((project) => addProjectToSidebar(project)); // add project to side bar component
+	page.prepend(listInPage);
 }
 
+function addProjectToMainPage(project, ul = $(".page__projects-list")) {
+	const li = createElement("li", {
+		attributes: {
+			class: "project-list__project-item btn",
+			["data-project-name"]: project.name,
+		},
+	});
+
+	const projectContainer = createElement("div", {
+		attributes: {
+			class: "project-item__container flex",
+		},
+	});
+
+	const pName = createElement("h3", {
+		property: {
+			textContent: project.name,
+		},
+		attributes: { class: "project__project-Name" },
+	});
+
+	const btnContainer = createElement("div", {
+		attributes: { class: "page__project-list__btn-container" },
+	});
+
+	const btnEdit = createElement("button", {
+		attributes: { class: "btn-container__edit" },
+		property: { textContent: "edit" },
+	});
+
+	const btnRemove = createElement("button", {
+		attributes: { class: "btn-container__remove" },
+		property: { textContent: "remove" },
+	});
+
+	li.addEventListener("click", clickHandlerRemoveProject);
+
+	btnContainer.appendChildren(btnEdit, btnRemove);
+
+	projectContainer.appendChildren(pName, btnContainer);
+	li.appendChild(projectContainer);
+	ul.appendChild(li);
+}
+
+// data-project-name is different from data-projectNm
+// fix it
 function clickHandlerRemoveProject() {
 	const pName = this.getAttribute("data-project-name");
 	document
