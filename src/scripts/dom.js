@@ -99,7 +99,7 @@ function clickHandlerAddProject(e) {
 	dialogAddProjectForm.close();
 	formAddProject.reset();
 
-	showNewProject(project);
+	addProjectToSidebar(project);
 }
 
 function clickHandlerProjectBtn(e) {
@@ -111,7 +111,7 @@ function clickHandlerProjectBtn(e) {
 }
 
 // Only adds project to the project list doesn't change the page. Give a more appropriate name.
-function showNewProject(project) {
+function addProjectToSidebar(project) {
 	const li = createElement("li", {
 		attributes: {
 			class: "side-bar__project btn",
@@ -519,7 +519,7 @@ function openMyProjects(list) {
 
 	page.prepend(ul);
 
-	list.forEach((project) => showNewProject(project)); // add project to side bar component
+	list.forEach((project) => addProjectToSidebar(project)); // add project to side bar component
 }
 
 function clickHandlerRemoveProject() {
