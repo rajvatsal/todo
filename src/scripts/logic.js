@@ -1,6 +1,6 @@
 import { emit, on, off } from "./pub-sub";
 
-const projects = [{ name: "sicko" }];
+const projects = [];
 
 // [ INTERFACES ]
 const inNOutInterface = (state) => ({
@@ -108,6 +108,9 @@ export function isValidProject(pName) {
 export function init() {
 	emit("return__getProjectList", ProjectManager.fetchAll()); // list default projects
 }
+
+ProjectManager.add({ name: "sicko", color: "red" });
+ProjectManager.add({ name: "joker", color: "blue" });
 
 on("addNewProject", ProjectManager.add);
 on("addNewTask", addNewTask);
