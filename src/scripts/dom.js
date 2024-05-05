@@ -553,7 +553,8 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 
 // data-project-name is different from data-projectNm
 // fix it
-function clickHandlerRemoveProject() {
+function clickHandlerRemoveProject(e) {
+	if (!e.target.classList.contains("btn-container__remove")) return;
 	const pName = this.getAttribute("data-project-name");
 	document
 		.querySelectorAll(`li[data-project-name="${pName}"]`)
