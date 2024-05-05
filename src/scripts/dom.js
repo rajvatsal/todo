@@ -105,11 +105,10 @@ function clickHandlerAddProject(e) {
 }
 
 function clickHandlerProjectBtn(e) {
-	if (e.target.classList.contains("side-bar__remove-project-btn")) {
-		clickHandlerRemoveProject.call(this);
-		return;
-	}
-	emit("getProjectTasks", this.getAttribute("data-project-name"));
+	const projectName = this.getAttribute("data-project-name");
+	if (e.target.classList.contains("side-bar__remove-project-btn"))
+		removeProject(projectName);
+	else emit("getProjectTasks", projectName);
 }
 
 // Only adds project to the project list doesn't change the page. Give a more appropriate name.
@@ -542,7 +541,7 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 		property: { textContent: "remove" },
 	});
 
-	li.addEventListener("click", clickHandlerRemoveProject);
+	li.addEventListener("click", clickHandlerProjectsInMainPage);
 
 	btnContainer.appendChildren(btnEdit, btnRemove);
 
@@ -551,16 +550,25 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 	ul.appendChild(li);
 }
 
-// data-project-name is different from data-projectNm
-// fix it
-function clickHandlerRemoveProject(e) {
-	if (!e.target.classList.contains("btn-container__remove")) return;
-	const pName = this.getAttribute("data-project-name");
+function removeProject(pName) {
 	document
 		.querySelectorAll(`li[data-project-name="${pName}"]`)
 		.forEach((node) => node.remove());
 	emit("removeProject", pName);
 }
+
+// data-project-name is different from data-projectNm
+// fix it
+function clickHandlerProjectsInMainPage(e) {
+	const projectName = this.getAttribute("data-project-name");
+	if (e.target.classList.contains("btn-container__remove"))
+		removeProject(projectName);
+	else if (e.target.classList.contains("btn-container__edit")) editProject();
+	else emit("getProjectTasks", projectName);
+}
+
+// finish it
+function editProject() {}
 
 on("return__getProjectTasks", clickHandlerOpenProject);
 on("return__getProjectList", openMyProjects);
