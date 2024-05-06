@@ -4,6 +4,7 @@ import { on, off, emit } from "./pub-sub";
 import { isValidProject } from "./logic";
 
 const btnProjectForm = $(".btn-add-project");
+const editProjectForm = $("dialog.edit-project");
 const dialogAddProjectForm = $("dialog.add-project");
 const btnDialogAddProject = $(".btn__form-add-project");
 const formAddProject = $("dialog.add-project > form");
@@ -20,6 +21,7 @@ const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
 const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
+const btnSubmitEditForm = $(".btn__form-edit-project");
 
 const tPriorityAttritubte = "data-priority";
 const headingHomePage = "My projects";
@@ -108,6 +110,9 @@ function clickHandlerProjectBtn(e) {
 	const projectName = this.getAttribute("data-project-name");
 	if (e.target.classList.contains("side-bar__remove-project-btn"))
 		removeProject(projectName);
+	// [FIX]: inconsistent class names
+	else if (e.target.classList.contains("project-edit-button"))
+		showEditProjectForm(this.getAttribute("data-project-name"));
 	else emit("getProjectTasks", projectName);
 }
 
@@ -126,7 +131,7 @@ function addProjectToSidebar(project) {
 	});
 	const pName = createElement("span", {
 		property: { textContent: project.name },
-		attributes: { class: "project-container__name" },
+		attributes: { class: "project-name" },
 	});
 	const buttonContainer = createElement("div", {
 		attributes: { class: "side-bar__project-button-container btn" },
@@ -139,6 +144,7 @@ function addProjectToSidebar(project) {
 		attributes: { class: "project-edit-button" },
 		property: { textContent: "edit" },
 	});
+
 	buttonContainer.appendChildren(btnEdit, btnRemove);
 	pContainer.appendChildren(pName, buttonContainer);
 	li.appendChild(pContainer);
@@ -535,7 +541,7 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 		property: {
 			textContent: project.name,
 		},
-		attributes: { class: "project__project-Name" },
+		attributes: { class: "project-name" },
 	});
 
 	const btnContainer = createElement("div", {
@@ -574,12 +580,57 @@ function clickHandlerProjectsInMainPage(e) {
 	const projectName = this.getAttribute("data-project-name");
 	if (e.target.classList.contains("btn-container__remove"))
 		removeProject(projectName);
-	else if (e.target.classList.contains("btn-container__edit")) editProject();
+	else if (e.target.classList.contains("btn-container__edit"))
+		showEditProjectForm(projectName);
+	// opening the project if none of the buttons are pressed
 	else emit("getProjectTasks", projectName);
 }
 
 // finish it
-function editProject() {}
+function showEditProjectForm(pName) {
+	editProjectForm.showModal();
+	btnSubmitEditForm.setAttribute("data-project-name", pName);
+}
+
+function clickHandlerSubmitEditProjectForm(e) {
+	// use variable instead of dom searching for form inputs
+	// to make it more efficient
+	const name = $("#edit-project-name").value;
+	if (!$("#edit-project-name").checkValidity()) return;
+
+	e.preventDefault();
+	if (!isValidProject(name)) return;
+
+	const oldName = this.getAttribute("data-project-name");
+	const color = $("#edit-project-color > :checked").value;
+
+	const projects = document.querySelectorAll(
+		`li[data-project-name="${oldName}"`,
+	);
+
+	console.log(projects);
+
+	// currently there is no way to show the colors
+	// so I am not doing anything about colors here
+	// add them in the future
+	projects.forEach((project) => {
+		project.querySelector(".project-name").textContent = name;
+	});
+
+	editProjectForm.close();
+	emit("edit-project", { oldName, name, color });
+}
+
+function clickHandlerCloseEditProjectForm() {
+	editProjectForm.close();
+	$("dialog.edit-project >form").reset();
+}
+
+btnSubmitEditForm.addEventListener("click", clickHandlerSubmitEditProjectForm);
+$(".btn__cancel-edit-project").addEventListener(
+	"click",
+	clickHandlerCloseEditProjectForm,
+);
 
 on("return__getProjectTasks", clickHandlerOpenProject);
 on("return__getProjectList", openMyProjects);

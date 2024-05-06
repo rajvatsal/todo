@@ -10,8 +10,8 @@
 - ## list
 
   - add my projects page
-    - add a add project button in .page
     - add edit project button
+    - ~~add a add project button in .page~~
     - ~~open project when you click on it (doesn't work in projects list of page when you are in my projects)~~
     - ~~combine the functions for adding project on sidebar and main page~~
     - ~~make my projects nav heading to a button~~
