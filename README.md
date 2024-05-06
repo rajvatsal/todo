@@ -9,6 +9,7 @@
 
 - ## list
 
+  - add progress save for each person on the app
   - contemplate how can you also use css for project colors. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
 
