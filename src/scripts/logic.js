@@ -19,7 +19,7 @@ const fetchOneInterface = (state) => ({
 
 const modifyInterface = (state) => ({
 	type: "modifyInterface",
-	modify: (taskIndex, opts) => state.modify(taskIndex, opts, state),
+	modify: (object, opts) => state.modify(object, opts, state),
 });
 
 // [ FACTORIES ]
