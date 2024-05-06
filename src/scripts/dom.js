@@ -467,7 +467,7 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
-function cleanPage() {
+function cleanProjects() {
 	// remove previous projects
 	// we are basically resetting everything so that
 	// we can add a fresh list
@@ -481,7 +481,7 @@ function cleanPage() {
 }
 
 function openMyProjects(list) {
-	cleanPage();
+	cleanProjects();
 
 	topHeading.textContent = headingHomePage;
 	topHeading.setAttribute("data-is-projects-page", true);
