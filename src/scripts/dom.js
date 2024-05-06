@@ -483,10 +483,12 @@ function cleanProjects() {
 	const projectsOnMainPage = $(".page__projects-list");
 	const projectsOnSidebar = $(".side-bar__project-list");
 	const taskList = $(".page > .task-list");
+	const btnAddProject = $(".page__btn-add-project");
 
 	if (projectsOnSidebar) projectsOnSidebar.remove();
 	if (projectsOnMainPage) projectsOnMainPage.remove();
 	if (taskList) taskList.remove();
+	if (btnAddProject) btnAddProject.remove();
 }
 
 function openMyProjects(list) {
