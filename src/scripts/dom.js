@@ -618,7 +618,7 @@ function clickHandlerSubmitEditProjectForm(e) {
 	});
 
 	editProjectForm.close();
-	emit("edit-project", { oldName, name, color });
+	emit("editProject", { oldName, name, color });
 }
 
 function clickHandlerCloseEditProjectForm() {
