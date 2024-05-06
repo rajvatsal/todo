@@ -430,6 +430,9 @@ function clickHandlerOpenProject({ tasks, pName }) {
 	// reset page
 	// remove task list so that tasks of new project
 	// can be added
+	// remove add project button
+
+	$(".page__btn-add-project").remove();
 	const taskList = $(".page> .task-list");
 	if (taskList) taskList.remove();
 
@@ -503,7 +506,15 @@ function openMyProjects(list) {
 		addProjectToSidebar(project);
 	});
 
+	const addProjectBtn = createElement("button", {
+		attributes: { class: "page__btn-add-project" },
+		property: { textContent: "add project" },
+	});
+
+	addProjectBtn.addEventListener("click", clickHandlerShowProjectForm);
+
 	page.prepend(listInPage);
+	page.prepend(addProjectBtn);
 }
 
 function addProjectToMainPage(project, ul = $(".page__projects-list")) {
