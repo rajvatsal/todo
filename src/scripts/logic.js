@@ -56,12 +56,14 @@ export const ProjectManager = ((options) => {
 		},
 		fetchAll: () => projects.slice(),
 		fetch: (ptn) => getProject(ptn),
+		modify: (project, opts) => Object.assign(project, opts),
 	};
 
 	const basic = inNOutInterface(proto);
 	const fetchAll = fetchAllInterface(proto);
 	const fetchOne = fetchOneInterface(proto);
-	const composite = Object.assign(basic, fetchAll, fetchOne);
+	const modify = modifyInterface(proto);
+	const composite = Object.assign({}, basic, fetchAll, fetchOne, modify);
 	return Object.assign(Object.create(composite), options);
 })();
 
@@ -109,6 +111,10 @@ export function init() {
 	emit("return__getProjectList", ProjectManager.fetchAll()); // list default projects
 }
 
+function modifyProject({ oldName, name, color }) {
+	ProjectManager.modify(getProject(oldName), { name, color });
+}
+
 ProjectManager.add({ name: "sicko", color: "red" });
 ProjectManager.add({ name: "joker", color: "blue" });
 
@@ -120,3 +126,4 @@ on("editTask", updateTask);
 on("getProjectList", returnProjectList);
 on("removeProject", ProjectManager.remove);
 on("removeTask", removeTask);
+on("editProject", modifyProject);
