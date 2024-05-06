@@ -437,9 +437,9 @@ function clickHandlerOpenProject({ tasks, pName }) {
 	// remove task list so that tasks of new project
 	// can be added
 	// remove add project button
-
-	$(".page__btn-add-project").remove();
+	const btnAddProject = $(".page__btn-add-project");
 	const taskList = $(".page> .task-list");
+	if (btnAddProject) btnAddProject.remove();
 	if (taskList) taskList.remove();
 
 	// if it's my projects page then remove projects list
@@ -610,13 +610,12 @@ function clickHandlerSubmitEditProjectForm(e) {
 		`li[data-project-name="${oldName}"`,
 	);
 
-	console.log(projects);
-
 	// currently there is no way to show the colors
 	// so I am not doing anything about colors here
 	// add them in the future
 	projects.forEach((project) => {
 		project.querySelector(".project-name").textContent = name;
+		project.setAttribute("data-project-name", name);
 	});
 
 	editProjectForm.close();
