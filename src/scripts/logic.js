@@ -24,8 +24,9 @@ const modifyInterface = (state) => ({
 
 // [ FACTORIES ]
 const TaskManager = (options) => {
+	const tasks = [];
 	const proto = {
-		tasks: [],
+		tasks,
 		add: (opts, arg) => {
 			arg.tasks.push(opts);
 			return opts;
@@ -39,7 +40,7 @@ const TaskManager = (options) => {
 	const fetchAll = fetchAllInterface(proto);
 	const modify = modifyInterface(proto);
 	const composite = Object.assign(inNOut, fetchAll, modify);
-	return Object.assign(Object.create(composite), options);
+	return Object.assign(Object.create(composite), options, { tasks });
 };
 
 export const ProjectManager = ((options) => {
