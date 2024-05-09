@@ -41,7 +41,7 @@ const TaskManager = (options) => {
 			return opts;
 		},
 		remove: (tIndex, parent) => parent.tasks.splice(tIndex, 1),
-		fetchAll: (parent, arg) => {
+		fetchAll: (parent) => {
 			parent.tasks.slice();
 		},
 		modify: (tIndex, opts, parent) => Object.assign(parent.tasks[tIndex], opts),
