@@ -5,35 +5,46 @@ const projects = [];
 // [ INTERFACES ]
 const inNOutInterface = (state) => ({
 	type: "inNOutInterface",
-	add: (options) => state.add(options, state),
-	remove: (index) => state.remove(index, state),
+	add(options) {
+		state.add(options, this);
+	},
+	remove(index) {
+		state.remove(index, this);
+	},
 });
 
 const fetchAllInterface = (state) => ({
-	fetchAll: () => state.fetchAll(state),
+	fetchAll() {
+		return state.fetchAll(this, this);
+	},
 });
 
 const fetchOneInterface = (state) => ({
-	fetch: (pattern) => state.fetch(pattern, state),
+	fetch(pattern) {
+		return state.fetch(pattern, this);
+	},
 });
 
 const modifyInterface = (state) => ({
 	type: "modifyInterface",
-	modify: (object, opts) => state.modify(object, opts, state),
+	modify(object, opts) {
+		return state.modify(object, opts, this);
+	},
 });
 
 // [ FACTORIES ]
 const TaskManager = (options) => {
 	const tasks = [];
 	const proto = {
-		tasks,
-		add: (opts, arg) => {
-			arg.tasks.push(opts);
+		add: (opts, parent) => {
+			parent.tasks.push(opts);
 			return opts;
 		},
-		remove: (tIndex, arg) => arg.tasks.splice(tIndex, 1),
-		fetchAll: (arg) => arg.tasks.slice(),
-		modify: (tIndex, opts, arg) => Object.assign(arg.tasks[tIndex], opts),
+		remove: (tIndex, parent) => parent.tasks.splice(tIndex, 1),
+		fetchAll: (parent, arg) => {
+			parent.tasks.slice();
+		},
+		modify: (tIndex, opts, parent) => Object.assign(parent.tasks[tIndex], opts),
 	};
 
 	const inNOut = inNOutInterface(proto);
