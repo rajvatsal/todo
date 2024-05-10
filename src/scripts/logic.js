@@ -14,12 +14,14 @@ const inNOutInterface = (state) => ({
 });
 
 const fetchAllInterface = (state) => ({
+	type: "fetchAllInterface",
 	fetchAll() {
 		return state.fetchAll(this);
 	},
 });
 
 const fetchOneInterface = (state) => ({
+	type: "fetchOneInterface",
 	fetch(pattern) {
 		return state.fetch(pattern, this);
 	},
