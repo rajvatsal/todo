@@ -15,7 +15,7 @@ const inNOutInterface = (state) => ({
 
 const fetchAllInterface = (state) => ({
 	fetchAll() {
-		return state.fetchAll(this, this);
+		return state.fetchAll(this);
 	},
 });
 
@@ -41,9 +41,7 @@ const TaskManager = (options) => {
 			return opts;
 		},
 		remove: (tIndex, parent) => parent.tasks.splice(tIndex, 1),
-		fetchAll: (parent) => {
-			parent.tasks.slice();
-		},
+		fetchAll: (parent) => parent.tasks.slice(),
 		modify: (tIndex, opts, parent) => Object.assign(parent.tasks[tIndex], opts),
 	};
 
