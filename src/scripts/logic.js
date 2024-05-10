@@ -1,6 +1,6 @@
 import { emit, on, off } from "./pub-sub";
 
-const projects = [];
+let projects = [];
 
 // [ INTERFACES ]
 const inNOutInterface = (state) => ({
@@ -33,8 +33,7 @@ const modifyInterface = (state) => ({
 });
 
 // [ FACTORIES ]
-const TaskManager = (options) => {
-	const tasks = [];
+const TaskManager = (options, tasks = []) => {
 	const proto = {
 		add: (opts, parent) => {
 			parent.tasks.push(opts);
@@ -52,7 +51,7 @@ const TaskManager = (options) => {
 	return Object.assign(Object.create(composite), options, { tasks });
 };
 
-export const ProjectManager = ((options) => {
+const ProjectManager = ((options) => {
 	const proto = {
 		add: (opts) => {
 			opts.taskManager = TaskManager();
@@ -89,6 +88,7 @@ function addNewTask(data) {
 	const project = getProject(projectName);
 	if (project !== undefined) project.taskManager.add(options);
 	else alert("error: project doesn't exist");
+	updateLocalStorage();
 }
 
 function openAProject(pName) {
@@ -99,10 +99,12 @@ function openAProject(pName) {
 function removeTask(data) {
 	const { tIndex, pName } = data;
 	getProject(pName).taskManager.remove(tIndex);
+	updateLocalStorage();
 }
 
 function updateTask({ pName, tIndex, opts }) {
 	getProject(pName).taskManager.modify(tIndex, opts);
+	updateLocalStorage();
 }
 
 function returnProjectList() {
@@ -123,17 +125,55 @@ export function init() {
 
 function modifyProject({ oldName, name, color }) {
 	ProjectManager.modify(getProject(oldName), { name, color });
+	updateLocalStorage();
 }
 
-ProjectManager.add({ name: "sicko", color: "red" });
-ProjectManager.add({ name: "joker", color: "blue" });
+const localSaves = localStorage.getItem("todolist");
 
-on("addNewProject", ProjectManager.add);
+if (localSaves) {
+	setTodolist();
+} else {
+	populateStorage();
+}
+
+function setTodolist() {
+	const todolist = JSON.parse(localSaves);
+
+	// Add protoype methods like add, fetch etc
+	todolist.forEach((project) => {
+		const tasks = project.taskManager.tasks;
+		project.taskManager = TaskManager({}, tasks);
+	});
+
+	projects = todolist;
+}
+
+function populateStorage() {
+	ProjectManager.add({ name: "sicko", color: "red" });
+	ProjectManager.add({ name: "joker", color: "blue" });
+	localStorage.setItem("todolist", JSON.stringify(projects));
+}
+
+function updateLocalStorage() {
+	localStorage.setItem("todolist", JSON.stringify(projects));
+}
+
+function addNewProject(opts) {
+	ProjectManager.add(opts);
+	updateLocalStorage();
+}
+
+function removeProject(ptn) {
+	ProjectManager.remove(ptn);
+	updateLocalStorage();
+}
+
+on("addNewProject", addNewProject);
 on("addNewTask", addNewTask);
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
 on("getProjectList", returnProjectList);
-on("removeProject", ProjectManager.remove);
+on("removeProject", removeProject);
 on("removeTask", removeTask);
 on("editProject", modifyProject);
