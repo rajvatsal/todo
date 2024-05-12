@@ -86,11 +86,11 @@ function getProject(pName) {
 }
 
 function addNewTask(data) {
-	const [projectName, options] = data;
-	const project = getProject(projectName);
-	if (project !== undefined) project.taskManager.add(options);
-	else alert("error: project doesn't exist");
+	const project = getProject(data.projectName);
+	const projectExists = project === undefined ? false : true;
+	if (projectExists) project.taskManager.add(data.options);
 	updateLocalStorage();
+	return projectExists;
 }
 
 function openAProject(pName) {

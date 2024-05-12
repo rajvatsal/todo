@@ -22,6 +22,7 @@ const btnTaskCancel = $(".task-form__btn-cancel");
 const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
+const myProjectsContainer = $(".my-projects-container");
 
 const tPriorityAttritubte = "data-priority";
 const headingHomePage = "My projects";
@@ -175,8 +176,9 @@ function clickHandlerTaskFormSubmit(e) {
 		priority: priority.value,
 	};
 
-	emit("addNewTask", [projectNm, taskOpts]);
-	showNewTask(taskOpts);
+	const isTaskAdded = emit("addNewTask", [projectNm, taskOpts], "addNewTask");
+	if (isTaskAdded) showNewTask(taskOpts);
+	else alert("project doesn't exist");
 }
 
 function showNewTask(newTask) {
@@ -508,7 +510,7 @@ function openMyProjects(list) {
 	});
 
 	// add ul after my projects button in side bar
-	btnMyProjects.after(listInSidebar);
+	myProjectsContainer.after(listInSidebar);
 	list.forEach((project) => {
 		addProjectToMainPage(project, listInPage);
 		addProjectToSidebar(project);
