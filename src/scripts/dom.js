@@ -576,6 +576,8 @@ function removeProject(pName) {
 		.querySelectorAll(`li[data-project-name="${pName}"]`)
 		.forEach((node) => node.remove());
 	emit("removeProject", pName);
+	if (pName === topHeading.getAttribute("data-projectNm"))
+		emit("getProjectList");
 }
 
 // data-project-name is different from data-projectNm
