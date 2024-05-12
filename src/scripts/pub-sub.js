@@ -18,11 +18,14 @@ export const off = (eventName, fn) => {
 	}
 };
 
-export const emit = (eventName, data) => {
+export const emit = (eventName, data, fnName) => {
 	//publish function
+	let returnValue = null;
 	if (eventsDefined[eventName]) {
 		eventsDefined[eventName].forEach(function (fn) {
-			fn(data);
+			if (fn.name === fnName) returnValue = fn(data);
+			else fn(data);
 		});
 	}
+	return returnValue;
 };
