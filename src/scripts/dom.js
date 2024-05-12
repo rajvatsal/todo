@@ -86,12 +86,12 @@ btnAddTaskSubmitForm.addEventListener("click", clickHandlerTaskFormSubmit);
 function clickHandlerAddProject(e) {
 	if (!ipDialogProjectName.checkValidity()) return;
 
+	e.preventDefault();
+
 	if (!isValidProject(ipDialogProjectName.value)) {
 		alert("project exists");
 		return;
 	}
-
-	e.preventDefault();
 
 	const project = {};
 	project.name = ipDialogProjectName.value;
