@@ -86,9 +86,10 @@ function getProject(pName) {
 }
 
 function addNewTask(data) {
-	const project = getProject(data.projectName);
+	const [projectName, opts] = data;
+	const project = getProject(projectName);
 	const projectExists = project === undefined ? false : true;
-	if (projectExists) project.taskManager.add(data.options);
+	if (projectExists) project.taskManager.add(opts);
 	updateLocalStorage();
 	return projectExists;
 }
