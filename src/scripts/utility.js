@@ -37,4 +37,8 @@ export function createElement(tag, opts) {
 	return Object.assign(element, appendsChildren());
 }
 
-export const $ = (selector) => document.querySelector(selector);
+export const $ = (function () {
+	const fn = (selector) => document.querySelector(selector);
+	fn.all = (selector) => document.querySelectorAll(selector);
+	return fn;
+})();
