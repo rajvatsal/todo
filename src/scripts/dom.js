@@ -23,6 +23,8 @@ const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
 const myProjectsContainer = $(".my-projects-container");
+const hamburger = $(".btn-hamburger");
+const sidebar = $(".side-bar");
 
 const tPriorityAttritubte = "data-priority";
 const headingHomePage = "My projects";
@@ -637,5 +639,25 @@ $(".btn__cancel-edit-project").addEventListener(
 	clickHandlerCloseEditProjectForm,
 );
 
+function setHamburgerAnimation() {
+	// this number should be equal to @media query's value in css
+	if (window.screen.width < 800) {
+		sidebar.setAttribute("class", "side-bar hidden");
+		hamburger.setAttribute("class", "btn-hamburger");
+	}
+
+	function clickHandlerHamburger() {
+		sidebar.classList.toggle("hidden");
+		this.classList.toggle("nav-open");
+	}
+	hamburger.addEventListener("click", clickHandlerHamburger);
+}
+
+function initAppDOM(projectList) {
+	setHamburgerAnimation();
+	openMyProjects(projectList);
+}
+
 on("return__getProjectTasks", clickHandlerOpenProject);
 on("return__getProjectList", openMyProjects);
+on("initApp", initAppDOM);

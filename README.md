@@ -9,7 +9,8 @@
 
 - ## list
 
-  - add progress save for each person on the app.
+  - ~~add hamburger button that works.~~
+  - ~~add progress save for each person on the app.~~
   - contemplate how can you also use css for project colors. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
   - show project colors using css.
@@ -21,4 +22,4 @@
   - use icons to represent buttons.
   - color of submit button and cancel button should be different.
   - make background black, transparent, blur.
-  - make it responsive by adding slider to left.
+  - ~~make it responsive by adding slider to left.~~

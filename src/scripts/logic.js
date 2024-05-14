@@ -123,7 +123,7 @@ export function isValidProject(pName) {
 }
 
 export function init() {
-	emit("return__getProjectList", ProjectManager.fetchAll()); // list default projects
+	emit("initApp", ProjectManager.fetchAll()); // list default projects
 }
 
 function modifyProject({ oldName, name, color }) {
