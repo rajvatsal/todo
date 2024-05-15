@@ -1,0 +1,124 @@
+@font-face {
+  font-family: "intertight";
+  src: url("./fonts/intertight-variable-font.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "intertight_italic";
+  src: url("./fonts/intertight-italic-variable-font.woff2") format("woff2");
+}
+
+:root {
+  --clr-accent-400: #9f0217;
+  --clr-accent-300: linear-gradient(45deg, #ffa0a0, #ffb45b);
+  --clr-primary-100: #ebebeb;
+  --clr-primary-200: #979797;
+  --clr-neutral-700: #121212;
+
+  --ff-primary: "intertight", helvetica, arial;
+  --ff-italics: "intertight_italic", helvetica, arial;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-light-bold: 500;
+  --fw-semi-bold: 600;
+  --fw-bold: 700;
+
+  --fs-300: 0.85rem;
+  --fs-400: 1rem;
+  --fs-600: 1.25rem;
+  --fs-700: 2.2rem;
+  --fs-body: var(--fs-400);
+  --fs-primary-heading: var(--fs-700);
+  --fs-secondary-heading: var(--fs-600);
+  --fs-button: var(--fs-400);
+}
+
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+  2. Remove default margin
+*/
+*:not(dialog) {
+  margin: 0;
+}
+/*
+  Typographic tweaks!
+  3. Add accessible line-height
+  4. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/*
+  5. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+  6. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/*
+  7. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/*
+  8. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/*
+  9. Set button cursor to pointer
+*/
+button {
+  cursor: pointer;
+}
+
+/*
+  10. Set min-height to 100vh
+/
+
+/*
+  custom classes
+*/
+.flex {
+  display: flex;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(-clr-primary-200);
+}

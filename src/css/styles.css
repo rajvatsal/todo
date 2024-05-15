@@ -1,0 +1,11 @@
+@import url("./utility.css");
+
+body {
+  font-family: var(--ff-primary);
+  background-color: var(--clr-primary-100);
+  color: var(--clr-neutral-700);
+}
+
+h1 {
+  font: var(--fw-bold) var(--fs-primary-heading) var(--ff-primary);
+}

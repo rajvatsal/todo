@@ -1,236 +1,190 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TodoList - Complete your goals</title>
-    <style>
-      .flex {
-        display: flex;
-      }
 
-      :root {
-        height: 100%;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TodoList - Complete your goals</title>
+  <style>
+    :root {
+      height: 100%;
+    }
 
-      body {
-        --fg-r-side: 1;
-        --fg-sidebar: 2;
-        --fb-sidebar: calc(
-          100% *
-            calc(var(--fg-r-side) / calc(var(--fg-r-side) + var(--fg-sidebar)))
-        );
-        --fb-sidebar-fixed: 290px;
-        display: flex;
-        height: inherit;
-      }
+    body {
+      --fg-r-side: 1;
+      --fg-sidebar: 2;
+      --fb-sidebar: calc(100% * calc(var(--fg-r-side) / calc(var(--fg-r-side) + var(--fg-sidebar))));
+      --fb-sidebar-fixed: 290px;
+      display: flex;
+      height: inherit;
+    }
 
-      header {
-      }
+    header {}
 
-      .side-bar {
-        flex: 0 0 var(--fb-sidebar-fixed);
-      }
+    .side-bar {
+      flex: 0 0 var(--fb-sidebar-fixed);
+    }
 
-      .r-side {
-        flex: 1 1 0;
-      }
+    .r-side {
+      flex: 1 1 0;
+    }
 
-      .page {
-      }
+    .page {}
 
-      .task-form {
-        display: none;
-      }
+    .task-form {
+      display: none;
+    }
 
-      div.task-container {
-        display: flex;
-        align-items: start;
-      }
+    div.task-container {
+      display: flex;
+      align-items: start;
+    }
 
-      .page__btn-add-task {
-        display: none;
-      }
+    .page__btn-add-task {
+      display: none;
+    }
 
-      .task-container[data-priority="p1"] {
-        border: 1px solid red;
-      }
+    .task-container[data-priority="p1"] {
+      border: 1px solid red;
+    }
 
-      .task-container[data-priority="p2"] {
-        border: 1px solid yellow;
-      }
+    .task-container[data-priority="p2"] {
+      border: 1px solid yellow;
+    }
 
-      .task-container[data-priority="p3"] {
-        border: 1px solid blue;
-      }
+    .task-container[data-priority="p3"] {
+      border: 1px solid blue;
+    }
 
-      .side-bar {
-        display: flex;
-        flex-direction: column;
-        transition: margin-left 1s ease;
-      }
+    .side-bar {
+      display: flex;
+      flex-direction: column;
+      transition: margin-left 1s ease;
+    }
 
+    .side-bar.hidden {
+      margin-left: calc(-1 * var(--fb-sidebar-fixed));
+    }
+
+    .btn-hamburger.nav-open {
+      margin-right: 10px;
+    }
+
+    .btn-hamburger {
+      margin-right: -80px;
+      align-self: flex-end;
+      z-index: 1;
+      transition: margin-right 1s ease;
+    }
+
+    .my-projects-container {
+      display: flex;
+    }
+
+    @media only screen and (max-width: 800px) {
       .side-bar.hidden {
-        margin-left: calc(-1 * var(--fb-sidebar-fixed));
+        transform: translateX(-100%);
+        margin-left: 0;
       }
 
-      .btn-hamburger.nav-open {
-        margin-right: 10px;
+      .side-bar {
+        position: fixed;
+        transition: transform 1s ease;
+        transform: translateX(0);
       }
+    }
+  </style>
+</head>
 
-      .btn-hamburger {
-        margin-right: -80px;
-        align-self: flex-end;
-        z-index: 1;
-        transition: margin-right 1s ease;
-      }
-
-      .my-projects-container {
-        display: flex;
-      }
-
-      button {
-        cursor: pointer;
-      }
-
-      @media only screen and (max-width: 800px) {
-        .side-bar.hidden {
-          transform: translateX(-100%);
-          margin-left: 0;
-        }
-
-        .side-bar {
-          position: fixed;
-          transition: transform 1s ease;
-          transform: translateX(0);
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="side-bar">
-      <button type="button" class="btn-hamburger nav-open">hamburger</button>
-      <div class="my-projects-container">
-        <button type="button" class="btn-project-home">
-          <h2>my projects</h2>
-        </button>
-        <button type="button" class="btn-add-project">add new project</button>
-      </div>
-      <dialog class="add-project">
-        <form action="" method="post">
-          <fieldset>
-            <legend>create new project</legend>
-            <form method="dialog" action="">
-              <label for="project-name">Name: </label>
-              <input
-                id="project-name"
-                type="text"
-                name="project_name"
-                value=""
-                placeholder="Todo list"
-                required
-              />
-              <label for="project-color">Select a color for your project</label>
-              <select id="project-color">
-                <option value="red" selected>red</option>
-                <option value="pink">pink</option>
-                <option value="yellow">yellow</option>
-                <option value="charcoal">charcoal</option>
-              </select>
-              <button type="submit" class="btn__form-add-project">
-                add project
-              </button>
-              <button type="button" class="btn__cancel-project-form">
-                cancel
-              </button>
-            </form>
-          </fieldset>
-        </form>
-      </dialog>
-      <dialog class="edit-project">
-        <form method="dialog" action="">
-          <fieldset>
-            <legend>edit project</legend>
-            <form method="dialog" action="">
-              <label for="edit-project-name">Name: </label>
-              <input
-                id="edit-project-name"
-                type="text"
-                name="project_name"
-                value=""
-                placeholder="Todo list"
-                required
-              />
-              <label for="edit-project-color"
-                >Select a color for your project</label
-              >
-              <select id="edit-project-color">
-                <option value="red" selected>red</option>
-                <option value="pink">pink</option>
-                <option value="yellow">yellow</option>
-                <option value="charcoal">charcoal</option>
-              </select>
-              <button type="submit" class="btn__form-edit-project">edit</button>
-              <button type="button" class="btn__cancel-edit-project">
-                cancel
-              </button>
-            </form>
-          </fieldset>
-        </form>
-      </dialog>
+<body>
+  <div class="side-bar">
+    <button type="button" class="btn-hamburger nav-open">hamburger</button>
+    <div class="my-projects-container">
+      <button type="button" class="btn-project-home">
+        <h2>my projects</h2>
+      </button>
+      <button type="button" class="btn-add-project">add new project</button>
     </div>
-    <div class="r-side">
-      <header>
-        <h1>My projects</h1>
-      </header>
-      <div class="page">
-        <button type="button" class="page__btn-add-task">Add task</button>
-        <form method="post" action="" class="task-form">
-          <fieldset>
-            <legend>Add new task</legend>
-            <label for="task_name">name</label>
-            <input
-              type="text"
-              id="task_name"
-              name="task_name"
-              value=""
-              placeholder="hunt wolf"
-              required
-            />
-            <label for="task_dec">description</label>
-            <input
-              type="textarea"
-              id="task_dec"
-              name="task_desc"
-              value=""
-              placeholder="it's our last day in the himalayan mountains"
-              maxlength="50ch"
-            />
-            <label for="due_date">due date</label>
-            <input
-              type="date"
-              id="due_date"
-              name="due_date"
-              value=""
-              required
-            />
-            <fieldset>
-              <legend>priority</legend>
-              <input type="radio" id="p1" name="priority" value="p1" checked />
-              <label for="p1">priority one</label>
-              <input type="radio" id="p2" name="priority" value="p2" />
-              <label for="p2">priority two</label>
-              <input type="radio" id="p3" name="priority" value="p3" />
-              <label for="p3">priority three</label>
-            </fieldset>
-            <button type="submit" class="task-form__btn-add-task">
-              add task
+    <dialog class="add-project">
+      <form action="" method="post">
+        <fieldset>
+          <legend>create new project</legend>
+          <form method="dialog" action="">
+            <label for="project-name">Name: </label>
+            <input id="project-name" type="text" name="project_name" value="" placeholder="Todo list" required />
+            <label for="project-color">Select a color for your project</label>
+            <select id="project-color">
+              <option value="red" selected>red</option>
+              <option value="pink">pink</option>
+              <option value="yellow">yellow</option>
+              <option value="charcoal">charcoal</option>
+            </select>
+            <button type="submit" class="btn__form-add-project">
+              add project
             </button>
-            <button type="button" class="task-form__btn-cancel">cancel</button>
+            <button type="button" class="btn__cancel-project-form">
+              cancel
+            </button>
+          </form>
+        </fieldset>
+      </form>
+    </dialog>
+    <dialog class="edit-project">
+      <form method="dialog" action="">
+        <fieldset>
+          <legend>edit project</legend>
+          <form method="dialog" action="">
+            <label for="edit-project-name">Name: </label>
+            <input id="edit-project-name" type="text" name="project_name" value="" placeholder="Todo list" required />
+            <label for="edit-project-color">Select a color for your project</label>
+            <select id="edit-project-color">
+              <option value="red" selected>red</option>
+              <option value="pink">pink</option>
+              <option value="yellow">yellow</option>
+              <option value="charcoal">charcoal</option>
+            </select>
+            <button type="submit" class="btn__form-edit-project">edit</button>
+            <button type="button" class="btn__cancel-edit-project">
+              cancel
+            </button>
+          </form>
+        </fieldset>
+      </form>
+    </dialog>
+  </div>
+  <div class="r-side">
+    <header>
+      <h1>My projects</h1>
+    </header>
+    <div class="page">
+      <button type="button" class="page__btn-add-task">Add task</button>
+      <form method="post" action="" class="task-form">
+        <fieldset>
+          <legend>Add new task</legend>
+          <label for="task_name">name</label>
+          <input type="text" id="task_name" name="task_name" value="" placeholder="hunt wolf" required />
+          <label for="task_dec">description</label>
+          <input type="textarea" id="task_dec" name="task_desc" value=""
+            placeholder="it's our last day in the himalayan mountains" maxlength="50ch" />
+          <label for="due_date">due date</label>
+          <input type="date" id="due_date" name="due_date" value="" required />
+          <fieldset>
+            <legend>priority</legend>
+            <input type="radio" id="p1" name="priority" value="p1" checked />
+            <label for="p1">priority one</label>
+            <input type="radio" id="p2" name="priority" value="p2" />
+            <label for="p2">priority two</label>
+            <input type="radio" id="p3" name="priority" value="p3" />
+            <label for="p3">priority three</label>
           </fieldset>
-        </form>
-      </div>
+          <button type="submit" class="task-form__btn-add-task">
+            add task
+          </button>
+          <button type="button" class="task-form__btn-cancel">cancel</button>
+        </fieldset>
+      </form>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
