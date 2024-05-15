@@ -38,6 +38,12 @@ function getTaskIndex(task) {
 
 btnMyProjects.addEventListener("click", () => emit("getProjectList"));
 
+function clickHandlerHamburger() {
+	sidebar.classList.toggle("hidden");
+	this.classList.toggle("nav-open");
+}
+hamburger.addEventListener("click", clickHandlerHamburger);
+
 function clickHandlerShowTaskForm(e) {
 	taskForm.style.display = "block";
 	e.target.style.display = "none";
@@ -639,22 +645,19 @@ $(".btn__cancel-edit-project").addEventListener(
 	clickHandlerCloseEditProjectForm,
 );
 
-function setHamburgerAnimation() {
-	// this number should be equal to @media query's value in css
-	if (window.screen.width < 800) {
-		sidebar.setAttribute("class", "side-bar hidden");
-		hamburger.setAttribute("class", "btn-hamburger");
-	}
-
-	function clickHandlerHamburger() {
-		sidebar.classList.toggle("hidden");
-		this.classList.toggle("nav-open");
-	}
-	hamburger.addEventListener("click", clickHandlerHamburger);
+function setInitialSidebarState() {
+	// min-widnow size should match the media query min-width in css
+	// should sidebar be opened or closed on the first render
+	if (window.screen.width > 800) return;
+	sidebar.setAttribute("class", "side-bar hidden");
+	hamburger.setAttribute("class", "btn-hamburger");
 }
 
 function renderApp(projectList) {
-	setHamburgerAnimation();
+	// Set hamburger animation only during the first render of the app
+	// if done inside openMyProjects then multiple eventlisteners
+	// will be added to the same element each time you open my projects page
+	setInitialSidebarState();
 	openMyProjects(projectList);
 }
 
