@@ -653,11 +653,11 @@ function setHamburgerAnimation() {
 	hamburger.addEventListener("click", clickHandlerHamburger);
 }
 
-function initAppDOM(projectList) {
+function renderApp(projectList) {
 	setHamburgerAnimation();
 	openMyProjects(projectList);
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);
 on("return__getProjectList", openMyProjects);
-on("initApp", initAppDOM);
+on("initApp", renderApp);
