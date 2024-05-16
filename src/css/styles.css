@@ -89,7 +89,7 @@ div.task-container {
 }
 
 .hamburger-container {
-  margin-right: -80px;
+  margin-right: -90px;
   align-self: flex-end;
   z-index: 1;
   transition: margin-right 1s ease;
