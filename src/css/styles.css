@@ -126,6 +126,10 @@ button:hover {
   color: var(--clr-neutral-700);
 }
 
+.side-bar button:hover {
+  bac,m
+}
+
 .side-bar button * {
   color: inherit;
 }
