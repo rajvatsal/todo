@@ -22,9 +22,10 @@ const btnTaskCancel = $(".task-form__btn-cancel");
 const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
-const myProjectsContainer = $(".my-projects-container");
 const hamburger = $(".btn-hamburger");
 const sidebar = $(".side-bar");
+const projectsNavSidebar = $(".projects-nav-container");
+const projectsNavPrimary = $(".page__projects-nav-primary");
 
 const tPriorityAttritubte = "data-priority";
 const headingHomePage = "My projects";
@@ -490,7 +491,7 @@ function cleanProjects() {
 	// remove previous projects
 	// we are basically resetting everything so that
 	// we can add a fresh list
-	const projectsOnMainPage = $(".page__projects-list");
+	const projectsOnMainPage = $(".page__projects-projects-list");
 	const projectsOnSidebar = $(".side-bar__project-list");
 	const taskList = $(".page > .task-list");
 	const btnAddProject = $(".page__btn-add-project");
@@ -518,7 +519,7 @@ function openMyProjects(list) {
 	});
 
 	// add ul after my projects button in side bar
-	myProjectsContainer.after(listInSidebar);
+	projectsNavSidebar.appendChild(listInSidebar);
 	list.forEach((project) => {
 		addProjectToMainPage(project, listInPage);
 		addProjectToSidebar(project);
@@ -531,7 +532,7 @@ function openMyProjects(list) {
 
 	addProjectBtn.addEventListener("click", clickHandlerShowProjectForm);
 
-	page.prepend(listInPage);
+	projectsNavPrimary.appendChild(listInPage);
 	page.prepend(addProjectBtn);
 }
 
