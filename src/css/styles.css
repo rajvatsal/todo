@@ -111,6 +111,8 @@ div.task-container {
   .side-bar {
     position: fixed;
     transition: transform var(--as-nav) ease;
+    top: 0;
+    bottom: 0;
     transform: translateX(0);
   }
 }
