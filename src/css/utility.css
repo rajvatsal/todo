@@ -32,6 +32,8 @@
   --fs-primary-heading: var(--fs-700);
   --fs-secondary-heading: var(--fs-600);
   --fs-button: var(--fs-400);
+
+  --h-topbar-container: 50px;
 }
 
 /*

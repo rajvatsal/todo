@@ -1,5 +1,10 @@
 @import url("./utility.css");
 
+.topbar-container,
+.hamburger-container {
+  height: var(--h-topbar-container);
+}
+
 body {
   font-family: var(--ff-primary);
   background-color: var(--clr-primary-100);

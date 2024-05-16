@@ -66,11 +66,11 @@
       margin-left: calc(-1 * var(--fb-sidebar-fixed));
     }
 
-    .btn-hamburger.nav-open {
+    .hamburger-container.nav-open {
       margin-right: 10px;
     }
 
-    .btn-hamburger {
+    .hamburger-container {
       margin-right: -80px;
       align-self: flex-end;
       z-index: 1;
@@ -98,7 +98,9 @@
 
 <body>
   <div class="side-bar">
-    <button type="button" class="btn-hamburger nav-open">hamburger</button>
+    <div class="hamburger-container nav-open">
+      <button type="button" class="btn-hamburger">hamburger</button>
+    </div>
     <div class="my-projects-container">
       <button type="button" class="btn-project-home">
         <h2>my projects</h2>
@@ -155,7 +157,10 @@
   </div>
   <div class="r-side">
     <header>
-      <h1>My projects</h1>
+      <div class="topbar-container"></div>
+      <div class="heading">
+        <h1>My projects</h1>
+      </div>
     </header>
     <div class="page">
       <nav class="page__projects-nav-primary"></nav>
