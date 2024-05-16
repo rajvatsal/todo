@@ -103,6 +103,10 @@ div.task-container {
 }
 
 @media only screen and (max-width: 800px) {
+  :root {
+    --w-page-primary: 95%;
+  }
+
   .side-bar.hidden {
     transform: translateX(-100%);
     margin-left: 0;
