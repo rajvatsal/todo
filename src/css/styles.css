@@ -39,6 +39,8 @@ header {
 
 .side-bar {
   flex: 0 0 var(--fb-sidebar-fixed);
+  background-color: var(--clr-neutral-700);
+  color: var(--clr-primary-100);
 }
 
 .r-side {
