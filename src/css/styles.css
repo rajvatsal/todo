@@ -126,10 +126,7 @@ button:hover {
   color: var(--clr-neutral-700);
 }
 
-.side-bar button:hover {
-  bac,m
-}
-
+/* maybe add a different color for sidebar hover buttons */
 .side-bar button * {
   color: inherit;
 }
