@@ -22,4 +22,5 @@
   - use icons to represent buttons.
   - color of submit button and cancel button should be different.
   - make background black, transparent, blur.
+  - fix overflow of h1 element during animation
   - ~~make it responsive by adding slider to left.~~
