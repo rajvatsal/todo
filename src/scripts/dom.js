@@ -144,7 +144,7 @@ function addProjectToSidebar(project) {
 		attributes: { class: "project-name" },
 	});
 	const buttonContainer = createElement("div", {
-		attributes: { class: "side-bar__project-button-container btn" },
+		attributes: { class: "side-bar__project-button-container" },
 	});
 	const btnRemove = createElement("button", {
 		attributes: { class: "side-bar__remove-project-btn" },
