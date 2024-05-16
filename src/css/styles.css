@@ -39,7 +39,8 @@ body {
 }
 
 .r-side {
-  flex: 1 1 0;
+  flex: 0 1 var(--w-page-primary);
+  margin: 0 auto;
 }
 
 .page {
