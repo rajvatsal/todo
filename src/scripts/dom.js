@@ -651,7 +651,7 @@ function setInitialSidebarState() {
 	// should sidebar be opened or closed on the first render
 	if (window.screen.width > 800) return;
 	sidebar.setAttribute("class", "side-bar hidden");
-	hamburger.setAttribute("class", "btn-hamburger");
+	hamburger.setAttribute("class", "hamburger-container");
 }
 
 function renderApp(projectList) {
