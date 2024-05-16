@@ -102,15 +102,31 @@ h6 {
 }
 
 /*
-  9. Set button cursor to pointer
+  9. Set default button styles
 */
 button {
   cursor: pointer;
+  background-color: transparent;
+  border: 1px solid grey;
 }
 
 /*
   10. Set min-height to 100vh
-/
+*/
+
+body {
+  min-height: 100vh;
+}
+
+/*
+  11. Set ul padding to li
+*/
+ul {
+  padding: 0;
+}
+li {
+  padding-left: 20px;
+}
 
 /*
   custom classes
@@ -126,4 +142,8 @@ button {
 .btn:hover {
   background-color: var(--clr-primary-200);
   box-shadow: var(--btn-box-shadow);
+}
+
+.side-bar__project-list .btn:hover * {
+  color: var(--clr-neutral-700);
 }

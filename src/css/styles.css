@@ -9,10 +9,6 @@
   content: "";
 }
 
-ul {
-  padding-left: 20px;
-}
-
 body {
   font-family: var(--ff-primary);
   background-color: var(--clr-primary-100);
@@ -31,15 +27,14 @@ body {
   );
   --fb-sidebar-fixed: 290px;
   display: flex;
-  min-height: 100vh;
-}
-
-header {
 }
 
 .side-bar {
   flex: 0 0 var(--fb-sidebar-fixed);
   background-color: var(--clr-neutral-700);
+}
+
+.side-bar > :not(dialog) * {
   color: var(--clr-primary-100);
 }
 
@@ -81,6 +76,10 @@ div.task-container {
   transition: margin-left 1s ease;
 }
 
+.side-bar__project-list .btn:hover * {
+  color: var(--clr-neutral-700);
+}
+
 .side-bar.hidden {
   margin-left: calc(-1 * var(--fb-sidebar-fixed));
 }
@@ -94,6 +93,8 @@ div.task-container {
   align-self: flex-end;
   z-index: 1;
   transition: margin-right 1s ease;
+  background-color: grey;
+  cursor: pointer;
 }
 
 .my-projects-container {
