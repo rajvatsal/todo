@@ -5,6 +5,14 @@
   height: var(--h-topbar-container);
 }
 
+::marker {
+  content: "";
+}
+
+ul {
+  padding-left: 20px;
+}
+
 body {
   font-family: var(--ff-primary);
   background-color: var(--clr-primary-100);
