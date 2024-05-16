@@ -74,7 +74,7 @@ div.task-container {
 .side-bar {
   display: flex;
   flex-direction: column;
-  transition: margin-left 1s ease;
+  transition: margin-left var(--as-nav) ease;
 }
 
 .side-bar__project-list .btn:hover * {
@@ -93,7 +93,7 @@ div.task-container {
   margin-right: -90px;
   align-self: flex-end;
   z-index: 1;
-  transition: margin-right 1s ease;
+  transition: margin-right var(--as-nav) ease;
   background-color: grey;
   cursor: pointer;
 }
@@ -110,7 +110,7 @@ div.task-container {
 
   .side-bar {
     position: fixed;
-    transition: transform 1s ease;
+    transition: transform var(--as-nav) ease;
     transform: translateX(0);
   }
 }
