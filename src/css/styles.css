@@ -120,3 +120,12 @@ div.task-container {
     transform: translateX(0);
   }
 }
+
+button:hover {
+  background-color: var(--clr-primary-200);
+  color: var(--clr-neutral-700);
+}
+
+.side-bar button * {
+  color: inherit;
+}
