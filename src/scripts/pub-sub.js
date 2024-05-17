@@ -1,7 +1,8 @@
 const eventsDefined = {};
 
-export const on = (eventName, fn) => {
+export const on = (eventName, fn, pubsubId) => {
 	//subscriber function
+	if (pubsubId) fn.psId = pubsubId;
 	eventsDefined[eventName] = eventsDefined[eventName] || [];
 	eventsDefined[eventName].push(fn);
 };
@@ -23,7 +24,7 @@ export const emit = (eventName, data, fnName) => {
 	let returnValue = null;
 	if (eventsDefined[eventName]) {
 		eventsDefined[eventName].forEach(function (fn) {
-			if (fn.name === fnName) returnValue = fn(data);
+			if (fn.psId === fnName) returnValue = fn(data);
 			else fn(data);
 		});
 	}

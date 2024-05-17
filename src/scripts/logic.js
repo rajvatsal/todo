@@ -172,7 +172,7 @@ function removeProject(ptn) {
 }
 
 on("addNewProject", addNewProject);
-on("addNewTask", addNewTask);
+on("addNewTask", addNewTask, "addNewTask");
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
