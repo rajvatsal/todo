@@ -22,7 +22,7 @@ const btnTaskCancel = $(".task-form__btn-cancel");
 const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
-const hamburger = $(".hamburger-container");
+const hamburger = $(".btn-hamburger");
 const sidebar = $(".side-bar");
 const projectsNavSidebar = $(".projects-nav-container");
 const projectsNavPrimary = $(".page__projects-nav-primary");
@@ -649,9 +649,13 @@ $(".btn__cancel-edit-project").addEventListener(
 function setInitialSidebarState() {
 	// min-widnow size should match the media query min-width in css
 	// should sidebar be opened or closed on the first render
-	if (window.screen.width > 800) return;
-	sidebar.setAttribute("class", "side-bar hidden");
-	hamburger.setAttribute("class", "hamburger-container");
+	if (window.screen.width < 800) {
+		sidebar.setAttribute("class", "side-bar hidden");
+		hamburger.setAttribute("class", "btn-hamburger");
+	} else {
+		sidebar.setAttribute("class", "side-bar");
+		hamburger.setAttribute("class", "btn-hamburger nav-open");
+	}
 }
 
 function renderApp(projectList) {

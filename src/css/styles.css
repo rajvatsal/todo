@@ -5,6 +5,10 @@
   height: var(--h-topbar-container);
 }
 
+.hamburger-container {
+  text-align: right;
+}
+
 ::marker {
   content: "";
 }
@@ -85,13 +89,12 @@ div.task-container {
   margin-left: calc(-1 * var(--fb-sidebar-fixed));
 }
 
-.hamburger-container.nav-open {
+.btn-hamburger.nav-open {
   margin-right: 10px;
 }
 
-.hamburger-container {
+.btn-hamburger {
   margin-right: -90px;
-  align-self: flex-end;
   z-index: 1;
   transition: margin-right var(--as-nav) ease;
   background-color: grey;
