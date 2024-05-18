@@ -136,7 +136,7 @@ function addProjectToSidebar(project) {
 	});
 	const pContainer = createElement("div", {
 		attributes: {
-			class: "side-bar__project-container",
+			class: "side-bar__project-container f-sb",
 		},
 	});
 	const pName = createElement("span", {
@@ -546,7 +546,7 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 
 	const projectContainer = createElement("div", {
 		attributes: {
-			class: "project-item__container flex",
+			class: "project-item__container f-sb",
 		},
 	});
 

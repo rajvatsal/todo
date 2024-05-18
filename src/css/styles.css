@@ -105,6 +105,21 @@ div.task-container {
   display: flex;
 }
 
+button:hover {
+  background-color: var(--clr-primary-200);
+  color: var(--clr-neutral-700);
+}
+
+/* maybe add a different color for sidebar hover buttons */
+.side-bar button * {
+  color: inherit;
+}
+
+.f-sb {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media only screen and (max-width: 800px) {
   :root {
     --w-page-primary: 95%;
@@ -122,14 +137,4 @@ div.task-container {
     bottom: 0;
     transform: translateX(0);
   }
-}
-
-button:hover {
-  background-color: var(--clr-primary-200);
-  color: var(--clr-neutral-700);
-}
-
-/* maybe add a different color for sidebar hover buttons */
-.side-bar button * {
-  color: inherit;
 }
