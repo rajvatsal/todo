@@ -14,13 +14,12 @@
   - contemplate how can you also use css for project colors. <!-- production. -->
   - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
   - show project colors using css.
-  - change font to roboto.
-  - create utility css.
+  - ~~change font to roboto.~~
+  - ~~create utility css.~~
   - add gradient to background like youtube.
   - add overflow hidden to root to prevent peek-a-boo url bar.
   - adjust typfaces, margins, paddings etc.
   - use icons to represent buttons.
   - color of submit button and cancel button should be different.
   - make background black, transparent, blur.
-  - fix overflow of h1 element during animation
   - ~~make it responsive by adding slider to left.~~
