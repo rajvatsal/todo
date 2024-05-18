@@ -24,8 +24,9 @@ const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
 const hamburger = $(".btn-hamburger");
 const sidebar = $(".side-bar");
-const projectsNavSidebar = $(".projects-nav-container");
+const projectsNavSidebar = $(".projects-nav-sidebar");
 const projectsNavPrimary = $(".page__projects-nav-primary");
+const projectListSidebar = $(".projects-nav-sidebar__project-list");
 
 const tPriorityAttritubte = "data-priority";
 const headingHomePage = "My projects";
@@ -82,7 +83,10 @@ function createTaskInfo(newTask) {
 	return infoContainer;
 }
 
-const clickHandlerShowProjectForm = () => dialogAddProjectForm.showModal();
+function clickHandlerShowProjectForm(e) {
+	e.stopPropagation();
+	dialogAddProjectForm.showModal();
+}
 function clickHandlerCancelProjectForm() {
 	formAddProject.reset();
 	dialogAddProjectForm.close();
@@ -161,10 +165,7 @@ function addProjectToSidebar(project) {
 
 	li.addEventListener("click", clickHandlerProjectBtn);
 
-	// select it dynamincally cuz this container will
-	// be removod and added to the dom by some other
-	// functions like opneMyPrjects
-	$(".side-bar__project-list").appendChild(li);
+	projectListSidebar.appendChild(li);
 }
 
 function clickHandlerTaskFormSubmit(e) {
@@ -487,52 +488,27 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
-function cleanProjects() {
-	// remove previous projects
-	// we are basically resetting everything so that
-	// we can add a fresh list
-	const projectsOnMainPage = $(".page__projects-projects-list");
-	const projectsOnSidebar = $(".side-bar__project-list");
-	const taskList = $(".page > .task-list");
-	const btnAddProject = $(".page__btn-add-project");
-
-	if (projectsOnSidebar) projectsOnSidebar.remove();
-	if (projectsOnMainPage) projectsOnMainPage.remove();
-	if (taskList) taskList.remove();
-	if (btnAddProject) btnAddProject.remove();
-}
-
 function openMyProjects(list) {
-	cleanProjects();
+	if (topHeading.getAttribute("data-is-projects-page") === "true") return;
 
 	topHeading.textContent = headingHomePage;
 	topHeading.setAttribute("data-is-projects-page", true);
 
 	btnAddTask.setAttribute("style", "display: none;");
 
-	const listInPage = createElement("ul", {
+	const projectsList = createElement("ul", {
 		attributes: { class: "page__projects-list" },
 	});
 
-	const listInSidebar = createElement("ul", {
-		attributes: { class: "side-bar__project-list" },
-	});
-
-	// add ul after my projects button in side bar
-	projectsNavSidebar.appendChild(listInSidebar);
-	list.forEach((project) => {
-		addProjectToMainPage(project, listInPage);
-		addProjectToSidebar(project);
-	});
+	list.forEach((project) => addProjectToMainPage(project, projectsList));
 
 	const addProjectBtn = createElement("button", {
 		attributes: { class: "page__btn-add-project" },
 		property: { textContent: "add project" },
 	});
-
 	addProjectBtn.addEventListener("click", clickHandlerShowProjectForm);
 
-	projectsNavPrimary.appendChild(listInPage);
+	projectsNavPrimary.appendChild(projectsList);
 	page.prepend(addProjectBtn);
 }
 
@@ -664,6 +640,9 @@ function renderApp(projectList) {
 	// will be added to the same element each time you open my projects page
 	setInitialSidebarState();
 	openMyProjects(projectList);
+	projectList.forEach((project) => {
+		addProjectToSidebar(project);
+	});
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);

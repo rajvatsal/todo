@@ -101,10 +101,6 @@ div.task-container {
   cursor: pointer;
 }
 
-.my-projects-container {
-  display: flex;
-}
-
 button:hover {
   background-color: var(--clr-primary-200);
   color: var(--clr-neutral-700);
