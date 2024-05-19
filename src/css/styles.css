@@ -176,6 +176,22 @@ div.task-container {
   margin-top: var(--top-margin-heading);
 }
 
+.task-info {
+  margin-right: auto;
+}
+
+.btn-edit-task,
+.btn-remove-task {
+  align-self: center;
+}
+
+.task-container input[type="radio"] {
+  cursor: pointer;
+  margin-top: 3px;
+  margin-right: 5px;
+  position: relative;
+}
+
 @media only screen and (max-width: 800px) {
   :root {
     --w-page-primary: 95%;
