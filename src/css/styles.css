@@ -134,11 +134,14 @@ div.task-container {
 }
 
 .side-bar .btn-hamburger {
-  margin-right: -90px;
+  --mr-nav-close: calc(
+    -1 * (var(--w-sidebar-toggle) + calc((2.5 / 100) * 100vw)) + 10px
+  );
+  margin-right: var(--mr-nav-close);
   z-index: 1;
   cursor: pointer;
   position: relative;
-  width: 30px;
+  width: var(--w-sidebar-toggle);
   height: 30px;
   background-color: transparent;
   transition: margin-right var(--as-nav) ease;
@@ -155,7 +158,7 @@ div.task-container {
 }
 
 .btn-hamburger.nav-open {
-  margin-right: 15px;
+  margin-right: 23px;
 }
 
 .btn-hamburger.nav-open::after {
