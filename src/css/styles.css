@@ -247,5 +247,6 @@ div.task-container {
     top: 0;
     bottom: 0;
     transform: translateX(0);
+    width: var(--fb-sidebar-fixed);
   }
 }
