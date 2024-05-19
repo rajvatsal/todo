@@ -131,6 +131,32 @@ div.task-container {
   justify-content: space-between;
 }
 
+.my-projects-container {
+  margin: 10px 5px;
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.side-bar__project {
+  margin: 0px 5px;
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.project-list__project-item,
+.task-list li {
+  padding-left: 6px;
+}
+
+.task-list,
+.page__project-list {
+  margin-top: 20px;
+}
+
+.page__btn-add-task {
+  margin-left: 6px;
+}
+
 @media only screen and (max-width: 800px) {
   :root {
     --w-page-primary: 95%;
