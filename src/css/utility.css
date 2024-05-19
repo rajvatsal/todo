@@ -11,8 +11,8 @@
 :root {
   --clr-accent-400: #9f0217;
   --clr-accent-300: linear-gradient(45deg, #ffa0a0, #ffb45b);
-  --clr-primary-100: #ebebeb;
-  --clr-primary-200: #e6e6e6;
+  --clr-primary-400: #ebebeb;
+  --clr-primary-500: #e6e6e6;
   --clr-neutral-700: #121212;
   --clr-neutral-600: #1c1c1c;
 
@@ -145,6 +145,6 @@ li {
 }
 
 .btn:hover {
-  background-color: var(--clr-primary-200);
+  background-color: var(--clr-primary-500);
   box-shadow: var(--btn-box-shadow);
 }

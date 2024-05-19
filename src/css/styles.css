@@ -15,7 +15,7 @@
 
 body {
   font-family: var(--ff-primary);
-  background-color: var(--clr-primary-100);
+  background-color: var(--clr-primary-400);
   color: var(--clr-neutral-700);
 }
 
@@ -39,7 +39,7 @@ body {
 }
 
 .side-bar > :not(dialog) * {
-  color: var(--clr-primary-100);
+  color: var(--clr-primary-400);
 }
 
 .r-side {
@@ -104,7 +104,7 @@ div.task-container {
 }
 
 button:hover {
-  background-color: var(--clr-primary-200);
+  background-color: var(--clr-primary-500);
   color: var(--clr-neutral-700);
 }
 
