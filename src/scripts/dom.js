@@ -488,8 +488,15 @@ function clickHandlerTaskCheckbox(e) {
 	emit("taskCompletedLogic", { tIndex, pName });
 }
 
+function cleanMainPage() {
+	const tList = $(".page .task-list");
+	if (tList) tList.remove();
+}
+
 function openMyProjects(list) {
 	if (topHeading.getAttribute("data-is-projects-page") === "true") return;
+
+	cleanMainPage();
 
 	topHeading.textContent = headingHomePage;
 	topHeading.setAttribute("data-is-projects-page", true);
