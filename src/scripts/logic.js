@@ -152,8 +152,7 @@ function setTodolist() {
 }
 
 function populateStorage() {
-	ProjectManager.add({ name: "sicko", color: "red" });
-	ProjectManager.add({ name: "joker", color: "blue" });
+	ProjectManager.add({ name: "Hope you like it", color: "red" });
 	localStorage.setItem("todolist", JSON.stringify(projects));
 }
 
