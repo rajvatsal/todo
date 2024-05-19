@@ -42,6 +42,7 @@ body {
 .side-bar {
   flex: 0 0 var(--fb-sidebar-fixed);
   background-color: var(--clr-neutral-700);
+  z-index: 9999;
 }
 
 .side-bar > :not(dialog) * {

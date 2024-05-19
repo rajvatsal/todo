@@ -17,3 +17,4 @@
   - color of submit button and cancel button should be different.
   - add watermark on main page background
   - move add project button inside header
+  - fix firefox glitch
