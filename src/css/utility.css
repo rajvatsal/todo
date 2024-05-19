@@ -15,6 +15,12 @@
   --clr-primary-500: #e6e6e6;
   --clr-neutral-700: #121212;
   --clr-neutral-600: #1c1c1c;
+  --clr-semantic-100: #ff00001f;
+  --clr-semantic-200: #5c0000;
+  --clr-semantic-400: #00a3ff2b;
+  --clr-semantic-500: #003854;
+  --clr-semantic-700: #2db10030;
+  --clr-semantic-800: #336200;
 
   --ff-primary: "intertight", helvetica, arial;
   --ff-italics: "intertight_italic", helvetica, arial;

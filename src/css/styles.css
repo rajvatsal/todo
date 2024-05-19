@@ -70,15 +70,51 @@ div.task-container {
 }
 
 .task-container[data-priority="p1"] {
-  border: 1px solid red;
+  background-color: var(--clr-semantic-100);
+  color: var(--clr-semantic-200);
+  border: 1px solid var(--clr-semantic-200);
+}
+
+.task-container[data-priority="p1"]:hover {
+  box-shadow: 10px 10px var(--clr-semantic-200);
+  z-index: 20;
 }
 
 .task-container[data-priority="p2"] {
-  border: 1px solid yellow;
+  background-color: var(--clr-semantic-400);
+  color: var(--clr-semantic-500);
+  border: 1px solid var(--clr-semantic-500);
+}
+
+.task-container[data-priority="p2"]:hover {
+  box-shadow: 10px 10px var(--clr-semantic-500);
+  z-index: 20;
 }
 
 .task-container[data-priority="p3"] {
-  border: 1px solid blue;
+  background-color: var(--clr-semantic-700);
+  color: var(--clr-semantic-800);
+  border: 1px solid var(--clr-semantic-800);
+}
+
+.task-container[data-priority="p3"]:hover {
+  box-shadow: 10px 10px var(--clr-semantic-800);
+  z-index: 20;
+}
+
+.task-container * {
+  color: inherit;
+}
+
+.task-container button:hover {
+  background-color: transparent;
+}
+
+.task-container {
+  padding: 5px 10px;
+  margin-bottom: 2px;
+  transition: box-shadow 300ms ease;
+  position: relative;
 }
 
 .side-bar {
