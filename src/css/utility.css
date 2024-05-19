@@ -143,6 +143,16 @@ li {
 }
 
 /*
+  12. Prevent peek a boo
+*/
+:root {
+  overflow-y: hidden;
+}
+body {
+  overflow-y: scroll;
+}
+
+/*
   custom classes
 */
 .flex {

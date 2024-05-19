@@ -8,18 +8,12 @@
   - dependency inversion - use an api if an another api is affecting your code
 
 - ## list
-
-  - ~~add hamburger button that works.~~
-  - ~~add progress save for each person on the app.~~
-  - contemplate how can you also use css for project colors. <!-- production. -->
-  - add sections. <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
+  <!-- this is an after thought, I may add it on revisiting this project on a later date. -->
+  - add sections.
   - show project colors using css.
-  - ~~change font to roboto.~~
-  - ~~create utility css.~~
   - add gradient to background like youtube.
   - add overflow hidden to root to prevent peek-a-boo url bar.
-  - adjust typfaces, margins, paddings etc.
   - use icons to represent buttons.
   - color of submit button and cancel button should be different.
-  - make background black, transparent, blur.
-  - ~~make it responsive by adding slider to left.~~
+  - add watermark on main page background
+  - move add project button inside header
