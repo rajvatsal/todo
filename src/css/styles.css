@@ -22,6 +22,7 @@ body {
   font-family: var(--ff-primary);
   background-color: var(--clr-primary-400);
   color: var(--clr-neutral-700);
+  --top-margin-heading: 10px;
 }
 
 h1 {
@@ -132,13 +133,13 @@ div.task-container {
 }
 
 .my-projects-container {
-  margin: 10px 5px;
+  margin: var(--top-margin-heading) 5px;
   padding: 1px 5px;
   border-radius: 5px;
 }
 
 .side-bar__project {
-  margin: 0px 5px;
+  margin: 0 5px;
   padding: 1px 5px;
   border-radius: 5px;
 }
@@ -165,6 +166,14 @@ div.task-container {
 .page__btn-add-project:hover {
   background-color: var(--clr-accent-400);
   color: var(--clr-primary-400);
+}
+
+.btn-add-project {
+  font-size: var(--fs-600);
+}
+
+.heading {
+  margin-top: var(--top-margin-heading);
 }
 
 @media only screen and (max-width: 800px) {
