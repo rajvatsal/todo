@@ -81,8 +81,10 @@ div.task-container {
   transition: margin-left var(--as-nav) ease;
 }
 
-.side-bar__project-list .btn:hover * {
-  color: var(--clr-neutral-700);
+/* overwrite utility styles */
+.side-bar .btn:hover,
+.side-bar .btn:hover * {
+  background-color: var(--clr-neutral-600);
 }
 
 .side-bar.hidden {
@@ -104,11 +106,6 @@ div.task-container {
 button:hover {
   background-color: var(--clr-primary-200);
   color: var(--clr-neutral-700);
-}
-
-/* maybe add a different color for sidebar hover buttons */
-.side-bar button * {
-  color: inherit;
 }
 
 .f-sb {
