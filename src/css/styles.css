@@ -135,7 +135,7 @@ div.task-container {
 
 .side-bar .btn-hamburger {
   --mr-nav-close: calc(
-    -1 * (var(--w-sidebar-toggle) + calc((2.5 / 100) * 100vw)) + 10px
+    -1 * (var(--w-sidebar-toggle) + calc((2.5 / 100) * 100vw)) + 20px
   );
   margin-right: var(--mr-nav-close);
   z-index: 1;
