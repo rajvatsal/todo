@@ -145,16 +145,26 @@ div.task-container {
 
 .project-list__project-item,
 .task-list li {
-  padding-left: 6px;
+  padding-left: 0px;
 }
 
 .task-list,
-.page__project-list {
+.page__projects-list {
   margin-top: 20px;
 }
 
 .page__btn-add-task {
-  margin-left: 6px;
+  margin-top: 3px;
+}
+
+.page__btn-add-project {
+  display: block;
+  margin-left: auto;
+}
+
+.page__btn-add-project:hover {
+  background-color: var(--clr-accent-400);
+  color: var(--clr-primary-400);
 }
 
 @media only screen and (max-width: 800px) {
