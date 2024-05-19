@@ -5,6 +5,11 @@
   height: var(--h-topbar-container);
 }
 
+button:hover {
+  background-color: var(--clr-primary-500);
+  color: var(--clr-neutral-700);
+}
+
 .hamburger-container {
   text-align: right;
 }
@@ -91,21 +96,34 @@ div.task-container {
   margin-left: calc(-1 * var(--fb-sidebar-fixed));
 }
 
-.btn-hamburger.nav-open {
-  margin-right: 10px;
-}
-
-.btn-hamburger {
+.side-bar .btn-hamburger {
   margin-right: -90px;
   z-index: 1;
-  transition: margin-right var(--as-nav) ease;
-  background-color: grey;
   cursor: pointer;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  transition: margin-right var(--as-nav) ease;
 }
 
-button:hover {
-  background-color: var(--clr-primary-500);
-  color: var(--clr-neutral-700);
+.btn-hamburger::after {
+  content: url("../assets/icon-sidebar.svg");
+  width: 20px;
+  position: absolute;
+  top: 10px;
+  right: -10px;
+  filter: none;
+  transition: filter 300ms ease;
+}
+
+.btn-hamburger.nav-open {
+  margin-right: 15px;
+}
+
+.btn-hamburger.nav-open::after {
+  filter: invert(98%) sepia(2%) saturate(0%) hue-rotate(197deg) brightness(102%)
+    contrast(104%);
 }
 
 .f-sb {
