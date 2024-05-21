@@ -1,4 +1,6 @@
 import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
+
+import Sidebar from "./Sidebar";
 import { createElement, $ } from "./utility";
 import { on, off, emit } from "./pub-sub";
 import { isValidProject } from "./logic";
@@ -22,11 +24,7 @@ const btnTaskCancel = $(".task-form__btn-cancel");
 const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
-const hamburger = $(".btn-hamburger");
-const sidebar = $(".side-bar");
-const projectsNavSidebar = $(".projects-nav-sidebar");
 const projectsNavPrimary = $(".page__projects-nav-primary");
-const projectListSidebar = $(".projects-nav-sidebar__project-list");
 
 const tPriorityAttritubte = "data-priority";
 const headingHomePage = "My projects";
@@ -39,12 +37,6 @@ function getTaskIndex(task) {
 }
 
 btnMyProjects.addEventListener("click", () => emit("getProjectList"));
-
-function clickHandlerHamburger() {
-	sidebar.classList.toggle("hidden");
-	this.classList.toggle("nav-open");
-}
-hamburger.addEventListener("click", clickHandlerHamburger);
 
 function clickHandlerShowTaskForm(e) {
 	taskForm.style.display = "block";
@@ -71,7 +63,7 @@ function createTaskInfo(newTask) {
 		? createElement("p", {
 				attributes: { class: "desc" },
 				property: { textContent: `${newTask.desc}` },
-		  })
+			})
 		: undefined;
 
 	const span = createElement("span", {
@@ -111,62 +103,15 @@ function clickHandlerAddProject(e) {
 	project.name = ipDialogProjectName.value;
 	project.color = ipDilaogProjectColor.value;
 
-	emit("addNewProject", project);
 	dialogAddProjectForm.close();
 	formAddProject.reset();
 
-	addProjectToSidebar(project);
+	emit("projectAdded", project);
 	if (topHeading.getAttribute("data-is-projects-page") !== "false")
 		addProjectToMainPage(project);
 }
 
-function clickHandlerProjectBtn(e) {
-	const projectName = this.getAttribute("data-project-name");
-	if (e.target.classList.contains("side-bar__remove-project-btn"))
-		removeProject(projectName);
-	// [FIX]: inconsistent class names
-	else if (e.target.classList.contains("project-edit-button"))
-		showEditProjectForm(this.getAttribute("data-project-name"));
-	else emit("getProjectTasks", projectName);
-}
-
 // Only adds project to the project list doesn't change the page. Give a more appropriate name.
-function addProjectToSidebar(project) {
-	const li = createElement("li", {
-		attributes: {
-			class: "side-bar__project btn",
-			["data-project-name"]: project.name,
-		},
-	});
-	const pContainer = createElement("div", {
-		attributes: {
-			class: "side-bar__project-container f-sb",
-		},
-	});
-	const pName = createElement("span", {
-		property: { textContent: project.name },
-		attributes: { class: "project-name" },
-	});
-	const buttonContainer = createElement("div", {
-		attributes: { class: "side-bar__project-button-container" },
-	});
-	const btnRemove = createElement("button", {
-		attributes: { class: "side-bar__remove-project-btn" },
-		property: { textContent: "remove" },
-	});
-	const btnEdit = createElement("button", {
-		attributes: { class: "project-edit-button" },
-		property: { textContent: "edit" },
-	});
-
-	buttonContainer.appendChildren(btnEdit, btnRemove);
-	pContainer.appendChildren(pName, buttonContainer);
-	li.appendChild(pContainer);
-
-	li.addEventListener("click", clickHandlerProjectBtn);
-
-	projectListSidebar.appendChild(li);
-}
 
 function clickHandlerTaskFormSubmit(e) {
 	if (!inputTaskName.checkValidity()) return;
@@ -563,6 +508,7 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 	ul.appendChild(li);
 }
 
+on("projectRemoved", removeProject);
 function removeProject(pName) {
 	document
 		.querySelectorAll(`li[data-project-name="${pName}"]`)
@@ -577,15 +523,17 @@ function removeProject(pName) {
 function clickHandlerProjectsInMainPage(e) {
 	const projectName = this.getAttribute("data-project-name");
 	if (e.target.classList.contains("btn-container__remove"))
-		removeProject(projectName);
+		emit("projectRemoved", projectName);
 	else if (e.target.classList.contains("btn-container__edit"))
-		showEditProjectForm(projectName);
+		emit("editProject", projectName);
 	// opening the project if none of the buttons are pressed
 	else emit("getProjectTasks", projectName);
 }
 
 // finish it
+on("editProject", showEditProjectForm);
 function showEditProjectForm(pName) {
+	console.log(pName);
 	editProjectForm.showModal();
 	btnSubmitEditForm.setAttribute("data-project-name", pName);
 }
@@ -602,20 +550,25 @@ function clickHandlerSubmitEditProjectForm(e) {
 	const oldName = this.getAttribute("data-project-name");
 	const color = $("#edit-project-color > :checked").value;
 
-	const projects = document.querySelectorAll(
-		`li[data-project-name="${oldName}"`,
-	);
+	editProjectForm.close();
+	emit("projectEdited", { oldName, name, color });
+}
 
+on("projectEdited", [editProjectMainPage, updateTopHeading]);
+function editProjectMainPage({ oldName, name, color }) {
 	// currently there is no way to show the colors
 	// so I am not doing anything about colors here
 	// add them in the future
-	projects.forEach((project) => {
-		project.querySelector(".project-name").textContent = name;
-		project.setAttribute("data-project-name", name);
-	});
+	const project = $(`.page__projects-list > li[data-project-name="${oldName}"`);
+	if (!project) return;
+	project.querySelector(".project-name").textContent = name;
+	project.setAttribute("data-project-name", name);
+}
 
-	editProjectForm.close();
-	emit("editProject", { oldName, name, color });
+function updateTopHeading({ oldName, name, color }) {
+	if (topHeading.getAttribute("data-projectnm") !== oldName) return;
+	topHeading.setAttribute("data-projectnm", name);
+	topHeading.textContent = name;
 }
 
 function clickHandlerCloseEditProjectForm() {
@@ -629,29 +582,11 @@ $(".btn__cancel-edit-project").addEventListener(
 	clickHandlerCloseEditProjectForm,
 );
 
-function setInitialSidebarState() {
-	// min-widnow size should match the media query min-width in css
-	// should sidebar be opened or closed on the first render
-	if (window.screen.width < 800) {
-		sidebar.setAttribute("class", "side-bar hidden");
-		hamburger.setAttribute("class", "btn-hamburger");
-	} else {
-		sidebar.setAttribute("class", "side-bar");
-		hamburger.setAttribute("class", "btn-hamburger nav-open");
-	}
-}
-
-function renderApp(projectList) {
-	// Set hamburger animation only during the first render of the app
-	// if done inside openMyProjects then multiple eventlisteners
-	// will be added to the same element each time you open my projects page
-	setInitialSidebarState();
+function render(projectList) {
+	Sidebar(projectList);
 	openMyProjects(projectList);
-	projectList.forEach((project) => {
-		addProjectToSidebar(project);
-	});
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);
 on("return__getProjectList", openMyProjects);
-on("initApp", renderApp);
+on("renderApp", render);

@@ -123,32 +123,27 @@ export function isValidProject(pName) {
 }
 
 export function init() {
-	emit("initApp", ProjectManager.fetchAll()); // list default projects
-}
+	const localSaves = localStorage.getItem("todolist");
 
-function modifyProject({ oldName, name, color }) {
-	ProjectManager.modify(getProject(oldName), { name, color });
-	updateLocalStorage();
-}
+	if (localSaves) {
+		setTodolist();
+	} else {
+		populateStorage();
+	}
 
-const localSaves = localStorage.getItem("todolist");
+	function setTodolist() {
+		const todolist = JSON.parse(localSaves);
 
-if (localSaves) {
-	setTodolist();
-} else {
-	populateStorage();
-}
+		// Add protoype methods like add, fetch etc
+		todolist.forEach((project) => {
+			const tasks = project.taskManager.tasks;
+			project.taskManager = TaskManager({}, tasks);
+		});
 
-function setTodolist() {
-	const todolist = JSON.parse(localSaves);
+		projects = todolist;
+	}
 
-	// Add protoype methods like add, fetch etc
-	todolist.forEach((project) => {
-		const tasks = project.taskManager.tasks;
-		project.taskManager = TaskManager({}, tasks);
-	});
-
-	projects = todolist;
+	emit("renderApp", ProjectManager.fetchAll()); // list default projects
 }
 
 function populateStorage() {
@@ -158,6 +153,11 @@ function populateStorage() {
 
 function updateLocalStorage() {
 	localStorage.setItem("todolist", JSON.stringify(projects));
+}
+
+function modifyProject({ oldName, name, color }) {
+	ProjectManager.modify(getProject(oldName), { name, color });
+	updateLocalStorage();
 }
 
 function addNewProject(opts) {
@@ -170,12 +170,12 @@ function removeProject(ptn) {
 	updateLocalStorage();
 }
 
-on("addNewProject", addNewProject);
+on("projectAdded", addNewProject);
 on("addNewTask", addNewTask, "addNewTask");
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
 on("getProjectList", returnProjectList);
-on("removeProject", removeProject);
+on("projectRemoved", removeProject);
 on("removeTask", removeTask);
-on("editProject", modifyProject);
+on("projectEdited", modifyProject);

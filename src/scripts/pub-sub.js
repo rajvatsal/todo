@@ -4,7 +4,9 @@ export const on = (eventName, fn, pubsubId) => {
 	//subscriber function
 	if (pubsubId) fn.psId = pubsubId;
 	eventsDefined[eventName] = eventsDefined[eventName] || [];
-	eventsDefined[eventName].push(fn);
+	if (Object.getPrototypeOf(fn).constructor === Array)
+		fn.forEach((callback) => eventsDefined[eventName].push(callback));
+	else eventsDefined[eventName].push(fn);
 };
 
 export const off = (eventName, fn) => {
