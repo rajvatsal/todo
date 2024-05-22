@@ -1,16 +1,14 @@
 import { on, off, emit } from "./pub-sub.js";
 import { createElement, $ } from "./utility";
 
-const sidebar = $(".side-bar");
-const hamburger = $(".btn-hamburger");
-const projectListSidebar = $(".projects-nav-sidebar__project-list");
+let sidebar;
+let hamburger;
+let projectListSidebar;
 
 const clickHandlerHamburger = function toggleNavbar() {
 	sidebar.classList.toggle("hidden");
 	this.classList.toggle("nav-open");
 };
-
-hamburger.addEventListener("click", clickHandlerHamburger);
 
 const clickHandlerProjectBtn = function openProject(e) {
 	const projectName = this.getAttribute("data-project-name");
@@ -26,7 +24,7 @@ const addProject = function addProject(project) {
 	const li = createElement("li", {
 		attributes: {
 			class: "side-bar__project btn",
-			["data-project-name"]: project.name,
+			"data-project-name": project.name,
 		},
 	});
 	const pContainer = createElement("div", {
@@ -71,6 +69,49 @@ const editProject = function editProject({ oldName, name, color }) {
 on("projectEdited", editProject);
 
 export default function render(projects) {
+	const container = createElement("div", {
+		attributes: {
+			class: "side-bar",
+		},
+	});
+	const hamburgerContainer = createElement("div", {
+		attributes: { class: "hamburger-container" },
+	});
+	const hamBtn = createElement("button", {
+		attributes: { type: "button", class: "btn-hamburger" },
+	});
+	hamburgerContainer.appendChild(hamBtn);
+
+	const myProjects = createElement("div", {
+		attributes: { class: "my-projects-container f-sb btn-project-home btn" },
+	});
+	const myProjectsHeading = createElement("h2", {
+		property: { textContent: "My Projects" },
+	});
+	const buttonAddPro = createElement("button", {
+		attributes: { type: "button", class: "btn-add-project" },
+		property: { textContent: "+" },
+	});
+	myProjects.appendChildren(myProjectsHeading, buttonAddPro);
+
+	const nav = createElement("nav", {
+		attributes: { class: "projects-nav-sidebar" },
+	});
+	const ul = createElement("ul", {
+		attributes: { class: "projects-nav-sidebar__project-list" },
+	});
+	nav.appendChild(ul);
+	container.appendChildren(hamburgerContainer, myProjects, nav);
+
+	hamBtn.addEventListener("click", clickHandlerHamburger);
+	myProjects.addEventListener("click", () => emit("openMyProjects"));
+	buttonAddPro.addEventListener("click", (event) => emit("addProject", event));
+
+	sidebar = container;
+	hamburger = hamBtn;
+	projectListSidebar = ul;
+
+	// biome-ignore lint/complexity/noForEach: <explanation>
 	projects.forEach((project) => addProject(project));
 
 	// min-widnow size should match the media query min-width in css
@@ -85,4 +126,6 @@ export default function render(projects) {
 		sidebar.setAttribute("class", "side-bar");
 		hamburger.setAttribute("class", "btn-hamburger nav-open");
 	}
+
+	return container;
 }

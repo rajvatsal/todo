@@ -1,4 +1,4 @@
-import { emit, on, off } from "./pub-sub";
+import { emit, off, on } from "./pub-sub";
 
 let projects = [];
 
@@ -80,7 +80,7 @@ const ProjectManager = ((options) => {
 
 // functions
 function getProject(pName) {
-	for (let project of projects) {
+	for (const project of projects) {
 		if (pName === project.name) return project;
 	}
 }
@@ -88,14 +88,14 @@ function getProject(pName) {
 function addNewTask(data) {
 	const [projectName, opts] = data;
 	const project = getProject(projectName);
-	const projectExists = project === undefined ? false : true;
+	const projectExists = project !== undefined;
 	if (projectExists) project.taskManager.add(opts);
 	updateLocalStorage();
 	return projectExists;
 }
 
 function openAProject(pName) {
-	let tasks = getProject(pName).taskManager.fetchAll();
+	const tasks = getProject(pName).taskManager.fetchAll();
 	emit("return__getProjectTasks", { tasks, pName });
 }
 
@@ -110,13 +110,12 @@ function updateTask({ pName, tIndex, opts }) {
 	updateLocalStorage();
 }
 
-function returnProjectList() {
-	const pList = ProjectManager.fetchAll();
-	emit("return__getProjectList", pList);
+function openProjectList() {
+	emit("openedMyProjects", ProjectManager.fetchAll());
 }
 
 export function isValidProject(pName) {
-	for (let project of projects) {
+	for (const project of projects) {
 		if (project.name === pName) return false;
 	}
 	return true;
@@ -135,6 +134,7 @@ export function init() {
 		const todolist = JSON.parse(localSaves);
 
 		// Add protoype methods like add, fetch etc
+		// biome-ignore lint/complexity/noForEach: <explanation>
 		todolist.forEach((project) => {
 			const tasks = project.taskManager.tasks;
 			project.taskManager = TaskManager({}, tasks);
@@ -175,7 +175,7 @@ on("addNewTask", addNewTask, "addNewTask");
 on("getProjectTasks", openAProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
-on("getProjectList", returnProjectList);
+on("openMyProjects", openProjectList);
 on("projectRemoved", removeProject);
 on("removeTask", removeTask);
 on("projectEdited", modifyProject);

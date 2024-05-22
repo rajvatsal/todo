@@ -1,9 +1,9 @@
 import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 
 import Sidebar from "./Sidebar";
-import { createElement, $ } from "./utility";
-import { on, off, emit } from "./pub-sub";
 import { isValidProject } from "./logic";
+import { emit, off, on } from "./pub-sub";
+import { $, createElement } from "./utility";
 
 const btnProjectForm = $(".btn-add-project");
 const editProjectForm = $("dialog.edit-project");
@@ -21,7 +21,6 @@ const inputTaskDesc = $("#task_dec");
 const page = $(".page");
 const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
-const btnMyProjects = $(".btn-project-home");
 const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
 const projectsNavPrimary = $(".page__projects-nav-primary");
@@ -32,11 +31,9 @@ const headingHomePage = "My projects";
 function getTaskIndex(task) {
 	const tasks = document.querySelectorAll(".page .task-list>li");
 	for (let i = 0; i < tasks.length; i++) {
-		if ((task = tasks[i])) return i;
+		if (task === tasks[i]) return i;
 	}
 }
-
-btnMyProjects.addEventListener("click", () => emit("getProjectList"));
 
 function clickHandlerShowTaskForm(e) {
 	taskForm.style.display = "block";
@@ -75,7 +72,8 @@ function createTaskInfo(newTask) {
 	return infoContainer;
 }
 
-function clickHandlerShowProjectForm(e) {
+on("addProject", showProjectForm);
+function showProjectForm(e) {
 	e.stopPropagation();
 	dialogAddProjectForm.showModal();
 }
@@ -85,7 +83,6 @@ function clickHandlerCancelProjectForm() {
 }
 
 btnCancelProjectForm.addEventListener("click", clickHandlerCancelProjectForm);
-btnProjectForm.addEventListener("click", clickHandlerShowProjectForm);
 btnDialogAddProject.addEventListener("click", clickHandlerAddProject);
 btnAddTaskSubmitForm.addEventListener("click", clickHandlerTaskFormSubmit);
 
@@ -458,7 +455,7 @@ function openMyProjects(list) {
 		attributes: { class: "page__btn-add-project" },
 		property: { textContent: "add project" },
 	});
-	addProjectBtn.addEventListener("click", clickHandlerShowProjectForm);
+	addProjectBtn.addEventListener("click", (e) => emit("addProject", e));
 
 	projectsNavPrimary.appendChild(projectsList);
 	page.prepend(addProjectBtn);
@@ -583,10 +580,11 @@ $(".btn__cancel-edit-project").addEventListener(
 );
 
 function render(projectList) {
-	Sidebar(projectList);
+	const sidebarComponent = Sidebar(projectList);
 	openMyProjects(projectList);
+	$("body").prepend(sidebarComponent);
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);
-on("return__getProjectList", openMyProjects);
+on("openedMyProjects", openMyProjects);
 on("renderApp", render);
