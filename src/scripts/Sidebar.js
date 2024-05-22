@@ -4,6 +4,7 @@ import { createElement, $ } from "./utility";
 let sidebar;
 let hamburger;
 let projectListSidebar;
+const SMALL_SCREEN = 800;
 
 const clickHandlerHamburger = function toggleNavbar() {
 	sidebar.classList.toggle("hidden");
@@ -69,17 +70,11 @@ const editProject = function editProject({ oldName, name, color }) {
 on("projectEdited", editProject);
 
 export default function render(projects) {
-	const container = createElement("div", {
-		attributes: {
-			class: "side-bar",
-		},
-	});
+	const container = createElement("div");
 	const hamburgerContainer = createElement("div", {
 		attributes: { class: "hamburger-container" },
 	});
-	const hamBtn = createElement("button", {
-		attributes: { type: "button", class: "btn-hamburger" },
-	});
+	const hamBtn = createElement("button");
 	hamburgerContainer.appendChild(hamBtn);
 
 	const myProjects = createElement("div", {
@@ -111,15 +106,10 @@ export default function render(projects) {
 	hamburger = hamBtn;
 	projectListSidebar = ul;
 
-	// biome-ignore lint/complexity/noForEach: <explanation>
-	projects.forEach((project) => addProject(project));
+	// add projects is available
+	if (projects) projects.forEach((project) => addProject(project));
 
-	// min-widnow size should match the media query min-width in css
-	// should sidebar be opened or closed on the first render
-	// Set hamburger animation only during the first render of the app
-	// if done inside openMyProjects then multiple eventlisteners
-	// will be added to the same element each time you open my projects page
-	if (window.screen.width < 800) {
+	if (window.screen.width < SMALL_SCREEN) {
 		sidebar.setAttribute("class", "side-bar hidden");
 		hamburger.setAttribute("class", "btn-hamburger");
 	} else {
