@@ -2,12 +2,11 @@ import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 
 import Sidebar from "./Sidebar";
 import AddProject from "./AddProjectDialog.js";
+import EditProject from "./FormEditProject.js";
 import { emit, off, on } from "./pub-sub";
 import { $, createElement } from "./utility";
 import { isValidProject } from "./logic";
 
-const btnProjectForm = $(".btn-add-project");
-const editProjectForm = $("dialog.edit-project");
 const topHeading = $(".heading>h1");
 const taskForm = $(".task-form");
 const btnAddTask = $(".page__btn-add-task");
@@ -490,30 +489,6 @@ function clickHandlerProjectsInMainPage(e) {
 	else emit("getProjectTasks", projectName);
 }
 
-// finish it
-on("editProject", showEditProjectForm);
-function showEditProjectForm(pName) {
-	console.log(pName);
-	editProjectForm.showModal();
-	btnSubmitEditForm.setAttribute("data-project-name", pName);
-}
-
-function clickHandlerSubmitEditProjectForm(e) {
-	// use variable instead of dom searching for form inputs
-	// to make it more efficient
-	const name = $("#edit-project-name").value;
-	if (!$("#edit-project-name").checkValidity()) return;
-
-	e.preventDefault();
-	if (!isValidProject(name)) return;
-
-	const oldName = this.getAttribute("data-project-name");
-	const color = $("#edit-project-color > :checked").value;
-
-	editProjectForm.close();
-	emit("projectEdited", { oldName, name, color });
-}
-
 on("projectEdited", [editProjectMainPage, updateTopHeading]);
 function editProjectMainPage({ oldName, name, color }) {
 	// currently there is no way to show the colors
@@ -531,23 +506,14 @@ function updateTopHeading({ oldName, name, color }) {
 	topHeading.textContent = name;
 }
 
-function clickHandlerCloseEditProjectForm() {
-	editProjectForm.close();
-	$("dialog.edit-project >form").reset();
-}
-
-btnSubmitEditForm.addEventListener("click", clickHandlerSubmitEditProjectForm);
-$(".btn__cancel-edit-project").addEventListener(
-	"click",
-	clickHandlerCloseEditProjectForm,
-);
-
 function render(projectList) {
+	const dialogEditProject = EditProject();
 	const dialogAddProject = AddProject();
 	const sidebarComponent = Sidebar(projectList);
 	openMyProjects(projectList);
 	$("body").prepend(sidebarComponent);
 	$("body").prepend(dialogAddProject);
+	$("body").prepend(dialogEditProject);
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);

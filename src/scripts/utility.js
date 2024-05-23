@@ -18,6 +18,13 @@ const appendsChildren = () => ({
 	},
 });
 
+const assignDefaultValues = function getAssigned(tag, opts) {
+	for (const val in DefaultValues[tag]) {
+		opts[val] = Object.assign({}, DefaultValues[tag][val], opts[val]);
+	}
+	return opts;
+};
+
 export function createElement(tag, opts) {
 	const element = document.createElement(tag);
 
