@@ -1,17 +1,13 @@
 import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 
 import Sidebar from "./Sidebar";
-import { isValidProject } from "./logic";
+import AddProject from "./AddProjectDialog.js";
 import { emit, off, on } from "./pub-sub";
 import { $, createElement } from "./utility";
+import { isValidProject } from "./logic";
 
 const btnProjectForm = $(".btn-add-project");
 const editProjectForm = $("dialog.edit-project");
-const dialogAddProjectForm = $("dialog.add-project");
-const btnDialogAddProject = $(".btn__form-add-project");
-const formAddProject = $("dialog.add-project > form");
-const ipDialogProjectName = $("#project-name");
-const ipDilaogProjectColor = $("#project-color");
 const topHeading = $(".heading>h1");
 const taskForm = $(".task-form");
 const btnAddTask = $(".page__btn-add-task");
@@ -21,7 +17,6 @@ const inputTaskDesc = $("#task_dec");
 const page = $(".page");
 const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
-const btnCancelProjectForm = $(".btn__cancel-project-form");
 const btnSubmitEditForm = $(".btn__form-edit-project");
 const projectsNavPrimary = $(".page__projects-nav-primary");
 
@@ -72,41 +67,7 @@ function createTaskInfo(newTask) {
 	return infoContainer;
 }
 
-on("addProject", showProjectForm);
-function showProjectForm(e) {
-	e.stopPropagation();
-	dialogAddProjectForm.showModal();
-}
-function clickHandlerCancelProjectForm() {
-	formAddProject.reset();
-	dialogAddProjectForm.close();
-}
-
-btnCancelProjectForm.addEventListener("click", clickHandlerCancelProjectForm);
-btnDialogAddProject.addEventListener("click", clickHandlerAddProject);
 btnAddTaskSubmitForm.addEventListener("click", clickHandlerTaskFormSubmit);
-
-function clickHandlerAddProject(e) {
-	if (!ipDialogProjectName.checkValidity()) return;
-
-	e.preventDefault();
-
-	if (!isValidProject(ipDialogProjectName.value)) {
-		alert("project exists");
-		return;
-	}
-
-	const project = {};
-	project.name = ipDialogProjectName.value;
-	project.color = ipDilaogProjectColor.value;
-
-	dialogAddProjectForm.close();
-	formAddProject.reset();
-
-	emit("projectAdded", project);
-	if (topHeading.getAttribute("data-is-projects-page") !== "false")
-		addProjectToMainPage(project);
-}
 
 // Only adds project to the project list doesn't change the page. Give a more appropriate name.
 
@@ -461,11 +422,13 @@ function openMyProjects(list) {
 	page.prepend(addProjectBtn);
 }
 
+on("projectAdded", addProjectToMainPage);
 function addProjectToMainPage(project, ul = $(".page__projects-list")) {
+	if (topHeading.getAttribute("data-is-projects-page") === "false") return;
 	const li = createElement("li", {
 		attributes: {
 			class: "project-list__project-item btn",
-			["data-project-name"]: project.name,
+			"data-project-name": project.name,
 		},
 	});
 
@@ -580,9 +543,11 @@ $(".btn__cancel-edit-project").addEventListener(
 );
 
 function render(projectList) {
+	const dialogAddProject = AddProject();
 	const sidebarComponent = Sidebar(projectList);
 	openMyProjects(projectList);
 	$("body").prepend(sidebarComponent);
+	$("body").prepend(dialogAddProject);
 }
 
 on("return__getProjectTasks", clickHandlerOpenProject);
