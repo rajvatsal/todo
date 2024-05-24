@@ -20,12 +20,8 @@ const projectsNavPrimary = $(".page__projects-nav-primary");
 
 const tPriorityAttritubte = "data-priority";
 
-function getTaskIndex(task) {
-	const tasks = document.querySelectorAll(".page .task-list>li");
-	for (let i = 0; i < tasks.length; i++) {
-		if (task === tasks[i]) return i;
-	}
-}
+const getTaskIndex = (task) =>
+	[...document.querySelectorAll(".page .task-list>li")].indexOf(task);
 
 function clickHandlerShowTaskForm(e) {
 	taskForm.style.display = "block";
