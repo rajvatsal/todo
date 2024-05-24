@@ -139,7 +139,7 @@ function showNewTask(newTask) {
 
 function removeTaskBtn() {
 	//this is the list element
-	emit("removeTask", Array.from(this.parentNode.children).indexOf(this));
+	emit("removeTask", [...this.parentNode.children].indexOf(this));
 	this.remove();
 }
 
