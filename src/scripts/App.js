@@ -401,7 +401,7 @@ function openMyProjects(list, check) {
 
 on("projectAdded", addProjectToMainPage);
 function addProjectToMainPage(project, ul = $(".page__projects-list")) {
-	if ($('[data-is-projects-page="false"]')) return;
+	if (!ul) return;
 	const li = createElement("li", {
 		attributes: {
 			class: "project-list__project-item btn",
