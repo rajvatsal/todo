@@ -20,7 +20,8 @@ export function createElement(tag, opts) {
 	const element = document.createElement(tag);
 
 	opts = DefaultValues[tag]
-		? Object.assign({}, DefaultValues[tag], opts)
+		? // fix it not using assignDEfaultValues
+			Object.assign({}, DefaultValues[tag], opts)
 		: opts;
 	if (!(opts === undefined)) {
 		for (let opt in opts.attributes) {

@@ -111,6 +111,7 @@ function updateTask({ tIndex, opts }) {
 }
 
 function openProjectList() {
+	if (openedProject === "") return;
 	openedProject = "";
 	emit("openedMyProjects", ProjectManager.fetchAll());
 }

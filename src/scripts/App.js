@@ -379,6 +379,7 @@ function clickHandlerTaskCheckbox(e) {
 }
 
 function openMyProjects(list, check) {
+	console.log(check);
 	if (!check) $(".page .task-list").remove();
 
 	btnAddTask.setAttribute("style", "display: none;");
