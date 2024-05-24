@@ -18,7 +18,7 @@ const clickHandlerProjectBtn = function openProject(e) {
 	// [FIX]: inconsistent class names
 	else if (e.target.classList.contains("project-edit-button"))
 		emit("editProject", this.getAttribute("data-project-name"));
-	else emit("getProjectTasks", projectName);
+	else emit("openProject", projectName);
 };
 
 const addProject = function addProject(project) {
@@ -100,12 +100,7 @@ export default function render(projects) {
 
 	hamBtn.addEventListener("click", clickHandlerHamburger);
 	myProjects.addEventListener("click", () => emit("openMyProjects"));
-	buttonAddPro.addEventListener("click", (event) => {
-		// find a way to remove refernce of the heading
-		if ($('[data-is-projects-page="false"]')) return;
-
-		emit("addProject", event);
-	});
+	buttonAddPro.addEventListener("click", (event) => emit("addProject", event));
 
 	sidebar = container;
 	hamburger = hamBtn;
