@@ -54,13 +54,15 @@ function createTaskInfo(newTask) {
 				property: { textContent: `${newTask.desc}` },
 			})
 		: undefined;
-
 	const span = createElement("span", {
 		attributes: { class: "due-date" },
 		property: { textContent: `${newTask.dueDate}` },
 	});
 
-	infoContainer.append(h3, p, span);
+	if (h3) infoContainer.appendChild(h3);
+	if (p) infoContainer.appendChild(p);
+	if (span) infoContainer.appendChild(span);
+
 	return infoContainer;
 }
 
@@ -91,7 +93,6 @@ function clickHandlerTaskFormSubmit(e) {
 }
 
 function showNewTask(newTask) {
-	console.log(typeof newTask);
 	const taskList = $(".task-list");
 	const li = createElement("li");
 
