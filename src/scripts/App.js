@@ -1,5 +1,6 @@
 import { compareAsc, format, intlFormat, weeksToDays } from "date-fns";
 
+import Header from "./Header.js";
 import Sidebar from "./Sidebar";
 import AddProject from "./AddProjectDialog.js";
 import EditProject from "./FormEditProject.js";
@@ -7,7 +8,6 @@ import { emit, off, on } from "./pub-sub";
 import { $, createElement } from "./utility";
 import { isValidProject } from "./logic";
 
-const topHeading = $(".heading>h1");
 const taskForm = $(".task-form");
 const btnAddTask = $(".page__btn-add-task");
 const inputTaskName = $("#task_name");
@@ -16,11 +16,9 @@ const inputTaskDesc = $("#task_dec");
 const page = $(".page");
 const btnAddTaskSubmitForm = $(".task-form__btn-add-task");
 const btnTaskCancel = $(".task-form__btn-cancel");
-const btnSubmitEditForm = $(".btn__form-edit-project");
 const projectsNavPrimary = $(".page__projects-nav-primary");
 
 const tPriorityAttritubte = "data-priority";
-const headingHomePage = "My projects";
 
 function getTaskIndex(task) {
 	const tasks = document.querySelectorAll(".page .task-list>li");
@@ -76,7 +74,6 @@ function clickHandlerTaskFormSubmit(e) {
 
 	e.preventDefault();
 
-	const projectNm = topHeading.getAttribute("data-projectNm");
 	const priority = $(
 		'.page .task-form input[type="radio"]:not(:disabled):checked',
 	);
@@ -88,12 +85,13 @@ function clickHandlerTaskFormSubmit(e) {
 		priority: priority.value,
 	};
 
-	const isTaskAdded = emit("addNewTask", [projectNm, taskOpts], "addNewTask");
+	const isTaskAdded = emit("addNewTask", taskOpts, "addNewTask");
 	if (isTaskAdded) showNewTask(taskOpts);
 	else alert("project doesn't exist");
 }
 
 function showNewTask(newTask) {
+	console.log(typeof newTask);
 	const taskList = $(".task-list");
 	const li = createElement("li");
 
@@ -141,10 +139,7 @@ function showNewTask(newTask) {
 
 function removeTaskBtn() {
 	//this is the list element
-	emit("removeTask", {
-		tIndex: Array.from(this.parentNode.children).indexOf(this),
-		pName: topHeading.getAttribute("data-projectNm"),
-	});
+	emit("removeTask", Array.from(this.parentNode.children).indexOf(this));
 	this.remove();
 }
 
@@ -283,10 +278,9 @@ function editTask() {
 		//priority
 		tContainer.setAttribute(tPriorityAttritubte, priority);
 
-		const pName = topHeading.getAttribute("data-projectNm");
 		const opts = { name, desc, dueDate, priority };
 		const tIndex = getTaskIndex(this);
-		emit("editTask", { pName, tIndex, opts });
+		emit("editTask", { tIndex, opts });
 
 		this.removeChild(select(".task-edit-form-container"));
 		select(".task-container").removeAttribute("style");
@@ -346,28 +340,23 @@ function clickHandlerDelegateTaskBtn(e) {
 	else return;
 }
 
-function clickHandlerOpenProject({ tasks, pName }) {
+function openProject({ tasks }) {
 	// reset page
 	// remove task list so that tasks of new project
 	// can be added
 	// remove add project button
+	const projectsList = $(".page__projects-list");
+	if (projectsList) projectsList.remove();
+
 	const btnAddProject = $(".page__btn-add-project");
 	const taskList = $(".page> .task-list");
 	if (btnAddProject) btnAddProject.remove();
 	if (taskList) taskList.remove();
 
-	// if it's my projects page then remove projects list
-	if (topHeading.getAttribute("data-is-projects-page") === "true") {
-		$(".page__projects-list").remove();
-		topHeading.setAttribute("data-is-projects-page", false);
-	}
 	page.prepend(createElement("ul", { attributes: { class: "task-list" } }));
 
 	// add tasks to page
 	tasks.forEach((task) => showNewTask(task));
-
-	topHeading.setAttribute("data-projectNm", pName);
-	topHeading.textContent = topHeading.getAttribute("data-projectNm");
 
 	//task form/task button reset
 	taskForm.style.display = "none";
@@ -375,7 +364,6 @@ function clickHandlerOpenProject({ tasks, pName }) {
 }
 
 function clickHandlerTaskCheckbox(e) {
-	const pName = topHeading.getAttribute("data-projectNm");
 	let tIndex = undefined;
 
 	const checkboxes = $(".task-list").querySelectorAll(
@@ -387,21 +375,11 @@ function clickHandlerTaskCheckbox(e) {
 		break;
 	}
 	$(`.task-list>li:nth-child(${tIndex + 1})`).remove();
-	emit("taskCompletedLogic", { tIndex, pName });
+	emit("taskCompletedLogic", tIndex);
 }
 
-function cleanMainPage() {
-	const tList = $(".page .task-list");
-	if (tList) tList.remove();
-}
-
-function openMyProjects(list) {
-	if (topHeading.getAttribute("data-is-projects-page") === "true") return;
-
-	cleanMainPage();
-
-	topHeading.textContent = headingHomePage;
-	topHeading.setAttribute("data-is-projects-page", true);
+function openMyProjects(list, check) {
+	if (!check) $(".page .task-list").remove();
 
 	btnAddTask.setAttribute("style", "display: none;");
 
@@ -423,7 +401,7 @@ function openMyProjects(list) {
 
 on("projectAdded", addProjectToMainPage);
 function addProjectToMainPage(project, ul = $(".page__projects-list")) {
-	if (topHeading.getAttribute("data-is-projects-page") === "false") return;
+	if ($('[data-is-projects-page="false"]')) return;
 	const li = createElement("li", {
 		attributes: {
 			class: "project-list__project-item btn",
@@ -472,9 +450,6 @@ function removeProject(pName) {
 	document
 		.querySelectorAll(`li[data-project-name="${pName}"]`)
 		.forEach((node) => node.remove());
-	emit("removeProject", pName);
-	if (pName === topHeading.getAttribute("data-projectNm"))
-		emit("getProjectList");
 }
 
 // data-project-name is different from data-projectNm
@@ -486,10 +461,10 @@ function clickHandlerProjectsInMainPage(e) {
 	else if (e.target.classList.contains("btn-container__edit"))
 		emit("editProject", projectName);
 	// opening the project if none of the buttons are pressed
-	else emit("getProjectTasks", projectName);
+	else emit("openProject", projectName);
 }
 
-on("projectEdited", [editProjectMainPage, updateTopHeading]);
+on("projectEdited", editProjectMainPage);
 function editProjectMainPage({ oldName, name, color }) {
 	// currently there is no way to show the colors
 	// so I am not doing anything about colors here
@@ -500,22 +475,16 @@ function editProjectMainPage({ oldName, name, color }) {
 	project.setAttribute("data-project-name", name);
 }
 
-function updateTopHeading({ oldName, name, color }) {
-	if (topHeading.getAttribute("data-projectnm") !== oldName) return;
-	topHeading.setAttribute("data-projectnm", name);
-	topHeading.textContent = name;
-}
-
 function render(projectList) {
+	const header = Header();
 	const dialogEditProject = EditProject();
 	const dialogAddProject = AddProject();
 	const sidebarComponent = Sidebar(projectList);
-	openMyProjects(projectList);
-	$("body").prepend(sidebarComponent);
-	$("body").prepend(dialogAddProject);
-	$("body").prepend(dialogEditProject);
+	openMyProjects(projectList, "first render");
+	$("body").prepend(sidebarComponent, dialogAddProject, dialogEditProject);
+	$(".r-side").prepend(header);
 }
 
-on("return__getProjectTasks", clickHandlerOpenProject);
+on("openedProject", openProject);
 on("openedMyProjects", openMyProjects);
 on("renderApp", render);

@@ -1,6 +1,7 @@
 import { emit, off, on } from "./pub-sub";
 
 let projects = [];
+let openedProject = "";
 
 // [ INTERFACES ]
 const inNOutInterface = (state) => ({
@@ -85,32 +86,32 @@ function getProject(pName) {
 	}
 }
 
-function addNewTask(data) {
-	const [projectName, opts] = data;
-	const project = getProject(projectName);
+function addNewTask(opts) {
+	const project = getProject(openedProject);
 	const projectExists = project !== undefined;
 	if (projectExists) project.taskManager.add(opts);
 	updateLocalStorage();
 	return projectExists;
 }
 
-function openAProject(pName) {
-	const tasks = getProject(pName).taskManager.fetchAll();
-	emit("return__getProjectTasks", { tasks, pName });
+function openProject(pName) {
+	openedProject = pName;
+	const tasks = getProject(openedProject).taskManager.fetchAll();
+	emit("openedProject", { tasks, pName });
 }
 
-function removeTask(data) {
-	const { tIndex, pName } = data;
-	getProject(pName).taskManager.remove(tIndex);
+function removeTask(tIndex) {
+	getProject(openedProject).taskManager.remove(tIndex);
 	updateLocalStorage();
 }
 
-function updateTask({ pName, tIndex, opts }) {
-	getProject(pName).taskManager.modify(tIndex, opts);
+function updateTask({ tIndex, opts }) {
+	getProject(openedProject).taskManager.modify(tIndex, opts);
 	updateLocalStorage();
 }
 
 function openProjectList() {
+	openedProject = "";
 	emit("openedMyProjects", ProjectManager.fetchAll());
 }
 
@@ -168,11 +169,12 @@ function addNewProject(opts) {
 function removeProject(ptn) {
 	ProjectManager.remove(ptn);
 	updateLocalStorage();
+	if (ptn === openedProject) emit("openMyProjects");
 }
 
 on("projectAdded", addNewProject);
 on("addNewTask", addNewTask, "addNewTask");
-on("getProjectTasks", openAProject);
+on("openProject", openProject);
 on("taskCompletedLogic", removeTask);
 on("editTask", updateTask);
 on("openMyProjects", openProjectList);

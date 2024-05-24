@@ -100,7 +100,12 @@ export default function render(projects) {
 
 	hamBtn.addEventListener("click", clickHandlerHamburger);
 	myProjects.addEventListener("click", () => emit("openMyProjects"));
-	buttonAddPro.addEventListener("click", (event) => emit("addProject", event));
+	buttonAddPro.addEventListener("click", (event) => {
+		// find a way to remove refernce of the heading
+		if ($('[data-is-projects-page="false"]')) return;
+
+		emit("addProject", event);
+	});
 
 	sidebar = container;
 	hamburger = hamBtn;
