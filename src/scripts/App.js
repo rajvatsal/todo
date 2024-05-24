@@ -60,7 +60,7 @@ function createTaskInfo(newTask) {
 		property: { textContent: `${newTask.dueDate}` },
 	});
 
-	infoContainer.appendChildren(h3, p, span);
+	infoContainer.append(h3, p, span);
 	return infoContainer;
 }
 
@@ -132,7 +132,7 @@ function showNewTask(newTask) {
 		},
 	});
 
-	taskContainer.appendChildren(checkBox, taskInfoContainer, editBtn, deleteBtn);
+	taskContainer.append(checkBox, taskInfoContainer, editBtn, deleteBtn);
 	li.appendChild(taskContainer);
 	taskList.appendChild(li);
 }
@@ -302,7 +302,7 @@ function editTask() {
 	};
 	btnCancel.addEventListener("click", clickHandlerEditFormCancel);
 
-	fieldsetPriority.appendChildren(
+	fieldsetPriority.append(
 		legendPriority,
 		priorities.p1,
 		priorities.label_p1,
@@ -311,7 +311,7 @@ function editTask() {
 		priorities.p3,
 		priorities.label_p3,
 	);
-	fieldset.appendChildren(
+	fieldset.append(
 		legend,
 		labelNm,
 		name,
@@ -438,9 +438,9 @@ function addProjectToMainPage(project, ul = $(".page__projects-list")) {
 
 	li.addEventListener("click", clickHandlerProjectsInMainPage);
 
-	btnContainer.appendChildren(btnEdit, btnRemove);
+	btnContainer.append(btnEdit, btnRemove);
 
-	projectContainer.appendChildren(pName, btnContainer);
+	projectContainer.append(pName, btnContainer);
 	li.appendChild(projectContainer);
 	ul.appendChild(li);
 }

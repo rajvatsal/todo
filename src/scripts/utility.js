@@ -9,15 +9,6 @@ const DefaultValues = (() => {
 	return { form };
 })();
 
-const appendsChildren = () => ({
-	appendChildren(...args) {
-		for (let child of args) {
-			if (child === undefined) continue;
-			this.appendChild(child);
-		}
-	},
-});
-
 const assignDefaultValues = function getAssigned(tag, opts) {
 	for (const val in DefaultValues[tag]) {
 		opts[val] = Object.assign({}, DefaultValues[tag][val], opts[val]);
@@ -41,7 +32,7 @@ export function createElement(tag, opts) {
 		}
 	}
 
-	return Object.assign(element, appendsChildren());
+	return element;
 }
 
 export const $ = (function () {

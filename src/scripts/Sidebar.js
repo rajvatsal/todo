@@ -49,8 +49,8 @@ const addProject = function addProject(project) {
 		property: { textContent: "edit" },
 	});
 
-	buttonContainer.appendChildren(btnEdit, btnRemove);
-	pContainer.appendChildren(pName, buttonContainer);
+	buttonContainer.append(btnEdit, btnRemove);
+	pContainer.append(pName, buttonContainer);
 	li.appendChild(pContainer);
 
 	li.addEventListener("click", clickHandlerProjectBtn);
@@ -87,7 +87,7 @@ export default function render(projects) {
 		attributes: { type: "button", class: "btn-add-project" },
 		property: { textContent: "+" },
 	});
-	myProjects.appendChildren(myProjectsHeading, buttonAddPro);
+	myProjects.append(myProjectsHeading, buttonAddPro);
 
 	const nav = createElement("nav", {
 		attributes: { class: "projects-nav-sidebar" },
@@ -96,7 +96,7 @@ export default function render(projects) {
 		attributes: { class: "projects-nav-sidebar__project-list" },
 	});
 	nav.appendChild(ul);
-	container.appendChildren(hamburgerContainer, myProjects, nav);
+	container.append(hamburgerContainer, myProjects, nav);
 
 	hamBtn.addEventListener("click", clickHandlerHamburger);
 	myProjects.addEventListener("click", () => emit("openMyProjects"));

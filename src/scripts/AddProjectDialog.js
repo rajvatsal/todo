@@ -101,17 +101,11 @@ const render = function renderDialog() {
 		attributes: { class: "input-container" },
 	});
 
-	input_2.appendChildren(...sections);
-	inputCont_1.appendChildren(label_1, input_1);
-	inputCont_2.appendChildren(label_2, input_2);
+	input_2.append(...sections);
+	inputCont_1.append(label_1, input_1);
+	inputCont_2.append(label_2, input_2);
 
-	fieldset.appendChildren(
-		legend,
-		inputCont_1,
-		inputCont_2,
-		btnSubmit,
-		btnCancel,
-	);
+	fieldset.append(legend, inputCont_1, inputCont_2, btnSubmit, btnCancel);
 	form.appendChild(fieldset);
 	dialog.appendChild(form);
 

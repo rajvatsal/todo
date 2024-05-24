@@ -39,7 +39,7 @@ const render = function renderHeader() {
 	});
 
 	headingContainer.appendChild(heading);
-	header.appendChildren(topBarContainer, headingContainer);
+	header.append(topBarContainer, headingContainer);
 
 	headingRef = heading;
 

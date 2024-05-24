@@ -124,16 +124,9 @@ const render = function createFrom() {
 		},
 	});
 
-	btnContainer.appendChildren(btnSubmit, btnCancel);
-	select.appendChildren(...opts);
-	fieldset.appendChildren(
-		legend,
-		label_1,
-		input_1,
-		label_2,
-		select,
-		btnContainer,
-	);
+	btnContainer.append(btnSubmit, btnCancel);
+	select.append(...opts);
+	fieldset.append(legend, label_1, input_1, label_2, select, btnContainer);
 
 	form.appendChild(fieldset);
 	dialog.appendChild(form);
