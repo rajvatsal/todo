@@ -4,7 +4,8 @@ import { $, createElement } from "./utility";
 let headingRef;
 const HEADING = "My projects";
 
-const updateCurrentProject = function changeName({ name }) {
+const updateCurrentProject = function changeName({ oldName, name }) {
+	if (headingRef.textContent !== oldName) return;
 	headingRef.textContent = name;
 };
 

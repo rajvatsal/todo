@@ -159,6 +159,7 @@ function updateLocalStorage() {
 
 function modifyProject({ oldName, name, color }) {
 	ProjectManager.modify(getProject(oldName), { name, color });
+	openedProject = openedProject === oldName ? name : openedProject;
 	updateLocalStorage();
 }
 
