@@ -10,106 +10,8 @@ let taskDate;
 let taskDescription;
 let taskForm;
 let page;
-let projectsNavPrimary;
 
 const tPriorityAttritubte = "data-priority";
-// I might want to create a seperate component for each project and task but they require access to some elements that are not created by them. Maybe pass them from main component
-
-function openMyProjects(list) {
-	// Only adds project to the project list doesn't change the page. Give a more appropriate name.
-	const tasklist = $(".page .task-list");
-	if (tasklist) tasklist.remove();
-
-	const projectsList = createElement("ul", {
-		attributes: { class: "page__projects-list" },
-	});
-
-	list.forEach((project) => addProjectToMainPage(project, projectsList));
-
-	const addProjectBtn = createElement("button", {
-		attributes: { class: "page__btn-add-project" },
-		property: { textContent: "add project" },
-	});
-	addProjectBtn.addEventListener("click", (e) => emit("addProject", e));
-
-	projectsNavPrimary.appendChild(projectsList);
-	page.prepend(addProjectBtn);
-}
-
-function addProjectToMainPage(project, ul = $(".page__projects-list")) {
-	if (!ul) return;
-	const li = createElement("li", {
-		attributes: {
-			class: "project-list__project-item btn",
-			"data-project-name": project.name,
-		},
-	});
-
-	const projectContainer = createElement("div", {
-		attributes: {
-			class: "project-item__container f-sb",
-		},
-	});
-
-	const pName = createElement("h3", {
-		property: {
-			textContent: project.name,
-		},
-		attributes: { class: "project-name" },
-	});
-
-	const btnContainer = createElement("div", {
-		attributes: { class: "page__project-list__btn-container" },
-	});
-
-	const btnEdit = createElement("button", {
-		attributes: { class: "btn-container__edit" },
-		property: { textContent: "edit" },
-	});
-
-	const btnRemove = createElement("button", {
-		attributes: { class: "btn-container__remove" },
-		property: { textContent: "remove" },
-	});
-
-	li.addEventListener("click", clickHandlerProjectsInMainPage);
-
-	btnContainer.append(btnEdit, btnRemove);
-
-	projectContainer.append(pName, btnContainer);
-	li.appendChild(projectContainer);
-	ul.appendChild(li);
-}
-
-function removeProject(pName) {
-	document
-		.querySelectorAll(`li[data-project-name="${pName}"]`)
-		.forEach((node) => node.remove());
-}
-
-// data-project-name is different from data-projectNm
-// fix it
-function clickHandlerProjectsInMainPage(e) {
-	const projectName = this.getAttribute("data-project-name");
-	if (e.target.classList.contains("btn-container__remove"))
-		emit("projectRemoved", projectName);
-	else if (e.target.classList.contains("btn-container__edit"))
-		emit("editProject", projectName);
-	// opening the project if none of the buttons are pressed
-	else emit("openProject", projectName);
-}
-
-function editProjectMainPage({ oldName, name, color }) {
-	// currently there is no way to show the colors
-	// so I am not doing anything about colors here
-	// add them in the future
-	const project = $(`.page__projects-list > li[data-project-name="${oldName}"`);
-	if (!project) return;
-	project.querySelector(".project-name").textContent = name;
-	project.setAttribute("data-project-name", name);
-}
-
-// ***End***
 
 const getTaskIndex = (task) =>
 	[...document.querySelectorAll(".page .task-list>li")].indexOf(task);
@@ -216,7 +118,6 @@ function showNewTask(newTask) {
 	li.appendChild(taskContainer);
 	taskList.appendChild(li);
 }
-
 function openProject({ tasks }) {
 	// reset page
 	// remove task list so that tasks of new project
@@ -488,12 +389,7 @@ function editTask() {
 	this.querySelector(".task-container").style.display = "none";
 }
 
-const render = function render() {
-	const main = createElement("main", { attributes: { class: "page" } });
-	const nav = createElement("nav", {
-		attributes: { class: "page__projects-nav-primary" },
-	});
-
+const render = function render(main) {
 	const btnAddTask = createElement("button", {
 		attributes: { class: "page__btn-add-task" },
 		property: { textContent: "Add Task" },
@@ -580,12 +476,11 @@ const render = function render() {
 	taskDescription = inputDescription;
 	taskForm = form;
 	page = main;
-	projectsNavPrimary = nav;
-	return main;
+	return page;
 };
 
-export default function init() {
-	const component = render();
+export default function init(main) {
+	const component = render(main);
 	btnAddTaskRef.addEventListener("click", clickHandlerShowTaskForm);
 	btnCancelRef.addEventListener("click", clickHandlerCancelTask);
 	btnSubmitTaskRef.addEventListener("click", clickHandlerTaskFormSubmit);
@@ -595,7 +490,3 @@ export default function init() {
 }
 
 on("openedProject", openProject);
-on("openedMyProjects", openMyProjects);
-on("projectRemoved", removeProject);
-on("projectAdded", addProjectToMainPage);
-on("projectEdited", editProjectMainPage);
