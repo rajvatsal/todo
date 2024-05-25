@@ -125,31 +125,13 @@ button {
 }
 
 /*
-  10. Set min-height to 100vh
-*/
-
-body {
-  min-height: 100vh;
-}
-
-/*
-  11. Set ul padding to li
+  10. Set ul padding to li
 */
 ul {
   padding: 0;
 }
 li {
   padding-left: 20px;
-}
-
-/*
-  12. Prevent peek a boo
-*/
-:root {
-  overflow-y: hidden;
-}
-body {
-  overflow-y: scroll;
 }
 
 /*

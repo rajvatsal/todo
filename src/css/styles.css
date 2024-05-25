@@ -18,10 +18,11 @@ button:hover {
   content: "";
 }
 
-body {
+div.content {
   font-family: var(--ff-primary);
   background-color: var(--clr-primary-400);
   color: var(--clr-neutral-700);
+  min-height: 100vh;
   --top-margin-heading: 10px;
 }
 
@@ -29,7 +30,7 @@ h1 {
   font: var(--fw-bold) var(--fs-primary-heading) var(--ff-primary);
 }
 
-body {
+div.content {
   --fg-r-side: 1;
   --fg-sidebar: 2;
   --fb-sidebar: calc(
@@ -235,6 +236,17 @@ div.task-container {
 @media only screen and (max-width: 800px) {
   :root {
     --w-page-primary: 95%;
+  }
+
+  /* prevent peek a boo sidebar */
+  div.content {
+    overflow-y: auto;
+    height: 100vh;
+  }
+
+  :root,
+  body {
+    overflow: hidden;
   }
 
   .side-bar.hidden {
