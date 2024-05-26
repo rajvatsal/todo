@@ -19,6 +19,7 @@ function openMyProjects(list) {
 	// Only adds project to the project list doesn't change the page. Give a more appropriate name.
 	const tasklist = $(".page .task-list");
 	if (tasklist) tasklist.remove();
+	btnAddTaskRef.setAttribute("style", "display: none;");
 
 	const projectsList = createElement("ul", {
 		attributes: { class: "page__projects-list" },
@@ -589,8 +590,6 @@ export default function init() {
 	btnAddTaskRef.addEventListener("click", clickHandlerShowTaskForm);
 	btnCancelRef.addEventListener("click", clickHandlerCancelTask);
 	btnSubmitTaskRef.addEventListener("click", clickHandlerTaskFormSubmit);
-
-	btnAddTaskRef.setAttribute("style", "display: none;");
 	return component;
 }
 
