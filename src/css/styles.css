@@ -241,7 +241,7 @@ div.task-container {
   /* prevent peek a boo sidebar */
   div.content {
     overflow-y: auto;
-    height: 100svh;
+    height: 95svh;
   }
 
   :root,
