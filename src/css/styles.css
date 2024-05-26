@@ -233,6 +233,10 @@ div.task-container {
   position: relative;
 }
 
+div.content {
+  padding-bottom: 170px;
+}
+
 @media only screen and (max-width: 800px) {
   :root {
     --w-page-primary: 95%;
@@ -241,7 +245,7 @@ div.task-container {
   /* prevent peek a boo sidebar */
   div.content {
     overflow-y: auto;
-    height: 95svh;
+    height: 100svh;
   }
 
   :root,
